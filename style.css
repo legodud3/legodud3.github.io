@@ -1,0 +1,110 @@
+:root {
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --link-color: #4da6ff;
+    --border-color: #333;
+    --hover-bg: #2a2a2a;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.search-container {
+    margin-bottom: 30px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.post-list {
+    list-style: none;
+    padding: 0;
+}
+
+.post-item {
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-date {
+    color: #888;
+    margin-left: 10px;
+    font-size: 0.9em;
+}
+
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-btn {
+    padding: 8px 16px;
+    background: var(--border-color);
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Markdown Content Styles */
+.markdown-body {
+    padding-top: 20px;
+}
+
+.markdown-body pre {
+    background-color: #111;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.markdown-body blockquote {
+    border-left: 4px solid var(--border-color);
+    margin: 0;
+    padding-left: 15px;
+    color: #aaa;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+}

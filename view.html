@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post View</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Back to Posts</a>
+    
+    <div id="content" class="markdown-body">
+        Loading...
+    </div>
+
+    <script>
+        async function loadPost() {
+            const params = new URLSearchParams(window.location.search);
+            const filename = params.get('post');
+            
+            if (!filename) {
+                document.getElementById('content').innerHTML = 'Post not specified.';
+                return;
+            }
+
+            try {
+                // Fetch the raw markdown content
+                const response = await fetch(`posts/${filename}`);
+                if (!response.ok) throw new Error('Post not found');
+                
+                const text = await response.text();
+                
+                // Parse Frontmatter (simple render, stripping it out mostly for the display)
+                let markdownContent = text;
+                
+                // Simple frontmatter extractor
+                if (text.startsWith('---')) {
+                    const end = text.indexOf('---', 3);
+                    if (end !== -1) {
+                        const frontmatter = text.substring(0, end + 3);
+                        markdownContent = text.substring(end + 3).trim();
+                        
+                        // Parse title from YAML to set document title
+                        try {
+                            // Removing --- for yaml parser
+                            const yamlText = frontmatter.replace(/^---\n/, '').replace(/\n---$/, '');
+                            const meta = jsyaml.load(yamlText);
+                            if (meta.title) {
+                                document.title = meta.title;
+                                // Optionally inject title as H1 if not present in markdown
+                            }
+                        } catch (e) {
+                            console.error('YAML parsing error', e);
+                        }
+                    }
+                }
+
+                // Render Markdown
+                document.getElementById('content').innerHTML = marked.parse(markdownContent);
+                
+            } catch (error) {
+                document.getElementById('content').innerHTML = `Error loading post: ${error.message}`;
+            }
+        }
+
+        loadPost();
+    </script>
+</body>
+</html>

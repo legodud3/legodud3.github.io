@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My Personal Blog</h1>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search posts...">
+    </div>
+
+    <ul id="postList" class="post-list">
+        <!-- Posts will be injected here -->
+    </ul>
+
+    <div class="pagination">
+        <button id="prevBtn" class="nav-btn" disabled>← Newer</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn" class="nav-btn">Older →</button>
+    </div>
+
+    <script>
+        let allPosts = [];
+        let currentPage = 1;
+        const POSTS_PER_PAGE = 10;
+
+        async function loadPosts() {
+            try {
+                const response = await fetch('posts.json');
+                allPosts = await response.json();
+                renderPosts();
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                document.getElementById('postList').innerHTML = '<li>Error loading posts. Please try again later.</li>';
+            }
+        }
+
+        function renderPosts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredPosts = allPosts.filter(post => 
+                post.title.toLowerCase().includes(searchTerm)
+            );
+
+            // Pagination
+            const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+            currentPage = Math.min(Math.max(1, currentPage), Math.max(1, totalPages));
+            
+            const start = (currentPage - 1) * POSTS_PER_PAGE;
+            const end = start + POSTS_PER_PAGE;
+            const displayedPosts = filteredPosts.slice(start, end);
+
+            const listEl = document.getElementById('postList');
+            listEl.innerHTML = '';
+
+            if (displayedPosts.length === 0) {
+                listEl.innerHTML = '<li>No posts found.</li>';
+            } else {
+                displayedPosts.forEach((post, index) => {
+                    const globalIndex = allPosts.indexOf(post) + 1; // Or calculated index based on filtered
+                    const li = document.createElement('li');
+                    li.className = 'post-item';
+                    li.innerHTML = `
+                        ${allPosts.length - allPosts.indexOf(post)}. 
+                        <a href="view.html?post=${encodeURIComponent(post.filename)}">${post.title}</a>
+                        <span class="post-date">[${post.date}]</span>
+                    `;
+                    listEl.appendChild(li);
+                });
+            }
+
+            // Update UI
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages || 1}`;
+            document.getElementById('prevBtn').disabled = currentPage <= 1;
+            document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('input', () => {
+            currentPage = 1; // Reset to first page on search
+            renderPosts();
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPosts();
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+             const filtered = allPosts.filter(p => p.title.toLowerCase().includes(searchTerm));
+             if (currentPage < Math.ceil(filtered.length / POSTS_PER_PAGE)) {
+                 currentPage++;
+                 renderPosts();
+             }
+        });
+
+        loadPosts();
+    </script>
+</body>
+</html>

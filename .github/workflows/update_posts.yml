@@ -1,0 +1,61 @@
+name: Build Post Index
+
+on:
+  push:
+    paths:
+      - 'posts/*.md'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate posts.json
+        run: |
+          echo "[" > posts.json
+          FIRST=1
+          # Loop through markdown files sorted by date/name
+          # We prefer to sort explicitly if possible, here simplified to shell
+          for file in posts/*.md; do
+             if [ "$FIRST" -eq 1 ]; then
+               FIRST=0
+             else
+               echo "," >> posts.json
+             fi
+             
+             # Extract Frontmatter
+             # Get Title
+             TITLE=$(grep "^title:" "$file" | head -1 | sed 's/title: //;s/"//g;s/'"'"'//g')
+             # Get Date
+             DATE=$(grep "^date:" "$file" | head -1 | sed 's/date: //;s/"//g')
+             # Filename
+             FILENAME=$(basename "$file")
+             
+             # Fallback if empty
+             if [ -z "$TITLE" ]; then TITLE="$FILENAME"; fi
+             if [ -z "$DATE" ]; then DATE="Unknown"; fi
+             
+             echo "  {" >> posts.json
+             echo "    \"title\": \"$TITLE\"," >> posts.json
+             echo "    \"date\": \"$DATE\"," >> posts.json
+             echo "    \"filename\": \"$FILENAME\"" >> posts.json
+             echo "  }" >> posts.json
+          done
+          echo "]" >> posts.json
+          
+          # Sort the JSON by date descending (Newest first)
+          # using python for reliable sorting
+          python3 -c "import sys, json; data = json.load(open('posts.json')); data.sort(key=lambda x: x['date'], reverse=True); print(json.dumps(data, indent=2))" > posts.json.sorted
+          mv posts.json.sorted posts.json
+
+      - name: Commit posts.json
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add posts.json
+          git commit -m "Update posts index" || echo "No changes to commit"
+          git push
