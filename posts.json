@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Hello World",
+    "date": "2026-01-09",
+    "filename": "hello-world.md"
+  },
+  {
+    "title": "Another Post",
+    "date": "2026-01-08",
+    "filename": "another-post.md"
+  }
+]
