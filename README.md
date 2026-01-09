@@ -29,9 +29,9 @@ If you have handwritten journal entries you want to convert to blog posts, use t
 
 1. Install dependencies: `pip install -r requirements.txt`
 2. Get a [Gemini API key](https://aistudio.google.com/app/apikey)
-3. Run: `python bulk_upload.py --input <image_directory> --api-key <your_key>`
+3. Run: `./bulk_upload.sh --input <image_directory> --api-key <your_key>`
 
-See [BULK_UPLOAD_GUIDE.md](BULK_UPLOAD_GUIDE.md) for detailed instructions.
+See [QUICK_START.md](QUICK_START.md) for a quick reference or [BULK_UPLOAD_GUIDE.md](BULK_UPLOAD_GUIDE.md) for detailed instructions.
 
 ## File Structure
 
@@ -42,5 +42,8 @@ See [BULK_UPLOAD_GUIDE.md](BULK_UPLOAD_GUIDE.md) for detailed instructions.
 - `posts.json`: A JSON file containing a list of all the blog posts.
 - `posts/`: A directory containing the blog posts in Markdown format.
 - `bulk_upload.py`: Script for bulk uploading handwritten journal entries using Gemini AI.
+- `bulk_upload.sh`: Wrapper script for easier execution.
 - `requirements.txt`: Python dependencies for the bulk upload script.
+- `QUICK_START.md`: Quick reference guide for bulk uploading.
+- `BULK_UPLOAD_GUIDE.md`: Comprehensive guide for bulk uploading handwritten entries.
 - `.github/workflows/update_posts.yml`: A GitHub Actions workflow to update the `posts.json` file automatically.
