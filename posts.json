@@ -1,8 +1,13 @@
 [
   {
+    "title": "Less tools more use",
+    "date": "2026-01-10",
+    "filename": "2026-01-10-less-tools-more-use.md"
+  },
+  {
     "title": "Iconic Positioning",
     "date": "2026-01-01",
-    "filename": "2026-01-01-iconic-positioning copy.md"
+    "filename": "2026-01-01-iconic-positioning.md"
   },
   {
     "title": "Time",
@@ -68,5 +73,10 @@
     "title": "Fringe and Interesting Opinions",
     "date": "2025-05-14",
     "filename": "2025-05-14-fringe-and-interesting-opinions.md"
+  },
+  {
+    "title": "What writing improves",
+    "date": "2025-05-01",
+    "filename": "2025-05-01-what-writing-improves.md"
   }
 ]
