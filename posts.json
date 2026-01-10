@@ -1,13 +1,18 @@
 [
   {
+    "title": "Less tools more use",
+    "date": "2026-01-10",
+    "filename": "2026-01-10-less-tools-more-use.md"
+  },
+  {
     "title": "Iconic Positioning",
     "date": "2026-01-01",
-    "filename": "2026-01-01-iconic-positioning copy.md"
+    "filename": "2026-01-01-iconic-positioning.md"
   },
   {
     "title": "Time",
     "date": "2025-12-30",
-    "filename": "2025-12-30-time copy.md"
+    "filename": "2025-12-30-time.md"
   },
   {
     "title": "Habit Retention",
@@ -18,11 +23,6 @@
     "title": "Writing After a Month",
     "date": "2025-08-24",
     "filename": "2025-08-24-writing-after-a-month.md"
-  },
-  {
-    "title": "Limited Risk to Yourself",
-    "date": "2025-07-05",
-    "filename": "2025-07-05-limited-risk-to-yourself.md"
   },
   {
     "title": "Providing Justification",
@@ -73,5 +73,10 @@
     "title": "Fringe and Interesting Opinions",
     "date": "2025-05-14",
     "filename": "2025-05-14-fringe-and-interesting-opinions.md"
+  },
+  {
+    "title": "What writing improves",
+    "date": "2025-05-01",
+    "filename": "2025-05-01-what-writing-improves.md"
   }
 ]
