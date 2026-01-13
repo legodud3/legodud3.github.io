@@ -15,6 +15,11 @@
         Loading...
     </div>
 
+    <div class="post-nav">
+        <a id="newerPost" href="#" style="display: none;"></a>
+        <a id="olderPost" href="#" style="display: none;"></a>
+    </div>
+
     <script>
         async function loadPost() {
             const params = new URLSearchParams(window.location.search);
@@ -59,6 +64,34 @@
 
                 // Render Markdown
                 document.getElementById('content').innerHTML = marked.parse(markdownContent);
+                
+                // Load Navigation
+                try {
+                    const postsResponse = await fetch('posts.json?v=' + new Date().getTime());
+                    const posts = await postsResponse.json();
+                    const currentIndex = posts.findIndex(p => p.filename === filename);
+                    
+                    if (currentIndex !== -1) {
+                        const newerPost = posts[currentIndex - 1];
+                        const olderPost = posts[currentIndex + 1];
+                        
+                        if (newerPost) {
+                            const newerLink = document.getElementById('newerPost');
+                            newerLink.href = `view.html?post=${encodeURIComponent(newerPost.filename)}`;
+                            newerLink.innerHTML = `&larr; ${newerPost.title}`;
+                            newerLink.style.display = 'inline-block';
+                        }
+                        
+                        if (olderPost) {
+                            const olderLink = document.getElementById('olderPost');
+                            olderLink.href = `view.html?post=${encodeURIComponent(olderPost.filename)}`;
+                            olderLink.innerHTML = `${olderPost.title} &rarr;`;
+                            olderLink.style.display = 'inline-block';
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error loading navigation', e);
+                }
                 
             } catch (error) {
                 document.getElementById('content').innerHTML = `Error loading post: ${error.message} <br> <small>Tried to load: posts/${filename}</small>`;

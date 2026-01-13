@@ -111,3 +111,11 @@ a:hover {
     display: inline-block;
     margin-bottom: 20px;
 }
+
+.post-nav {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+}
