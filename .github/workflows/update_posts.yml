@@ -35,8 +35,8 @@ jobs:
                           title_match = re.search(r"^title:\s*(.*)", content, re.MULTILINE)
                           date_match = re.search(r"^date:\s*(.*)", content, re.MULTILINE)
                           
-                          title = title_match.group(1).strip().strip("\"'").strip() if title_match else filename
-                          date = date_match.group(1).strip().strip("\"'").strip() if date_match else "Unknown"
+                          title = title_match.group(1).strip().strip("\"" + chr(39)).strip() if title_match else filename
+                          date = date_match.group(1).strip().strip("\"" + chr(39)).strip() if date_match else "Unknown"
                           
                           # Get relative path for JSON (handles subfolders)
                           rel_path = os.path.relpath(filepath, posts_dir).replace("\\", "/")
