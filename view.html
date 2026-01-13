@@ -61,7 +61,7 @@
                 document.getElementById('content').innerHTML = marked.parse(markdownContent);
                 
             } catch (error) {
-                document.getElementById('content').innerHTML = `Error loading post: ${error.message}`;
+                document.getElementById('content').innerHTML = `Error loading post: ${error.message} <br> <small>Tried to load: posts/${filename}</small>`;
             }
         }
 

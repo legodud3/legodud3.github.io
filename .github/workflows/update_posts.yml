@@ -16,13 +16,14 @@ jobs:
 
       - name: Generate posts.json
         run: |
-          python3 -c '
+          cat <<EOF > generate_posts.py
           import os
           import json
           import re
 
           posts = []
           posts_dir = "posts"
+          
           # Loop through files in posts/ directory recursively
           for root, dirs, files in os.walk(posts_dir):
               for filename in files:
@@ -35,8 +36,9 @@ jobs:
                           title_match = re.search(r"^title:\s*(.*)", content, re.MULTILINE)
                           date_match = re.search(r"^date:\s*(.*)", content, re.MULTILINE)
                           
-                          title = title_match.group(1).strip().strip("\"" + chr(39)).strip() if title_match else filename
-                          date = date_match.group(1).strip().strip("\"" + chr(39)).strip() if date_match else "Unknown"
+                          # Strip quotes safely
+                          title = title_match.group(1).strip().strip('"\'').strip() if title_match else filename
+                          date = date_match.group(1).strip().strip('"\'').strip() if date_match else "Unknown"
                           
                           # Get relative path for JSON (handles subfolders)
                           rel_path = os.path.relpath(filepath, posts_dir).replace("\\", "/")
@@ -47,7 +49,9 @@ jobs:
           
           with open("posts.json", "w", encoding="utf-8") as f:
               json.dump(posts, f, indent=2)
-          '
+          EOF
+          
+          python3 generate_posts.py
 
       - name: Commit posts.json
         run: |

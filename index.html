@@ -35,7 +35,8 @@
 
         async function loadPosts() {
             try {
-                const response = await fetch('posts.json');
+                // Add timestamp to prevent caching of the posts list
+                const response = await fetch('posts.json?v=' + new Date().getTime());
                 allPosts = await response.json();
                 renderPosts();
             } catch (error) {
