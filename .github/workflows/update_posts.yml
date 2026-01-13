@@ -16,41 +16,34 @@ jobs:
 
       - name: Generate posts.json
         run: |
-          echo "[" > posts.json
-          FIRST=1
-          # Loop through markdown files sorted by date/name
-          # We prefer to sort explicitly if possible, here simplified to shell
-          for file in posts/*.md; do
-             if [ "$FIRST" -eq 1 ]; then
-               FIRST=0
-             else
-               echo "," >> posts.json
-             fi
-             
-             # Extract Frontmatter
-             # Get Title
-             TITLE=$(grep "^title:" "$file" | head -1 | sed 's/title: //;s/"//g;s/'"'"'//g')
-             # Get Date
-             DATE=$(grep "^date:" "$file" | head -1 | sed 's/date: //;s/"//g')
-             # Filename
-             FILENAME=$(basename "$file")
-             
-             # Fallback if empty
-             if [ -z "$TITLE" ]; then TITLE="$FILENAME"; fi
-             if [ -z "$DATE" ]; then DATE="Unknown"; fi
-             
-             echo "  {" >> posts.json
-             echo "    \"title\": \"$TITLE\"," >> posts.json
-             echo "    \"date\": \"$DATE\"," >> posts.json
-             echo "    \"filename\": \"$FILENAME\"" >> posts.json
-             echo "  }" >> posts.json
-          done
-          echo "]" >> posts.json
+          python3 -c '
+          import os
+          import json
+          import re
+
+          posts = []
+          # Loop through files in posts/ directory
+          for filename in os.listdir("posts"):
+              if filename.endswith(".md"):
+                  filepath = os.path.join("posts", filename)
+                  with open(filepath, "r", encoding="utf-8") as f:
+                      content = f.read()
+                      
+                      # Extract title and date using Regex
+                      title_match = re.search(r"^title:\s*(.*)", content, re.MULTILINE)
+                      date_match = re.search(r"^date:\s*(.*)", content, re.MULTILINE)
+                      
+                      title = title_match.group(1).strip().strip("\"'").strip() if title_match else filename
+                      date = date_match.group(1).strip().strip("\"'").strip() if date_match else "Unknown"
+                      
+                      posts.append({"title": title, "date": date, "filename": filename})
+
+          # Sort by date descending
+          posts.sort(key=lambda x: x["date"], reverse=True)
           
-          # Sort the JSON by date descending (Newest first)
-          # using python for reliable sorting
-          python3 -c "import sys, json; data = json.load(open('posts.json')); data.sort(key=lambda x: x['date'], reverse=True); print(json.dumps(data, indent=2))" > posts.json.sorted
-          mv posts.json.sorted posts.json
+          with open("posts.json", "w", encoding="utf-8") as f:
+              json.dump(posts, f, indent=2)
+          '
 
       - name: Commit posts.json
         run: |
