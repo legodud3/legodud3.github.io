@@ -3,7 +3,7 @@ name: Build Post Index
 on:
   push:
     paths:
-      - 'posts/*.md'
+      - 'posts/**/*.md'
 
 permissions:
   contents: write
@@ -22,21 +22,25 @@ jobs:
           import re
 
           posts = []
-          # Loop through files in posts/ directory
-          for filename in os.listdir("posts"):
-              if filename.endswith(".md"):
-                  filepath = os.path.join("posts", filename)
-                  with open(filepath, "r", encoding="utf-8") as f:
-                      content = f.read()
-                      
-                      # Extract title and date using Regex
-                      title_match = re.search(r"^title:\s*(.*)", content, re.MULTILINE)
-                      date_match = re.search(r"^date:\s*(.*)", content, re.MULTILINE)
-                      
-                      title = title_match.group(1).strip().strip("\"'").strip() if title_match else filename
-                      date = date_match.group(1).strip().strip("\"'").strip() if date_match else "Unknown"
-                      
-                      posts.append({"title": title, "date": date, "filename": filename})
+          posts_dir = "posts"
+          # Loop through files in posts/ directory recursively
+          for root, dirs, files in os.walk(posts_dir):
+              for filename in files:
+                  if filename.endswith(".md"):
+                      filepath = os.path.join(root, filename)
+                      with open(filepath, "r", encoding="utf-8") as f:
+                          content = f.read()
+                          
+                          # Extract title and date using Regex
+                          title_match = re.search(r"^title:\s*(.*)", content, re.MULTILINE)
+                          date_match = re.search(r"^date:\s*(.*)", content, re.MULTILINE)
+                          
+                          title = title_match.group(1).strip().strip("\"'").strip() if title_match else filename
+                          date = date_match.group(1).strip().strip("\"'").strip() if date_match else "Unknown"
+                          
+                          # Get relative path for JSON (handles subfolders)
+                          rel_path = os.path.relpath(filepath, posts_dir).replace("\\", "/")
+                          posts.append({"title": title, "date": date, "filename": rel_path})
 
           # Sort by date descending
           posts.sort(key=lambda x: x["date"], reverse=True)
