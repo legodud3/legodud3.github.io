@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'posts/**/*.md'
+      - '.github/workflows/update_posts.yml'
 
 permissions:
   contents: write
@@ -16,7 +17,7 @@ jobs:
 
       - name: Generate posts.json
         run: |
-          cat <<EOF > generate_posts.py
+          cat <<'EOF' > generate_posts.py
           import os
           import json
           import re
