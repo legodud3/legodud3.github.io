@@ -1,6 +1,7 @@
 ---
 title: Binder Clips
 date: 2025-05-25
+tag: Analysis
 ---
 
 # Binder Clips

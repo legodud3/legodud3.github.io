@@ -1,6 +1,7 @@
 ---
 title: Prioritize Getting Sh*t Done
 date: 2025-05-30
+tag: Synthesis
 ---
 
 # Prioritize Getting Sh*t Done
@@ -10,4 +11,4 @@ I finally started putting my daily writings online. It's been approximately two 
 2. Write with a pen and paper, not a computer.
 3. A few times a week, consolidate and publish writing online so it's archived forever.
 
-[EDIT] Trying this again with a github pages hosted blog now.
+EDIT[Jan 8, 2026] Trying this again with a github pages hosted blog now.

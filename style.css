@@ -119,3 +119,112 @@ a:hover {
     display: flex;
     justify-content: space-between;
 }
+
+/* Tags & Filters */
+.tag-filter-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tag-filter-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 15px;
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+}
+
+.tag-filter-btn:hover {
+    background-color: var(--hover-bg);
+    filter: brightness(1.2);
+}
+
+.tag-filter-btn.tag-reportage {
+    color: #e67e22;
+    border-color: #e67e22;
+}
+
+.tag-filter-btn.tag-reportage.active {
+    background-color: #e67e22;
+    color: #fff;
+    border: 1px solid #e67e22;
+}
+
+.tag-filter-btn.tag-synthesis {
+    color: #27ae60;
+    border-color: #27ae60;
+}
+
+.tag-filter-btn.tag-synthesis.active {
+    background-color: #27ae60;
+    color: #fff;
+    border: 1px solid #27ae60;
+}
+
+.tag-filter-btn.tag-analysis {
+    color: #8e44ad;
+    border-color: #8e44ad;
+}
+
+.tag-filter-btn.tag-analysis.active {
+    background-color: #8e44ad;
+    color: #fff;
+    border: 1px solid #8e44ad;
+}
+
+.post-tag {
+    font-size: 0.85em;
+    margin-left: 8px;
+    font-weight: bold;
+}
+
+.post-meta {
+    margin-top: -15px;
+    margin-bottom: 30px;
+    color: #888;
+    font-size: 0.9em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.post-meta .post-tag {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/* Tag color styles */
+.post-tag.tag-reportage {
+    color: #e67e22;
+}
+
+.post-tag.tag-synthesis {
+    color: #27ae60;
+}
+
+.post-tag.tag-analysis {
+    color: #8e44ad;
+}
+
+/* Navigation link styles */
+.post-nav a {
+    display: none;
+}
+
+.post-nav a.visible {
+    display: inline-block;
+}
+
+/* Footer styles */
+.site-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: #888;
+    font-size: 0.8rem;
+}
