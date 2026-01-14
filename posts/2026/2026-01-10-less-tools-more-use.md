@@ -1,7 +1,7 @@
 ---
 title: Less tools more use
 date: 2026-01-10
-tag: Synthesis
+tag: Reflection
 ---
 
 # Less tools more use

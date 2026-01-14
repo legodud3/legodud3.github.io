@@ -144,37 +144,15 @@ a:hover {
     filter: brightness(1.2);
 }
 
-.tag-filter-btn.tag-reportage {
-    color: #e67e22;
-    border-color: #e67e22;
-}
-
-.tag-filter-btn.tag-reportage.active {
-    background-color: #e67e22;
-    color: #fff;
-    border: 1px solid #e67e22;
-}
-
-.tag-filter-btn.tag-synthesis {
+.tag-filter-btn.tag-reflection {
     color: #27ae60;
     border-color: #27ae60;
 }
 
-.tag-filter-btn.tag-synthesis.active {
+.tag-filter-btn.tag-reflection.active {
     background-color: #27ae60;
     color: #fff;
     border: 1px solid #27ae60;
-}
-
-.tag-filter-btn.tag-analysis {
-    color: #8e44ad;
-    border-color: #8e44ad;
-}
-
-.tag-filter-btn.tag-analysis.active {
-    background-color: #8e44ad;
-    color: #fff;
-    border: 1px solid #8e44ad;
 }
 
 .post-tag {
@@ -198,16 +176,8 @@ a:hover {
 }
 
 /* Tag color styles */
-.post-tag.tag-reportage {
-    color: #e67e22;
-}
-
-.post-tag.tag-synthesis {
+.post-tag.tag-reflection {
     color: #27ae60;
-}
-
-.post-tag.tag-analysis {
-    color: #8e44ad;
 }
 
 /* Navigation link styles */

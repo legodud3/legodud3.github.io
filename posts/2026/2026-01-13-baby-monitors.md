@@ -1,7 +1,7 @@
 ---
 title: Software manufacturing process
 date: 2026-01-16
-tag: Analysis
+tag: Reflection
 ---
 
 # Software manufacturing process

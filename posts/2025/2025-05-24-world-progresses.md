@@ -1,7 +1,7 @@
 ---
 title: The World Progresses Because...
 date: 2025-05-24
-tag: Synthesis
+tag: Reflection
 ---
 
 # The World Progresses Because...

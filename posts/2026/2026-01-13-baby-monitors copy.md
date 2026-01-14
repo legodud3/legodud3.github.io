@@ -1,7 +1,7 @@
 ---
 title: Baby monitors
 date: 2026-01-13
-tag: Analysis
+tag: Reflection
 ---
 
 # Baby monitors

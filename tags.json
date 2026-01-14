@@ -1,14 +1,6 @@
 {
-  "reportage": {
-    "name": "Reportage",
-    "color": "#e67e22"
-  },
-  "synthesis": {
-    "name": "Synthesis",
+  "reflection": {
+    "name": "Reflection",
     "color": "#27ae60"
-  },
-  "analysis": {
-    "name": "Analysis",
-    "color": "#8e44ad"
   }
 }

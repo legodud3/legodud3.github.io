@@ -7,21 +7,12 @@ def main():
     output_file = "posts.json"
     posts = []
 
-    # MECE Tagging Rules: Reportage (Log), Reflection (Insight), Analysis (Deconstruction)
-    TAG_RULES = {
-        "Analysis": {
-            "color": "#8e44ad",
-            "key": "analysis"
-        },
-        "Synthesis": {
-            "color": "#27ae60",
-            "key": "synthesis"
-        },
-        "Reportage": {
-            "color": "#e67e22",
-            "key": "reportage"
-        }
-    }
+    # Load tags from tags.json to avoid duplication
+    TAG_RULES = {}
+    with open("tags.json", "r", encoding="utf-8") as f:
+        tags_data = json.load(f)
+        for key, data in tags_data.items():
+            TAG_RULES[data["name"]] = {"color": data["color"], "key": key}
 
     # Loop through files in posts/ directory recursively
     for root, dirs, files in os.walk(posts_dir):

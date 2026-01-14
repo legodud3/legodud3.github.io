@@ -1,7 +1,7 @@
 ---
 title: Habit Retention
 date: 2025-11-28
-tag: Analysis
+tag: Reflection
 ---
 
 # Habit Retention
