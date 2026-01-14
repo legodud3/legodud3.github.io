@@ -1,7 +1,7 @@
 ---
 title: What is a Calorie?
 date: 2025-05-31
-tag: Analysis
+tag: Reflection
 ---
 
 # What is a Calorie?

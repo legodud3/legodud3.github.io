@@ -1,7 +1,7 @@
 ---
 title: Spontaneous Days
 date: 2025-06-07
-tag: Reportage
+tag: Reflection
 ---
 
 # Spontaneous Days

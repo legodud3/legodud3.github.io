@@ -1,7 +1,7 @@
 ---
 title: Prioritize Getting Sh*t Done
 date: 2025-05-30
-tag: Synthesis
+tag: Reflection
 ---
 
 # Prioritize Getting Sh*t Done

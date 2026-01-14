@@ -1,7 +1,7 @@
 ---
 title: What writing improves
 date: 2025-05-01
-tag: Analysis
+tag: Reflection
 ---
 
 # What writing improves
