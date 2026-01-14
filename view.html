@@ -63,15 +63,39 @@
                 }
 
                 // Render Markdown
-                document.getElementById('content').innerHTML = marked.parse(markdownContent);
+                const contentEl = document.getElementById('content');
+                contentEl.innerHTML = marked.parse(markdownContent);
                 
-                // Load Navigation
+                // Load Navigation and Meta
                 try {
                     const postsResponse = await fetch('posts.json?v=' + new Date().getTime());
                     const posts = await postsResponse.json();
                     const currentIndex = posts.findIndex(p => p.filename === filename);
                     
                     if (currentIndex !== -1) {
+                        const currentPost = posts[currentIndex];
+
+                        // Inject Meta (Tag + Date)
+                        if (currentPost) {
+                            const metaDiv = document.createElement('div');
+                            metaDiv.className = 'post-meta';
+
+                            let metaHtml = '';
+                            if (currentPost.tag_name) {
+                                metaHtml += `<span class="post-tag" style="color: ${currentPost.tag_color}">[${currentPost.tag_name}]</span>`;
+                            }
+                            metaHtml += `[${currentPost.date}]`;
+
+                            metaDiv.innerHTML = metaHtml;
+
+                            const h1 = contentEl.querySelector('h1');
+                            if (h1) {
+                                h1.parentNode.insertBefore(metaDiv, h1.nextSibling);
+                            } else {
+                                contentEl.insertBefore(metaDiv, contentEl.firstChild);
+                            }
+                        }
+
                         const newerPost = posts[currentIndex - 1];
                         const olderPost = posts[currentIndex + 1];
                         

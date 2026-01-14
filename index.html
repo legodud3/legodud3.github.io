@@ -18,6 +18,10 @@ c<!DOCTYPE html>
         <input type="text" id="searchInput" placeholder="Search posts...">
     </div>
 
+    <div id="tagFilters" class="tag-filter-container">
+        <!-- Tag buttons will be injected here -->
+    </div>
+
     <ul id="postList" class="post-list">
         <!-- Posts will be injected here -->
     </ul>
@@ -31,6 +35,7 @@ c<!DOCTYPE html>
     <script>
         let allPosts = [];
         let currentPage = 1;
+        let activeTag = null;
         const POSTS_PER_PAGE = 10;
 
         async function loadPosts() {
@@ -38,6 +43,7 @@ c<!DOCTYPE html>
                 // Add timestamp to prevent caching of the posts list
                 const response = await fetch('posts.json?v=' + new Date().getTime());
                 allPosts = await response.json();
+                renderTagFilters();
                 renderPosts();
             } catch (error) {
                 console.error('Error loading posts:', error);
@@ -45,11 +51,75 @@ c<!DOCTYPE html>
             }
         }
 
+        function renderTagFilters() {
+            const tagCounts = {};
+            allPosts.forEach(post => {
+                if (post.tag_key) {
+                    if (!tagCounts[post.tag_key]) {
+                        tagCounts[post.tag_key] = {
+                            count: 0,
+                            name: post.tag_name,
+                            color: post.tag_color
+                        };
+                    }
+                    tagCounts[post.tag_key].count++;
+                }
+            });
+
+            // Convert to array and sort by count desc
+            const sortedTags = Object.entries(tagCounts)
+                .sort((a, b) => b[1].count - a[1].count)
+                .slice(0, 3); // Top 3
+
+            const filterContainer = document.getElementById('tagFilters');
+            filterContainer.innerHTML = '';
+
+            if (sortedTags.length > 0) {
+                 const allBtn = document.createElement('button');
+                 allBtn.className = 'tag-filter-btn';
+                 if (!activeTag) allBtn.classList.add('active');
+                 allBtn.textContent = 'All';
+                 allBtn.onclick = () => {
+                     activeTag = null;
+                     currentPage = 1;
+                     renderTagFilters();
+                     renderPosts();
+                 };
+                 filterContainer.appendChild(allBtn);
+
+                 sortedTags.forEach(([key, info]) => {
+                     const btn = document.createElement('button');
+                     btn.className = 'tag-filter-btn';
+                     if (activeTag === key) {
+                         btn.classList.add('active');
+                         btn.style.backgroundColor = info.color;
+                         btn.style.color = '#fff';
+                         btn.style.border = '1px solid ' + info.color;
+                     } else {
+                         btn.style.color = info.color;
+                         btn.style.borderColor = info.color;
+                     }
+
+                     btn.textContent = `${info.name} (${info.count})`;
+
+                     btn.onclick = () => {
+                         activeTag = (activeTag === key) ? null : key;
+                         currentPage = 1;
+                         renderTagFilters();
+                         renderPosts();
+                     };
+                     filterContainer.appendChild(btn);
+                 });
+            }
+        }
+
         function renderPosts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filteredPosts = allPosts.filter(post => 
-                post.title.toLowerCase().includes(searchTerm)
-            );
+            const filteredPosts = allPosts.filter(post => {
+                const matchesSearch = post.title.toLowerCase().includes(searchTerm);
+                const matchesTag = activeTag ? post.tag_key === activeTag : true;
+                return matchesSearch && matchesTag;
+            });
 
             // Pagination
             const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
@@ -66,13 +136,19 @@ c<!DOCTYPE html>
                 listEl.innerHTML = '<li>No posts found.</li>';
             } else {
                 displayedPosts.forEach((post, index) => {
-                    const globalIndex = allPosts.indexOf(post) + 1; // Or calculated index based on filtered
                     const li = document.createElement('li');
                     li.className = 'post-item';
+
+                    let tagHtml = '';
+                    if (post.tag_name) {
+                        tagHtml = `<span class="post-tag" style="color: ${post.tag_color}">[${post.tag_name}]</span>`;
+                    }
+
                     li.innerHTML = `
                         ${allPosts.length - allPosts.indexOf(post)}. 
                         <a href="view.html?post=${encodeURIComponent(post.filename)}">${post.title}</a>
                         <span class="post-date">[${post.date}]</span>
+                        ${tagHtml}
                     `;
                     listEl.appendChild(li);
                 });
@@ -99,7 +175,11 @@ c<!DOCTYPE html>
 
         document.getElementById('nextBtn').addEventListener('click', () => {
              const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-             const filtered = allPosts.filter(p => p.title.toLowerCase().includes(searchTerm));
+             const filtered = allPosts.filter(post => {
+                const matchesSearch = post.title.toLowerCase().includes(searchTerm);
+                const matchesTag = activeTag ? post.tag_key === activeTag : true;
+                return matchesSearch && matchesTag;
+            });
              if (currentPage < Math.ceil(filtered.length / POSTS_PER_PAGE)) {
                  currentPage++;
                  renderPosts();
