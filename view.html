@@ -16,8 +16,8 @@
     </div>
 
     <div class="post-nav">
-        <a id="newerPost" href="#" style="display: none;"></a>
-        <a id="olderPost" href="#" style="display: none;"></a>
+        <a id="newerPost" href="#"></a>
+        <a id="olderPost" href="#"></a>
     </div>
 
     <script>
@@ -81,8 +81,8 @@
                             metaDiv.className = 'post-meta';
 
                             let metaHtml = '';
-                            if (currentPost.tag_name) {
-                                metaHtml += `<span class="post-tag" style="color: ${currentPost.tag_color}">[${currentPost.tag_name}]</span>`;
+                            if (currentPost.tag_name && currentPost.tag_key) {
+                                metaHtml += `<span class="post-tag tag-${currentPost.tag_key}">[${currentPost.tag_name}]</span>`;
                             }
                             metaHtml += `[${currentPost.date}]`;
 
@@ -103,14 +103,14 @@
                             const newerLink = document.getElementById('newerPost');
                             newerLink.href = `view.html?post=${encodeURIComponent(newerPost.filename)}`;
                             newerLink.innerHTML = `&larr; ${newerPost.title}`;
-                            newerLink.style.display = 'inline-block';
+                            newerLink.classList.add('visible');
                         }
                         
                         if (olderPost) {
                             const olderLink = document.getElementById('olderPost');
                             olderLink.href = `view.html?post=${encodeURIComponent(olderPost.filename)}`;
                             olderLink.innerHTML = `${olderPost.title} &rarr;`;
-                            olderLink.style.display = 'inline-block';
+                            olderLink.classList.add('visible');
                         }
                     }
                 } catch (e) {

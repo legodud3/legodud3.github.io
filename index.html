@@ -89,15 +89,9 @@ c<!DOCTYPE html>
 
                  sortedTags.forEach(([key, info]) => {
                      const btn = document.createElement('button');
-                     btn.className = 'tag-filter-btn';
+                     btn.className = `tag-filter-btn tag-${key}`;
                      if (activeTag === key) {
                          btn.classList.add('active');
-                         btn.style.backgroundColor = info.color;
-                         btn.style.color = '#fff';
-                         btn.style.border = '1px solid ' + info.color;
-                     } else {
-                         btn.style.color = info.color;
-                         btn.style.borderColor = info.color;
                      }
 
                      btn.textContent = `${info.name} (${info.count})`;
@@ -140,8 +134,8 @@ c<!DOCTYPE html>
                     li.className = 'post-item';
 
                     let tagHtml = '';
-                    if (post.tag_name) {
-                        tagHtml = `<span class="post-tag" style="color: ${post.tag_color}">[${post.tag_name}]</span>`;
+                    if (post.tag_name && post.tag_key) {
+                        tagHtml = `<span class="post-tag tag-${post.tag_key}">[${post.tag_name}]</span>`;
                     }
 
                     li.innerHTML = `
@@ -189,7 +183,7 @@ c<!DOCTYPE html>
         loadPosts();
     </script>
 
-    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eaeaea; text-align: center; color: #666; font-size: 0.8rem;">
+    <footer class="site-footer">
         <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
     </footer>
 </body>
