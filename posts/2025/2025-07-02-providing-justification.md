@@ -1,6 +1,7 @@
 ---
 title: Providing Justification
 date: 2025-07-02
+tag: Synthesis
 ---
 
 # Providing Justification

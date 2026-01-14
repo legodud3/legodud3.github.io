@@ -1,6 +1,7 @@
 ---
 title: Less tools more use
 date: 2026-01-10
+tag: Synthesis
 ---
 
 # Less tools more use

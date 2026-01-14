@@ -1,6 +1,7 @@
 ---
 title: Fringe and Interesting Opinions
 date: 2025-05-14
+tag: Synthesis
 ---
 
 # Fringe and Interesting Opinions
