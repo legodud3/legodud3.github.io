@@ -93,14 +93,9 @@ c<!DOCTYPE html>
                      btn.className = 'tag-filter-btn';
                      btn.dataset.tagKey = key;
                      btn.dataset.tagColor = info.color;
+                     btn.className = `tag-filter-btn tag-${key}`;
                      if (activeTag === key) {
                          btn.classList.add('active');
-                         btn.style.backgroundColor = info.color;
-                         btn.style.color = '#fff';
-                         btn.style.border = '1px solid ' + info.color;
-                     } else {
-                         btn.style.color = info.color;
-                         btn.style.borderColor = info.color;
                      }
 
                      btn.textContent = `${info.name} (${info.count})`;
@@ -113,6 +108,40 @@ c<!DOCTYPE html>
                      };
                      filterContainer.appendChild(btn);
                  });
+                // 'All' Button
+                const allBtn = document.createElement('button');
+                allBtn.className = 'tag-filter-btn';
+                allBtn.dataset.key = 'all';
+                allBtn.textContent = 'All';
+
+                allBtn.onclick = () => {
+                    activeTag = null;
+                    currentPage = 1;
+                    updateFilterStyles();
+                    renderPosts();
+                };
+                filterContainer.appendChild(allBtn);
+
+                // Tag Buttons
+                sortedTags.forEach(([key, info]) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'tag-filter-btn';
+                    btn.dataset.key = key;
+                    btn.dataset.color = info.color;
+                    btn.textContent = `${info.name} (${info.count})`;
+
+                    // Initial styles will be set by updateFilterStyles
+
+                    btn.onclick = () => {
+                        activeTag = (activeTag === key) ? null : key;
+                        currentPage = 1;
+                        updateFilterStyles();
+                        renderPosts();
+                    };
+                    filterContainer.appendChild(btn);
+                });
+
+                updateFilterStyles();
             }
         }
 
@@ -125,6 +154,16 @@ c<!DOCTYPE html>
                     // Handle "All" button
                     if (!activeTag) {
                         btn.classList.add('active');
+        function updateFilterStyles() {
+            const buttons = document.querySelectorAll('.tag-filter-btn');
+            buttons.forEach(btn => {
+                const key = btn.dataset.key;
+                const color = btn.dataset.color;
+
+                if (key === 'all') {
+                    if (!activeTag) {
+                        btn.classList.add('active');
+                        // Optional: Styling for active All button if needed
                     } else {
                         btn.classList.remove('active');
                     }
@@ -141,6 +180,16 @@ c<!DOCTYPE html>
                         btn.style.backgroundColor = '';
                         btn.style.color = tagColor;
                         btn.style.borderColor = tagColor;
+                    if (activeTag === key) {
+                        btn.classList.add('active');
+                        btn.style.backgroundColor = color;
+                        btn.style.color = '#fff';
+                        btn.style.borderColor = color;
+                    } else {
+                        btn.classList.remove('active');
+                        btn.style.backgroundColor = ''; // Reset to default
+                        btn.style.color = color;
+                        btn.style.borderColor = color;
                     }
                 }
             });
@@ -173,8 +222,8 @@ c<!DOCTYPE html>
                     li.className = 'post-item';
 
                     let tagHtml = '';
-                    if (post.tag_name) {
-                        tagHtml = `<span class="post-tag" style="color: ${post.tag_color}">[${post.tag_name}]</span>`;
+                    if (post.tag_name && post.tag_key) {
+                        tagHtml = `<span class="post-tag tag-${post.tag_key}">[${post.tag_name}]</span>`;
                     }
 
                     li.innerHTML = `
@@ -222,7 +271,7 @@ c<!DOCTYPE html>
         loadPosts();
     </script>
 
-    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eaeaea; text-align: center; color: #666; font-size: 0.8rem;">
+    <footer class="site-footer">
         <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
     </footer>
 </body>

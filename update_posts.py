@@ -11,17 +11,25 @@ def main():
     except FileNotFoundError:
         print("tags.json not found.")
         sys.exit(1)
+    except json.JSONDecodeError as e:
+        print(f"Error parsing tags.json: {e}")
+        sys.exit(1)
 
     posts = []
     posts_dir = "posts"
+
+    if not os.path.isdir(posts_dir):
+        print(f"Posts directory '{posts_dir}' not found.")
+        sys.exit(1)
 
     # Loop through files in posts/ directory recursively
     for root, dirs, files in os.walk(posts_dir):
         for filename in files:
             if filename.endswith(".md"):
                 filepath = os.path.join(root, filename)
-                with open(filepath, "r", encoding="utf-8") as f:
-                    content = f.read()
+                try:
+                    with open(filepath, "r", encoding="utf-8") as f:
+                        content = f.read()
 
                     # Extract title, date, tag using Regex
                     # Note: We need to handle potential quotes and whitespace
@@ -45,10 +53,10 @@ def main():
                             tag_name = tag_info["name"]
                             tag_color = tag_info["color"]
                         elif tag_key.lower() in tags_data:
-                             tag_info = tags_data[tag_key.lower()]
-                             tag_name = tag_info["name"]
-                             tag_color = tag_info["color"]
-                             tag_key = tag_key.lower() # Normalize key
+                            tag_info = tags_data[tag_key.lower()]
+                            tag_name = tag_info["name"]
+                            tag_color = tag_info["color"]
+                            tag_key = tag_key.lower() # Normalize key
                         else:
                             # Tag specified but not found in tags.json
                             print(f"Warning: Tag '{tag_key}' in {filename} not found in tags.json")
@@ -70,7 +78,11 @@ def main():
 
                     posts.append(post_data)
 
+                except Exception as e:
+                    print(f"Warning: Failed to process {filepath}: {e}")
+
     # Sort by date descending
+    # Note: Assumes ISO format (YYYY-MM-DD) for correct string sorting
     posts.sort(key=lambda x: x["date"], reverse=True)
 
     with open("posts.json", "w", encoding="utf-8") as f:
