@@ -16,8 +16,8 @@
     </div>
 
     <div class="post-nav">
-        <a id="newerPost" href="#" style="display: none;"></a>
-        <a id="olderPost" href="#" style="display: none;"></a>
+        <a id="newerPost" href="#"></a>
+        <a id="olderPost" href="#"></a>
     </div>
 
     <script>
@@ -63,15 +63,39 @@
                 }
 
                 // Render Markdown
-                document.getElementById('content').innerHTML = marked.parse(markdownContent);
+                const contentEl = document.getElementById('content');
+                contentEl.innerHTML = marked.parse(markdownContent);
                 
-                // Load Navigation
+                // Load Navigation and Meta
                 try {
                     const postsResponse = await fetch('posts.json?v=' + new Date().getTime());
                     const posts = await postsResponse.json();
                     const currentIndex = posts.findIndex(p => p.filename === filename);
                     
                     if (currentIndex !== -1) {
+                        const currentPost = posts[currentIndex];
+
+                        // Inject Meta (Tag + Date)
+                        if (currentPost) {
+                            const metaDiv = document.createElement('div');
+                            metaDiv.className = 'post-meta';
+
+                            let metaHtml = '';
+                            if (currentPost.tag_name && currentPost.tag_key) {
+                                metaHtml += `<span class="post-tag tag-${currentPost.tag_key}">[${currentPost.tag_name}]</span>`;
+                            }
+                            metaHtml += `[${currentPost.date}]`;
+
+                            metaDiv.innerHTML = metaHtml;
+
+                            const h1 = contentEl.querySelector('h1');
+                            if (h1) {
+                                h1.parentNode.insertBefore(metaDiv, h1.nextSibling);
+                            } else {
+                                contentEl.insertBefore(metaDiv, contentEl.firstChild);
+                            }
+                        }
+
                         const newerPost = posts[currentIndex - 1];
                         const olderPost = posts[currentIndex + 1];
                         
@@ -79,14 +103,14 @@
                             const newerLink = document.getElementById('newerPost');
                             newerLink.href = `view.html?post=${encodeURIComponent(newerPost.filename)}`;
                             newerLink.innerHTML = `&larr; ${newerPost.title}`;
-                            newerLink.style.display = 'inline-block';
+                            newerLink.classList.add('visible');
                         }
                         
                         if (olderPost) {
                             const olderLink = document.getElementById('olderPost');
                             olderLink.href = `view.html?post=${encodeURIComponent(olderPost.filename)}`;
                             olderLink.innerHTML = `${olderPost.title} &rarr;`;
-                            olderLink.style.display = 'inline-block';
+                            olderLink.classList.add('visible');
                         }
                     }
                 } catch (e) {
