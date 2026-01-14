@@ -75,42 +75,70 @@ c<!DOCTYPE html>
             filterContainer.innerHTML = '';
 
             if (sortedTags.length > 0) {
-                 const allBtn = document.createElement('button');
-                 allBtn.className = 'tag-filter-btn';
-                 if (!activeTag) allBtn.classList.add('active');
-                 allBtn.textContent = 'All';
-                 allBtn.onclick = () => {
-                     activeTag = null;
-                     currentPage = 1;
-                     renderTagFilters();
-                     renderPosts();
-                 };
-                 filterContainer.appendChild(allBtn);
+                // 'All' Button
+                const allBtn = document.createElement('button');
+                allBtn.className = 'tag-filter-btn';
+                allBtn.dataset.key = 'all';
+                allBtn.textContent = 'All';
 
-                 sortedTags.forEach(([key, info]) => {
-                     const btn = document.createElement('button');
-                     btn.className = 'tag-filter-btn';
-                     if (activeTag === key) {
-                         btn.classList.add('active');
-                         btn.style.backgroundColor = info.color;
-                         btn.style.color = '#fff';
-                         btn.style.border = '1px solid ' + info.color;
-                     } else {
-                         btn.style.color = info.color;
-                         btn.style.borderColor = info.color;
-                     }
+                allBtn.onclick = () => {
+                    activeTag = null;
+                    currentPage = 1;
+                    updateFilterStyles();
+                    renderPosts();
+                };
+                filterContainer.appendChild(allBtn);
 
-                     btn.textContent = `${info.name} (${info.count})`;
+                // Tag Buttons
+                sortedTags.forEach(([key, info]) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'tag-filter-btn';
+                    btn.dataset.key = key;
+                    btn.dataset.color = info.color;
+                    btn.textContent = `${info.name} (${info.count})`;
 
-                     btn.onclick = () => {
-                         activeTag = (activeTag === key) ? null : key;
-                         currentPage = 1;
-                         renderTagFilters();
-                         renderPosts();
-                     };
-                     filterContainer.appendChild(btn);
-                 });
+                    // Initial styles will be set by updateFilterStyles
+
+                    btn.onclick = () => {
+                        activeTag = (activeTag === key) ? null : key;
+                        currentPage = 1;
+                        updateFilterStyles();
+                        renderPosts();
+                    };
+                    filterContainer.appendChild(btn);
+                });
+
+                updateFilterStyles();
             }
+        }
+
+        function updateFilterStyles() {
+            const buttons = document.querySelectorAll('.tag-filter-btn');
+            buttons.forEach(btn => {
+                const key = btn.dataset.key;
+                const color = btn.dataset.color;
+
+                if (key === 'all') {
+                    if (!activeTag) {
+                        btn.classList.add('active');
+                        // Optional: Styling for active All button if needed
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                } else {
+                    if (activeTag === key) {
+                        btn.classList.add('active');
+                        btn.style.backgroundColor = color;
+                        btn.style.color = '#fff';
+                        btn.style.borderColor = color;
+                    } else {
+                        btn.classList.remove('active');
+                        btn.style.backgroundColor = ''; // Reset to default
+                        btn.style.color = color;
+                        btn.style.borderColor = color;
+                    }
+                }
+            });
         }
 
         function renderPosts() {
