@@ -11,4 +11,4 @@ The world progresses because humans want more. We are evolutionarily wired to ne
 * Optimizing for newer and different experiences.
 * *Trying to devise plans against unknown and known risks. These include real events (eaten by a tiger, washed away in a flood, left behind by your tribe) and tail risks that go beyond the needs of food, shelter, and relationships.
 
-And therefore, we have constructed the world around us so that everything fulfills the need of "humans wanting more."
+And therefore, we have constructed the world around us so that everything satisfies "humans want more."
