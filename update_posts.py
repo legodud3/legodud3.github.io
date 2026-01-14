@@ -15,6 +15,10 @@ def main():
     posts = []
     posts_dir = "posts"
 
+    if not os.path.isdir(posts_dir):
+        print(f"Posts directory '{posts_dir}' not found.")
+        sys.exit(1)
+
     # Loop through files in posts/ directory recursively
     for root, dirs, files in os.walk(posts_dir):
         for filename in files:
