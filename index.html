@@ -120,7 +120,6 @@ c<!DOCTYPE html>
             const filterButtons = document.querySelectorAll('.tag-filter-btn');
             filterButtons.forEach(btn => {
                 const tagKey = btn.dataset.tagKey;
-                const tagColor = btn.dataset.tagColor;
                 
                 if (tagKey === 'all') {
                     // Handle "All" button
@@ -131,6 +130,7 @@ c<!DOCTYPE html>
                     }
                 } else {
                     // Handle tag-specific buttons
+                    const tagColor = btn.dataset.tagColor;
                     if (activeTag === tagKey) {
                         btn.classList.add('active');
                         btn.style.backgroundColor = tagColor;
