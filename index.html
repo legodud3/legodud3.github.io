@@ -77,18 +77,22 @@ c<!DOCTYPE html>
             if (sortedTags.length > 0) {
                  const allBtn = document.createElement('button');
                  allBtn.className = 'tag-filter-btn';
+                 allBtn.dataset.tagKey = 'all';
                  if (!activeTag) allBtn.classList.add('active');
                  allBtn.textContent = 'All';
                  allBtn.onclick = () => {
                      activeTag = null;
                      currentPage = 1;
-                     renderTagFilters();
+                     updateTagFilterActiveState();
                      renderPosts();
                  };
                  filterContainer.appendChild(allBtn);
 
                  sortedTags.forEach(([key, info]) => {
                      const btn = document.createElement('button');
+                     btn.className = 'tag-filter-btn';
+                     btn.dataset.tagKey = key;
+                     btn.dataset.tagColor = info.color;
                      btn.className = `tag-filter-btn tag-${key}`;
                      if (activeTag === key) {
                          btn.classList.add('active');
@@ -99,7 +103,7 @@ c<!DOCTYPE html>
                      btn.onclick = () => {
                          activeTag = (activeTag === key) ? null : key;
                          currentPage = 1;
-                         renderTagFilters();
+                         updateTagFilterActiveState();
                          renderPosts();
                      };
                      filterContainer.appendChild(btn);
@@ -141,6 +145,15 @@ c<!DOCTYPE html>
             }
         }
 
+        function updateTagFilterActiveState() {
+            const filterButtons = document.querySelectorAll('.tag-filter-btn');
+            filterButtons.forEach(btn => {
+                const tagKey = btn.dataset.tagKey;
+                
+                if (tagKey === 'all') {
+                    // Handle "All" button
+                    if (!activeTag) {
+                        btn.classList.add('active');
         function updateFilterStyles() {
             const buttons = document.querySelectorAll('.tag-filter-btn');
             buttons.forEach(btn => {
@@ -155,6 +168,18 @@ c<!DOCTYPE html>
                         btn.classList.remove('active');
                     }
                 } else {
+                    // Handle tag-specific buttons
+                    const tagColor = btn.dataset.tagColor;
+                    if (activeTag === tagKey) {
+                        btn.classList.add('active');
+                        btn.style.backgroundColor = tagColor;
+                        btn.style.color = '#fff';
+                        btn.style.border = '1px solid ' + tagColor;
+                    } else {
+                        btn.classList.remove('active');
+                        btn.style.backgroundColor = '';
+                        btn.style.color = tagColor;
+                        btn.style.borderColor = tagColor;
                     if (activeTag === key) {
                         btn.classList.add('active');
                         btn.style.backgroundColor = color;
