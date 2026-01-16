@@ -21,6 +21,38 @@
 
     <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eaeaea; text-align: center; color: #666; font-size: 0.8rem;">
         <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
+        <div class="theme-toggle-container">
+            <span class="theme-toggle-label">Dark</span>
+            <label class="theme-toggle-switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="theme-toggle-slider"></span>
+            </label>
+            <span class="theme-toggle-label">Light</span>
+        </div>
     </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        // Check for saved theme preference or default to dark mode
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'light') {
+            htmlElement.classList.add('light-mode');
+            themeToggle.checked = true;
+        }
+
+        // Toggle theme when switch is clicked
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                htmlElement.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
 </body>
 </html>
