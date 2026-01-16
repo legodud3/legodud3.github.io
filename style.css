@@ -278,3 +278,8 @@ a:hover {
     background-color: var(--link-color);
     filter: brightness(1.2);
 }
+
+.theme-toggle-switch input:focus-visible + .theme-toggle-slider {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+}
