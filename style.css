@@ -131,11 +131,19 @@ a:hover {
 }
 
 /* Tags & Filters */
+.tag-and-surprise-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
 .tag-filter-container {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
     flex-wrap: wrap;
+    flex: 1;
 }
 
 .tag-filter-btn {
@@ -163,6 +171,25 @@ a:hover {
     background-color: #27ae60;
     color: #fff;
     border: 1px solid #27ae60;
+}
+
+.surprise-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--link-color);
+    background-color: var(--bg-color);
+    color: var(--link-color);
+    cursor: pointer;
+    border-radius: 15px;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.surprise-btn:hover {
+    background-color: var(--link-color);
+    color: var(--bg-color);
+    transform: scale(1.05);
 }
 
 .post-tag {
