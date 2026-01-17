@@ -12,10 +12,11 @@ This is a custom-built static blogging engine designed for simplicity and longev
     *   **Tagging System**: Created but only 1 tag for now "Reflection". More to be added as content expands.
     *   **Search & Filtering**: The homepage features real-time search and tag filtering.
     *   **Pagination**: Automatically handles large archives of posts.
+    *   **Surprise Me**: A button to jump to a random post for serendipitous discovery.
 *   **Reading Experience**:
     *   Client-side Markdown rendering.
     *   Previous/Next post navigation in the footer.
-    *   Clean, distraction-free dark mode design.
+    *   Clean, distraction-free design with a **Dark Mode Toggle**.
 
 ## Getting Started
 
