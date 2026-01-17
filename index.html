@@ -18,8 +18,11 @@
         <input type="text" id="searchInput" placeholder="Search posts...">
     </div>
 
-    <div id="tagFilters" class="tag-filter-container">
-        <!-- Tag buttons will be injected here -->
+    <div class="tag-and-surprise-container">
+        <div id="tagFilters" class="tag-filter-container">
+            <!-- Tag buttons will be injected here -->
+        </div>
+        <button id="surpriseBtn" class="surprise-btn">✨ Surprise me</button>
     </div>
 
     <ul id="postList" class="post-list">
@@ -212,6 +215,15 @@
                  currentPage++;
                  renderPosts();
              }
+        });
+
+        // Surprise Me Button
+        document.getElementById('surpriseBtn').addEventListener('click', () => {
+            if (allPosts.length > 0) {
+                const randomIndex = Math.floor(Math.random() * allPosts.length);
+                const randomPost = allPosts[randomIndex];
+                window.location.href = `view.html?post=${encodeURIComponent(randomPost.filename)}`;
+            }
         });
 
         loadPosts();
