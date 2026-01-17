@@ -20,6 +20,20 @@
         <a id="olderPost" href="#"></a>
     </div>
 
+    <footer class="site-footer">
+        <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
+        <div class="theme-toggle-container">
+            <span class="theme-toggle-label">Dark</span>
+            <label class="theme-toggle-switch">
+                <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
+                <span class="theme-toggle-slider"></span>
+            </label>
+            <span class="theme-toggle-label">Light</span>
+        </div>
+    </footer>
+
+    <script src="theme-toggle.js"></script>
+
     <script>
         async function loadPost() {
             const params = new URLSearchParams(window.location.search);
