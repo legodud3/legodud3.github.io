@@ -14,9 +14,10 @@ This is a custom-built static blogging engine designed for simplicity and longev
     *   **Pagination**: Automatically handles large archives of posts.
     *   **Surprise Me**: A button to jump to a random post for serendipitous discovery.
 *   **Reading Experience**:
+    *   **Side Projects Page**: A dedicated section to showcase ongoing and completed side projects.
     *   Client-side Markdown rendering.
     *   Previous/Next post navigation in the footer.
-    *   Clean, distraction-free design with a **Dark Mode Toggle**.
+    *   Clean, distraction-free design with a **slider for dark/light mode and CMY color themes**.
 
 ## Getting Started
 
