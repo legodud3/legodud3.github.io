@@ -35,6 +35,12 @@ header {
     padding-bottom: 20px;
 }
 
+nav {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 h1, h2, h3 {
     margin-top: 0;
 }
@@ -119,7 +125,21 @@ a:hover {
 
 .back-link {
     display: inline-block;
+    margin-bottom: 0;
+}
+
+.post-top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.post-top-links {
+    display: flex;
+    gap: 12px;
 }
 
 .post-nav {
@@ -128,6 +148,26 @@ a:hover {
     border-top: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
+}
+
+.projects-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.projects-table th,
+.projects-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.projects-table th {
+    color: #888;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 /* Tags & Filters */
