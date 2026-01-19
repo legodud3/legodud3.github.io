@@ -1,24 +1,34 @@
-// Theme toggle functionality
-const themeToggle = document.getElementById('themeToggle');
+// Theme toggle functionality for CMYK modes
+const themeSlider = document.getElementById('themeSlider');
 const htmlElement = document.documentElement;
 
-// Ensure the theme toggle element exists before proceeding
-if (themeToggle) {
-    // Check for saved theme preference or default to dark mode
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'light') {
-        htmlElement.classList.add('light-mode');
-        themeToggle.checked = true;
-    }
+// Theme mapping: 0=dark, 1=cyan, 2=magenta, 3=yellow, 4=light
+const themes = ['dark', 'cyan', 'magenta', 'yellow', 'light'];
 
-    // Toggle theme when switch is clicked
-    themeToggle.addEventListener('change', function() {
-        if (this.checked) {
-            htmlElement.classList.add('light-mode');
-            localStorage.setItem('theme', 'light');
-        } else {
-            htmlElement.classList.remove('light-mode');
-            localStorage.setItem('theme', 'dark');
-        }
+// Ensure the theme slider element exists before proceeding
+if (themeSlider) {
+    // Check for saved theme preference or default to dark mode
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    const themeIndex = themes.indexOf(currentTheme);
+    
+    // Set slider to saved theme index, or 0 (dark) if theme not found
+    themeSlider.value = themeIndex !== -1 ? themeIndex : 0;
+    applyTheme(themeIndex !== -1 ? currentTheme : 'dark');
+
+    // Handle slider change
+    themeSlider.addEventListener('input', function() {
+        const selectedTheme = themes[parseInt(this.value)];
+        applyTheme(selectedTheme);
+        localStorage.setItem('theme', selectedTheme);
     });
+}
+
+function applyTheme(theme) {
+    // Remove all theme classes
+    htmlElement.classList.remove('light-mode', 'cyan-mode', 'magenta-mode', 'yellow-mode');
+    
+    // Add the appropriate class for the theme (dark is default, no class needed)
+    if (theme !== 'dark') {
+        htmlElement.classList.add(`${theme}-mode`);
+    }
 }
