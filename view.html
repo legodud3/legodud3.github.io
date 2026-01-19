@@ -29,12 +29,16 @@
     <footer class="site-footer">
         <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
         <div class="theme-toggle-container">
-            <span class="theme-toggle-label">Dark</span>
-            <label class="theme-toggle-switch">
-                <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
-                <span class="theme-toggle-slider"></span>
-            </label>
-            <span class="theme-toggle-label">Light</span>
+            <div class="theme-slider-wrapper">
+                <input type="range" id="themeSlider" class="theme-slider" min="0" max="4" step="1" value="0" aria-label="Select theme mode">
+            </div>
+            <div class="theme-labels-container">
+                <span class="theme-label">Dark</span>
+                <span class="theme-label">Cyan</span>
+                <span class="theme-label">Magenta</span>
+                <span class="theme-label">Yellow</span>
+                <span class="theme-label">Light</span>
+            </div>
         </div>
     </footer>
 
