@@ -11,13 +11,9 @@ if (themeSlider) {
     const currentTheme = localStorage.getItem('theme') || 'dark';
     const themeIndex = themes.indexOf(currentTheme);
     
-    if (themeIndex !== -1) {
-        themeSlider.value = themeIndex;
-        applyTheme(currentTheme);
-    } else {
-        themeSlider.value = 0;
-        applyTheme('dark');
-    }
+    // Set slider to saved theme index, or 0 (dark) if theme not found
+    themeSlider.value = themeIndex !== -1 ? themeIndex : 0;
+    applyTheme(themeIndex !== -1 ? currentTheme : 'dark');
 
     // Handle slider change
     themeSlider.addEventListener('input', function() {
