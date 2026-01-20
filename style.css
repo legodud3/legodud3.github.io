@@ -35,6 +35,11 @@ header {
     padding-bottom: 20px;
 }
 
+nav {
+    display: flex;
+    gap: 20px;
+}
+
 .header-brand {
     display: flex;
     align-items: center;
@@ -42,7 +47,7 @@ header {
 }
 
 .site-logo {
-    height: 40px;
+    height: 50px;
     width: auto;
 }
 
@@ -320,4 +325,31 @@ a:hover {
 .theme-toggle-switch input:focus-visible + .theme-toggle-slider {
     outline: 2px solid var(--link-color);
     outline-offset: 2px;
+}
+
+/* Table Styles */
+.projects-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 20px 10px;
+    margin: 20px 0;
+}
+
+.projects-table th,
+.projects-table td {
+    text-align: left;
+    padding: 12px;
+}
+
+.projects-table th {
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.projects-table td {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.projects-table tr:last-child td {
+    border-bottom: none;
 }
