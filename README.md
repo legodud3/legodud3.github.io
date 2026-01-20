@@ -17,7 +17,7 @@ This is a custom-built static blogging engine designed for simplicity and longev
     *   **Side Projects Page**: A dedicated section to showcase ongoing and completed side projects.
     *   Client-side Markdown rendering.
     *   Previous/Next post navigation in the footer.
-    *   Clean, distraction-free design with a **slider for dark/light mode and CMY color themes**.
+    *   Clean, distraction-free design with dark and light modes
 
 ## Getting Started
 
