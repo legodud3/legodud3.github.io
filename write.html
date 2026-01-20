@@ -6,10 +6,6 @@
     <title>Write New Post - Chinmay Deo</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .editor-container {
-            display: none;
-        }
-
         .login-container, .editor-container {
             max-width: 800px;
             margin: 40px auto;
@@ -17,10 +13,6 @@
 
         .login-container.hidden, .editor-container.hidden {
             display: none !important;
-        }
-
-        .editor-container {
-            display: block;
         }
 
         .form-group {
@@ -519,8 +511,9 @@ tag: ${tag}
             const frontMatter = generateFrontMatter(title, date, tag);
             const fullContent = frontMatter + body;
 
-            // Base64 encode the content
-            const encodedContent = btoa(unescape(encodeURIComponent(fullContent)));
+            // Base64 encode the content with proper UTF-8 handling
+            const encodedContent = btoa(encodeURIComponent(fullContent).replace(/%([0-9A-F]{2})/g,
+                (match, p1) => String.fromCharCode('0x' + p1)));
 
             showStatus('Publishing post...', 'info');
 
@@ -566,6 +559,12 @@ tag: ${tag}
                         const errorData = await updateResponse.json();
                         throw new Error(errorData.message || 'Failed to update post');
                     }
+                    
+                    const updateData = await updateResponse.json();
+                    showStatus(
+                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a>`,
+                        'success'
+                    );
                 } else {
                     // Create new file
                     const createResponse = await fetch(
@@ -589,21 +588,13 @@ tag: ${tag}
                         const errorData = await createResponse.json();
                         throw new Error(errorData.message || 'Failed to create post');
                     }
+                    
+                    const createData = await createResponse.json();
+                    showStatus(
+                        `✓ Post published successfully! GitHub Actions will update the site shortly. <a href="${createData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a>`,
+                        'success'
+                    );
                 }
-
-                const data = await (checkResponse.ok ? 
-                    fetch(`${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`, {
-                        headers: {
-                            'Authorization': `token ${authConfig.token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    }).then(r => r.json()) : 
-                    Promise.resolve({}));
-
-                showStatus(
-                    `✓ Post published successfully! GitHub Actions will update the site shortly. <a href="${data.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a>`,
-                    'success'
-                );
 
                 // Clear form after successful publish
                 setTimeout(() => {
