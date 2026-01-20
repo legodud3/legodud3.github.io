@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write New Post - Chinmay Deo</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .editor-container {
+            display: none;
+        }
+
+        .login-container, .editor-container {
+            max-width: 800px;
+            margin: 40px auto;
+        }
+
+        .login-container.hidden, .editor-container.hidden {
+            display: none !important;
+        }
+
+        .editor-container {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="password"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 16px;
+            border-radius: 4px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            min-height: 400px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--link-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            filter: brightness(1.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .status-message.success {
+            background-color: rgba(39, 174, 96, 0.2);
+            border: 1px solid #27ae60;
+            color: #27ae60;
+            display: block;
+        }
+
+        .status-message.error {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            display: block;
+        }
+
+        .status-message.info {
+            background-color: rgba(77, 166, 255, 0.2);
+            border: 1px solid var(--link-color);
+            color: var(--link-color);
+            display: block;
+        }
+
+        .preview-container {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--hover-bg);
+        }
+
+        .preview-container h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .preview-content {
+            color: var(--text-color);
+        }
+
+        .preview-content pre {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .login-info {
+            background-color: rgba(77, 166, 255, 0.1);
+            border: 1px solid var(--link-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .login-info p {
+            margin: 8px 0;
+            font-size: 0.9em;
+        }
+
+        .login-info strong {
+            color: var(--link-color);
+        }
+
+        .auth-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid #27ae60;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        .auth-status span {
+            color: #27ae60;
+        }
+
+        .markdown-preview {
+            line-height: 1.6;
+        }
+
+        .markdown-preview h1 {
+            font-size: 2em;
+            margin-top: 0.67em;
+            margin-bottom: 0.67em;
+        }
+
+        .markdown-preview h2 {
+            font-size: 1.5em;
+            margin-top: 0.83em;
+            margin-bottom: 0.83em;
+        }
+
+        .markdown-preview h3 {
+            font-size: 1.17em;
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+
+        .markdown-preview ul, .markdown-preview ol {
+            margin: 1em 0;
+            padding-left: 40px;
+        }
+
+        .markdown-preview blockquote {
+            border-left: 4px solid var(--border-color);
+            margin: 1em 0;
+            padding-left: 15px;
+            color: #aaa;
+        }
+
+        .markdown-preview code {
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        .markdown-preview pre code {
+            padding: 0;
+        }
+
+        .char-count {
+            font-size: 0.85em;
+            color: #888;
+            text-align: right;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-brand">
+            <a href="index.html"><img src="legohat_logo.png" alt="Logo" class="site-logo"></a>
+            <h1>Write New Post</h1>
+        </div>
+        <nav>
+            <a href="index.html">← Back to Posts</a>
+        </nav>
+    </header>
+
+    <!-- Login Screen -->
+    <div id="loginContainer" class="login-container">
+        <h2>GitHub Authentication Required</h2>
+        <div class="login-info">
+            <p><strong>Why do I need a Personal Access Token?</strong></p>
+            <p>This editor uses the GitHub API to create posts directly in your repository. A Personal Access Token (PAT) allows the editor to authenticate with GitHub on your behalf.</p>
+            <p><strong>How to create a PAT:</strong></p>
+            <p>1. Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)</p>
+            <p>2. Click "Generate new token (classic)"</p>
+            <p>3. Give it a name (e.g., "Blog Editor")</p>
+            <p>4. Select scope: <strong>repo</strong> (Full control of private repositories)</p>
+            <p>5. Click "Generate token" and copy the token</p>
+            <p><strong>Security:</strong> Your token will be stored in your browser's localStorage and never sent to any server except GitHub's API.</p>
+        </div>
+        <div class="form-group">
+            <label for="githubToken">GitHub Personal Access Token:</label>
+            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+        </div>
+        <div class="form-group">
+            <label for="githubUsername">GitHub Username:</label>
+            <input type="text" id="githubUsername" placeholder="legodud3">
+        </div>
+        <div class="form-group">
+            <label for="githubRepo">Repository Name:</label>
+            <input type="text" id="githubRepo" placeholder="legodud3.github.io">
+        </div>
+        <button class="btn btn-primary" onclick="login()">Login & Continue</button>
+        <div id="loginStatus" class="status-message"></div>
+    </div>
+
+    <!-- Editor Screen -->
+    <div id="editorContainer" class="editor-container hidden">
+        <div class="auth-status">
+            <span>✓ Authenticated as <strong id="loggedInUser"></strong></span>
+            <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+        </div>
+
+        <form id="postForm" onsubmit="return false;">
+            <div class="form-group">
+                <label for="postTitle">Title:</label>
+                <input type="text" id="postTitle" required placeholder="My Awesome Post">
+            </div>
+
+            <div class="form-group">
+                <label for="postDate">Date:</label>
+                <input type="date" id="postDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="postTag">Tag:</label>
+                <select id="postTag" required>
+                    <option value="">Select a tag...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="postBody">Content (Markdown):</label>
+                <textarea id="postBody" required placeholder="# Your content here&#x0a;&#x0a;Write your post in Markdown..."></textarea>
+                <div class="char-count">
+                    <span id="charCount">0</span> characters
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn btn-primary" onclick="publishPost()">Publish Post</button>
+                <button type="button" class="btn btn-secondary" onclick="previewPost()">Preview</button>
+                <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
+            </div>
+        </form>
+
+        <div id="statusMessage" class="status-message"></div>
+
+        <div id="previewContainer" class="preview-container" style="display: none;">
+            <h3>Preview</h3>
+            <div id="previewContent" class="preview-content markdown-preview"></div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
+        <div class="theme-toggle-container">
+            <span class="theme-toggle-label">Dark</span>
+            <label class="theme-toggle-switch">
+                <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
+                <span class="theme-toggle-slider"></span>
+            </label>
+            <span class="theme-toggle-label">Light</span>
+        </div>
+    </footer>
+
+    <script src="theme-toggle.js"></script>
+    <script>
+        // Configuration
+        const GITHUB_API = 'https://api.github.com';
+        let authConfig = {
+            token: null,
+            username: null,
+            repo: null
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('postDate').value = today;
+
+            // Load tags
+            loadTags();
+
+            // Check if already logged in
+            checkAuth();
+
+            // Character counter
+            document.getElementById('postBody').addEventListener('input', function() {
+                document.getElementById('charCount').textContent = this.value.length;
+            });
+        });
+
+        async function loadTags() {
+            try {
+                const response = await fetch('tags.json');
+                const tags = await response.json();
+                const select = document.getElementById('postTag');
+                
+                for (const [key, data] of Object.entries(tags)) {
+                    const option = document.createElement('option');
+                    option.value = data.name;
+                    option.textContent = data.name;
+                    select.appendChild(option);
+                }
+            } catch (error) {
+                console.error('Error loading tags:', error);
+                showStatus('Error loading tags. Using defaults.', 'error');
+                // Add a default option
+                const select = document.getElementById('postTag');
+                const option = document.createElement('option');
+                option.value = 'Reflection';
+                option.textContent = 'Reflection';
+                select.appendChild(option);
+            }
+        }
+
+        function checkAuth() {
+            const savedToken = localStorage.getItem('github_token');
+            const savedUsername = localStorage.getItem('github_username');
+            const savedRepo = localStorage.getItem('github_repo');
+
+            if (savedToken && savedUsername && savedRepo) {
+                authConfig.token = savedToken;
+                authConfig.username = savedUsername;
+                authConfig.repo = savedRepo;
+                
+                // Pre-fill login form
+                document.getElementById('githubToken').value = savedToken;
+                document.getElementById('githubUsername').value = savedUsername;
+                document.getElementById('githubRepo').value = savedRepo;
+                
+                // Show editor
+                showEditor();
+            } else {
+                showLogin();
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('loginContainer').classList.remove('hidden');
+            document.getElementById('editorContainer').classList.add('hidden');
+        }
+
+        function showEditor() {
+            document.getElementById('loginContainer').classList.add('hidden');
+            document.getElementById('editorContainer').classList.remove('hidden');
+            document.getElementById('loggedInUser').textContent = authConfig.username;
+        }
+
+        async function login() {
+            const token = document.getElementById('githubToken').value.trim();
+            const username = document.getElementById('githubUsername').value.trim();
+            const repo = document.getElementById('githubRepo').value.trim();
+
+            if (!token || !username || !repo) {
+                showStatus('Please fill in all fields.', 'error', 'loginStatus');
+                return;
+            }
+
+            // Validate token by making a test API call
+            showStatus('Validating credentials...', 'info', 'loginStatus');
+            
+            try {
+                const response = await fetch(`${GITHUB_API}/repos/${username}/${repo}`, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Invalid credentials or repository not found');
+                }
+
+                // Save credentials
+                localStorage.setItem('github_token', token);
+                localStorage.setItem('github_username', username);
+                localStorage.setItem('github_repo', repo);
+
+                authConfig.token = token;
+                authConfig.username = username;
+                authConfig.repo = repo;
+
+                showStatus('Login successful!', 'success', 'loginStatus');
+                setTimeout(() => {
+                    showEditor();
+                }, 1000);
+            } catch (error) {
+                showStatus(`Login failed: ${error.message}`, 'error', 'loginStatus');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout? Your GitHub token will be removed from this browser.')) {
+                localStorage.removeItem('github_token');
+                localStorage.removeItem('github_username');
+                localStorage.removeItem('github_repo');
+                authConfig = { token: null, username: null, repo: null };
+                clearForm();
+                showLogin();
+            }
+        }
+
+        function generateSlug(title) {
+            return title
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        function generateFrontMatter(title, date, tag) {
+            return `---
+title: ${title}
+date: ${date}
+tag: ${tag}
+---
+
+`;
+        }
+
+        async function publishPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const date = document.getElementById('postDate').value;
+            const tag = document.getElementById('postTag').value;
+            const body = document.getElementById('postBody').value.trim();
+
+            if (!title || !date || !tag || !body) {
+                showStatus('Please fill in all fields.', 'error');
+                return;
+            }
+
+            const slug = generateSlug(title);
+            const year = date.split('-')[0];
+            const filename = `${date}-${slug}.md`;
+            const path = `posts/${year}/${filename}`;
+
+            // Generate full content with front matter
+            const frontMatter = generateFrontMatter(title, date, tag);
+            const fullContent = frontMatter + body;
+
+            // Base64 encode the content
+            const encodedContent = btoa(unescape(encodeURIComponent(fullContent)));
+
+            showStatus('Publishing post...', 'info');
+
+            try {
+                // Check if file already exists
+                const checkResponse = await fetch(
+                    `${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`,
+                    {
+                        headers: {
+                            'Authorization': `token ${authConfig.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    }
+                );
+
+                if (checkResponse.ok) {
+                    if (!confirm('A post with this title and date already exists. Do you want to overwrite it?')) {
+                        showStatus('Publish cancelled.', 'info');
+                        return;
+                    }
+                    const existingFile = await checkResponse.json();
+                    
+                    // Update existing file
+                    const updateResponse = await fetch(
+                        `${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `token ${authConfig.token}`,
+                                'Accept': 'application/vnd.github.v3+json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                message: `Update post: ${title}`,
+                                content: encodedContent,
+                                sha: existingFile.sha,
+                                branch: 'main'
+                            })
+                        }
+                    );
+
+                    if (!updateResponse.ok) {
+                        const errorData = await updateResponse.json();
+                        throw new Error(errorData.message || 'Failed to update post');
+                    }
+                } else {
+                    // Create new file
+                    const createResponse = await fetch(
+                        `${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `token ${authConfig.token}`,
+                                'Accept': 'application/vnd.github.v3+json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                message: `Add new post: ${title}`,
+                                content: encodedContent,
+                                branch: 'main'
+                            })
+                        }
+                    );
+
+                    if (!createResponse.ok) {
+                        const errorData = await createResponse.json();
+                        throw new Error(errorData.message || 'Failed to create post');
+                    }
+                }
+
+                const data = await (checkResponse.ok ? 
+                    fetch(`${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`, {
+                        headers: {
+                            'Authorization': `token ${authConfig.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    }).then(r => r.json()) : 
+                    Promise.resolve({}));
+
+                showStatus(
+                    `✓ Post published successfully! GitHub Actions will update the site shortly. <a href="${data.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a>`,
+                    'success'
+                );
+
+                // Clear form after successful publish
+                setTimeout(() => {
+                    if (confirm('Post published! Do you want to write another post?')) {
+                        clearForm();
+                    }
+                }, 2000);
+
+            } catch (error) {
+                showStatus(`Failed to publish: ${error.message}`, 'error');
+            }
+        }
+
+        function previewPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const date = document.getElementById('postDate').value;
+            const tag = document.getElementById('postTag').value;
+            const body = document.getElementById('postBody').value.trim();
+
+            if (!title && !body) {
+                showStatus('Nothing to preview. Please add some content.', 'info');
+                return;
+            }
+
+            const frontMatter = generateFrontMatter(title || 'Untitled', date, tag || 'Untagged');
+            const fullContent = frontMatter + body;
+
+            // Simple markdown to HTML conversion (basic)
+            let html = body
+                // Headers
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                // Bold
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                // Italic
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                // Links
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+                // Line breaks
+                .replace(/\n\n/g, '</p><p>')
+                // Lists (simple version)
+                .replace(/^\* (.+)$/gim, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+
+            html = `
+                <div style="background-color: var(--code-bg); padding: 10px; border-radius: 4px; margin-bottom: 20px; font-size: 0.9em;">
+                    <pre style="margin: 0; background: none; padding: 0;">---
+title: ${title || 'Untitled'}
+date: ${date}
+tag: ${tag || 'Untagged'}
+---</pre>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <p>${html}</p>
+                </div>
+            `;
+
+            document.getElementById('previewContent').innerHTML = html;
+            document.getElementById('previewContainer').style.display = 'block';
+            
+            // Scroll to preview
+            document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearForm() {
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('postTag').value = '';
+            document.getElementById('postBody').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('statusMessage').className = 'status-message';
+        }
+
+        function showStatus(message, type, elementId = 'statusMessage') {
+            const statusEl = document.getElementById(elementId);
+            statusEl.innerHTML = message;
+            statusEl.className = `status-message ${type}`;
+            
+            // Auto-hide after 5 seconds for non-error messages
+            if (type !== 'error') {
+                setTimeout(() => {
+                    statusEl.className = 'status-message';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
