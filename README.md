@@ -5,7 +5,7 @@ This is a custom-built static blogging engine designed for simplicity and longev
 ## Features
 
 *   **Zero-Backend Architecture**: No database to maintain. The site is purely HTML, CSS, and JavaScript, making it extremely fast and secure.
-*   **Browser-Based Editor**: Write and publish posts directly from your browser at `/write.html` using the GitHub API - no command line needed!
+*   **Browser-Based Editor**: Write and publish posts directly from browser at `../write.html` using the GitHub API - no command line needed! Needs Github Private Key
 *   **Automated Content Pipeline**:
     *   Posts are written in **Markdown** and stored in the `posts/` directory (organized by year).
     *   A **GitHub Action** triggers on every push, running a Python script to scan files and regenerate the `posts.json` index automatically.

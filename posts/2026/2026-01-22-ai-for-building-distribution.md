@@ -1,5 +1,5 @@
 ---
-title: AI for building distribution
+title: AI for building software
 date: 2026-01-22
 tag: Reflection
 ---
