@@ -1,5 +1,5 @@
 ---
-title: AI for building software (backlog)
+title: AI for building software (2)
 date: 2026-01-23
 tag: Reflection
 ---
