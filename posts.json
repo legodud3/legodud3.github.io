@@ -1,5 +1,13 @@
 [
   {
+    "title": "Just look at the data",
+    "date": "2026-02-12",
+    "filename": "2026/2026-02-12-just-look-at-the-data.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60"
+  },
+  {
     "title": "Why My AI food logger lost out to Lose It!, and what I believe it means for the future of apps",
     "date": "2026-02-07",
     "filename": "2026/2026-02-07-why-my-ai-food-logger-lost-out-to-lose-it-and-what-i-believe-it-means-for-the-future-of-apps.md",
@@ -40,17 +48,17 @@
     "tag_color": "#27ae60"
   },
   {
-    "title": "AI for building software (2)",
+    "title": "AI for building software (3)",
     "date": "2026-01-23",
-    "filename": "2026/2026-01-23-ai-for-building-software-backlog.md",
+    "filename": "2026/2026-01-23-ai-for-building-software-3.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
     "tag_color": "#27ae60"
   },
   {
-    "title": "AI for building software (3)",
+    "title": "AI for building software (2)",
     "date": "2026-01-23",
-    "filename": "2026/2026-01-23-ai-for-building-software-3.md",
+    "filename": "2026/2026-01-23-ai-for-building-software-backlog.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
     "tag_color": "#27ae60"
