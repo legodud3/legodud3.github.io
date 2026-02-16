@@ -1,6 +1,34 @@
 import os
 import json
 import re
+from datetime import datetime
+
+
+def parse_front_matter(content):
+    if not content.startswith("---\n"):
+        return {}
+
+    end = content.find("\n---", 4)
+    if end == -1:
+        return {}
+
+    front_matter = content[4:end].strip()
+    meta = {}
+    for line in front_matter.splitlines():
+        match = re.match(r"^([A-Za-z0-9_-]+)\s*:\s*(.*)$", line.strip())
+        if not match:
+            continue
+        key = match.group(1).strip().lower()
+        value = match.group(2).strip().strip("\"'")
+        meta[key] = value
+    return meta
+
+
+def parse_date(date_str):
+    try:
+        return datetime.strptime(date_str, "%Y-%m-%d")
+    except (TypeError, ValueError):
+        return datetime.min
 
 def main():
     posts_dir = "posts"
@@ -21,15 +49,11 @@ def main():
                 filepath = os.path.join(root, filename)
                 with open(filepath, "r", encoding="utf-8") as f:
                     content = f.read()
-                    
-                    # Extract title and date using Regex
-                    title_match = re.search(r"^title:\s*(.*)", content, re.MULTILINE)
-                    date_match = re.search(r"^date:\s*(.*)", content, re.MULTILINE)
-                    tag_match = re.search(r"^tag:\s*(.*)", content, re.MULTILINE)
-                    
-                    title = title_match.group(1).strip().strip('"\'').strip() if title_match else filename
-                    date = date_match.group(1).strip().strip('"\'').strip() if date_match else "Unknown"
-                    manual_tag = tag_match.group(1).strip().strip('"\'').strip() if tag_match else None
+
+                    meta = parse_front_matter(content)
+                    title = meta.get("title", filename)
+                    date = meta.get("date", "Unknown")
+                    manual_tag = meta.get("tag")
 
                     tag_name = None
                     tag_key = None
@@ -45,10 +69,17 @@ def main():
                     
                     # Get relative path for JSON (handles subfolders)
                     rel_path = os.path.relpath(filepath, posts_dir).replace("\\", "/")
-                    posts.append({"title": title, "date": date, "filename": rel_path, "tag_name": tag_name, "tag_key": tag_key, "tag_color": tag_color})
+                    posts.append({
+                        "title": title,
+                        "date": date,
+                        "filename": rel_path,
+                        "tag_name": tag_name,
+                        "tag_key": tag_key,
+                        "tag_color": tag_color
+                    })
 
     # Sort by date descending
-    posts.sort(key=lambda x: x["date"], reverse=True)
+    posts.sort(key=lambda x: parse_date(x["date"]), reverse=True)
     
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(posts, f, indent=2)

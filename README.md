@@ -5,7 +5,7 @@ This is a custom-built static blogging engine designed for simplicity and longev
 ## Features
 
 *   **Zero-Backend Architecture**: No database to maintain. The site is purely HTML, CSS, and JavaScript, making it extremely fast and secure.
-*   **Browser-Based Editor**: Write and publish posts directly from browser at `../write.html` using the GitHub API - no command line needed! Needs Github Private Key
+*   **Browser-Based Editor**: Write and publish posts directly from browser at `../write.html` using the GitHub API - no command line needed.
 *   **Automated Content Pipeline**:
     *   Posts are written in **Markdown** and stored in the `posts/` directory (organized by year).
     *   A **GitHub Action** triggers on every push, running a Python script to scan files and regenerate the `posts.json` index automatically.
@@ -37,6 +37,7 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
      - Select scope: **repo** (Full control of private repositories)
      - Click "Generate token" and copy it
    - Enter your PAT, GitHub username, and repository name
+   - Optional: save only username/repository on the device for convenience
    - Click "Login & Continue"
 3. **Write your post**:
    - Enter a title, select date (defaults to today), and choose a tag
@@ -44,6 +45,11 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
    - Click "Preview" to see how it will look
    - Click "Publish Post" to commit directly to GitHub
 4. GitHub Actions will automatically update the site index
+
+### Security notes
+
+- The editor keeps your GitHub PAT in session storage only (cleared when browser session ends).
+- Username and repository can be optionally stored in local storage for convenience.
 
 ### Option 2: Manual File Creation
 
