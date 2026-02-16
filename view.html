@@ -6,6 +6,7 @@
     <title>Post View</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 </head>
 <body>
@@ -52,6 +53,10 @@
                 document.getElementById('content').innerHTML = 'Post not specified.';
                 return;
             }
+            if (filename.includes('..') || filename.startsWith('/') || filename.startsWith('\\')) {
+                document.getElementById('content').innerHTML = 'Invalid post path.';
+                return;
+            }
 
             try {
                 // Fetch the raw markdown content
@@ -87,7 +92,8 @@
 
                 // Render Markdown
                 const contentEl = document.getElementById('content');
-                contentEl.innerHTML = marked.parse(markdownContent);
+                const renderedHtml = marked.parse(markdownContent);
+                contentEl.innerHTML = DOMPurify.sanitize(renderedHtml);
                 
                 // Load Navigation and Meta
                 try {
@@ -103,13 +109,13 @@
                             const metaDiv = document.createElement('div');
                             metaDiv.className = 'post-meta';
 
-                            let metaHtml = '';
                             if (currentPost.tag_name && currentPost.tag_key) {
-                                metaHtml += `<span class="post-tag tag-${currentPost.tag_key}">[${currentPost.tag_name}]</span>`;
+                                const tagSpan = document.createElement('span');
+                                tagSpan.className = `post-tag tag-${currentPost.tag_key}`;
+                                tagSpan.textContent = `[${currentPost.tag_name}]`;
+                                metaDiv.appendChild(tagSpan);
                             }
-                            metaHtml += `[${currentPost.date}]`;
-
-                            metaDiv.innerHTML = metaHtml;
+                            metaDiv.appendChild(document.createTextNode(`[${currentPost.date}]`));
 
                             const h1 = contentEl.querySelector('h1');
                             if (h1) {
@@ -125,14 +131,14 @@
                         if (newerPost) {
                             const newerLink = document.getElementById('newerPost');
                             newerLink.href = `view.html?post=${encodeURIComponent(newerPost.filename)}`;
-                            newerLink.innerHTML = `&larr; ${newerPost.title}`;
+                            newerLink.textContent = `← ${newerPost.title}`;
                             newerLink.classList.add('visible');
                         }
                         
                         if (olderPost) {
                             const olderLink = document.getElementById('olderPost');
                             olderLink.href = `view.html?post=${encodeURIComponent(olderPost.filename)}`;
-                            olderLink.innerHTML = `${olderPost.title} &rarr;`;
+                            olderLink.textContent = `${olderPost.title} →`;
                             olderLink.classList.add('visible');
                         }
                     }

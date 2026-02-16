@@ -182,7 +182,7 @@
                     }
 
                     li.innerHTML = `
-                        ${allPosts.length - allPosts.indexOf(post)}. 
+                        ${start + index + 1}. 
                         <a href="view.html?post=${encodeURIComponent(post.filename)}">${post.title}</a>
                         <span class="post-date">[${post.date}]</span>
                         ${tagHtml}

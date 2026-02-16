@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Write New Post - Chinmay Deo</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
     <style>
         .login-container, .editor-container {
             max-width: 800px;
@@ -271,6 +273,11 @@
             <label for="githubRepo">Repository Name:</label>
             <input type="text" id="githubRepo" placeholder="legodud3.github.io">
         </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="rememberRepo"> Remember username and repository on this device
+            </label>
+        </div>
         <button class="btn btn-primary" onclick="login()">Login & Continue</button>
         <div id="loginStatus" class="status-message"></div>
     </div>
@@ -388,25 +395,24 @@
         }
 
         function checkAuth() {
-            const savedToken = localStorage.getItem('github_token');
-            const savedUsername = localStorage.getItem('github_username');
-            const savedRepo = localStorage.getItem('github_repo');
+            const sessionToken = sessionStorage.getItem('github_token');
+            const savedUsername = sessionStorage.getItem('github_username') || localStorage.getItem('github_username') || '';
+            const savedRepo = sessionStorage.getItem('github_repo') || localStorage.getItem('github_repo') || '';
 
-            if (savedToken && savedUsername && savedRepo) {
-                authConfig.token = savedToken;
+            // Pre-fill login form
+            document.getElementById('githubUsername').value = savedUsername;
+            document.getElementById('githubRepo').value = savedRepo;
+            document.getElementById('rememberRepo').checked = Boolean(savedUsername || savedRepo);
+
+            if (sessionToken && savedUsername && savedRepo) {
+                authConfig.token = sessionToken;
                 authConfig.username = savedUsername;
                 authConfig.repo = savedRepo;
-                
-                // Pre-fill login form
-                document.getElementById('githubToken').value = savedToken;
-                document.getElementById('githubUsername').value = savedUsername;
-                document.getElementById('githubRepo').value = savedRepo;
-                
-                // Show editor
                 showEditor();
-            } else {
-                showLogin();
+                return;
             }
+
+            showLogin();
         }
 
         function showLogin() {
@@ -424,6 +430,7 @@
             const token = document.getElementById('githubToken').value.trim();
             const username = document.getElementById('githubUsername').value.trim();
             const repo = document.getElementById('githubRepo').value.trim();
+            const rememberRepo = document.getElementById('rememberRepo').checked;
 
             if (!token || !username || !repo) {
                 showStatus('Please fill in all fields.', 'error', 'loginStatus');
@@ -445,10 +452,17 @@
                     throw new Error('Invalid credentials or repository not found');
                 }
 
-                // Save credentials
-                localStorage.setItem('github_token', token);
-                localStorage.setItem('github_username', username);
-                localStorage.setItem('github_repo', repo);
+                // Keep token in session storage only; this avoids long-lived auth in localStorage.
+                sessionStorage.setItem('github_token', token);
+                sessionStorage.setItem('github_username', username);
+                sessionStorage.setItem('github_repo', repo);
+                if (rememberRepo) {
+                    localStorage.setItem('github_username', username);
+                    localStorage.setItem('github_repo', repo);
+                } else {
+                    localStorage.removeItem('github_username');
+                    localStorage.removeItem('github_repo');
+                }
 
                 authConfig.token = token;
                 authConfig.username = username;
@@ -465,13 +479,23 @@
 
         function logout() {
             if (confirm('Are you sure you want to logout? Your GitHub token will be removed from this browser.')) {
-                localStorage.removeItem('github_token');
-                localStorage.removeItem('github_username');
-                localStorage.removeItem('github_repo');
+                sessionStorage.removeItem('github_token');
+                sessionStorage.removeItem('github_username');
+                sessionStorage.removeItem('github_repo');
                 authConfig = { token: null, username: null, repo: null };
+                document.getElementById('githubToken').value = '';
                 clearForm();
                 showLogin();
             }
+        }
+
+        function escapeHtml(value) {
+            return value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
         function generateSlug(title) {
@@ -619,41 +643,26 @@ tag: ${tag}
                 return;
             }
 
-            const frontMatter = generateFrontMatter(title || 'Untitled', date, tag || 'Untagged');
-            const fullContent = frontMatter + body;
+            const safeTitle = escapeHtml(title || 'Untitled');
+            const safeDate = escapeHtml(date || new Date().toISOString().split('T')[0]);
+            const safeTag = escapeHtml(tag || 'Untagged');
 
-            // Simple markdown to HTML conversion (basic)
-            let html = body
-                // Headers
-                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-                // Bold
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                // Italic
-                .replace(/\*(.+?)\*/g, '<em>$1</em>')
-                // Links
-                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-                // Line breaks
-                .replace(/\n\n/g, '</p><p>')
-                // Lists (simple version)
-                .replace(/^\* (.+)$/gim, '<li>$1</li>')
-                .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-
-            html = `
+            const renderedBody = marked.parse(body || '');
+            const safeBodyHtml = DOMPurify.sanitize(renderedBody);
+            const previewHtml = `
                 <div style="background-color: var(--code-bg); padding: 10px; border-radius: 4px; margin-bottom: 20px; font-size: 0.9em;">
                     <pre style="margin: 0; background: none; padding: 0;">---
-title: ${title || 'Untitled'}
-date: ${date}
-tag: ${tag || 'Untagged'}
+title: ${safeTitle}
+date: ${safeDate}
+tag: ${safeTag}
 ---</pre>
                 </div>
                 <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
-                    <p>${html}</p>
+                    ${safeBodyHtml}
                 </div>
             `;
 
-            document.getElementById('previewContent').innerHTML = html;
+            document.getElementById('previewContent').innerHTML = previewHtml;
             document.getElementById('previewContainer').style.display = 'block';
             
             // Scroll to preview
