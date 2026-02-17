@@ -21,9 +21,161 @@ body {
     color: var(--text-color);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.6;
-    max-width: 800px;
+    max-width: 1240px;
     margin: 0 auto;
     padding: 20px;
+}
+
+.app-shell {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.left-rail {
+    width: 25%;
+    min-width: 250px;
+    max-width: 320px;
+    position: sticky;
+    top: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    background: linear-gradient(180deg, rgba(77, 166, 255, 0.06) 0%, rgba(77, 166, 255, 0.02) 100%);
+}
+
+.main-panel {
+    width: 75%;
+    min-width: 0;
+}
+
+.page-header {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+    padding-bottom: 12px;
+}
+
+.page-header-slim {
+    margin-bottom: 10px;
+}
+
+.rail-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.rail-brand span {
+    font-size: 1.5rem;
+    line-height: 1.1;
+}
+
+.rail-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.rail-nav a {
+    display: inline-block;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.rail-nav a:hover,
+.rail-nav a:focus-visible {
+    background-color: var(--hover-bg);
+    text-decoration: none;
+}
+
+.rail-nav a.active {
+    border-color: var(--link-color);
+    background-color: rgba(77, 166, 255, 0.18);
+}
+
+.rail-widget {
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+}
+
+.rail-section-title {
+    font-size: 0.95rem;
+    margin: 0 0 10px 0;
+}
+
+.rail-hat-tip {
+    font-size: 0.82rem;
+    color: #999;
+    margin: 12px 0 0;
+}
+
+.heatmap-widget {
+    overflow-x: auto;
+}
+
+.heatmap-months,
+.heatmap-row {
+    display: grid;
+    grid-template-columns: 36px repeat(12, 13px);
+    gap: 4px;
+    align-items: center;
+    min-width: 220px;
+}
+
+.heatmap-months {
+    margin-bottom: 6px;
+}
+
+.heatmap-month-label {
+    font-size: 0.65rem;
+    color: #9aa3ad;
+    text-align: center;
+}
+
+.heatmap-year-label {
+    font-size: 0.7rem;
+    color: #9aa3ad;
+}
+
+.heatmap-cell {
+    width: 13px;
+    height: 13px;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+}
+
+.heatmap-level-0 { background-color: #1f2937; }
+.heatmap-level-1 { background-color: #1f4d2d; }
+.heatmap-level-2 { background-color: #1f7a3f; }
+.heatmap-level-3 { background-color: #2ea44f; }
+.heatmap-level-4 { background-color: #56d364; }
+
+:root.light-mode .heatmap-level-0 { background-color: #ebedf0; }
+:root.light-mode .heatmap-level-1 { background-color: #9be9a8; }
+:root.light-mode .heatmap-level-2 { background-color: #40c463; }
+:root.light-mode .heatmap-level-3 { background-color: #30a14e; }
+:root.light-mode .heatmap-level-4 { background-color: #216e39; }
+
+.heatmap-empty {
+    margin: 0;
+    color: #9aa3ad;
+    font-size: 0.82rem;
+}
+
+.heatmap-legend {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    font-size: 0.72rem;
+    color: #9aa3ad;
 }
 
 header {
@@ -352,4 +504,26 @@ a:hover {
 
 .projects-table tr:last-child td {
     border-bottom: none;
+}
+
+@media (max-width: 940px) {
+    body {
+        padding: 14px;
+    }
+
+    .app-shell {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .left-rail {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        position: static;
+    }
+
+    .main-panel {
+        width: 100%;
+    }
 }

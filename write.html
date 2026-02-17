@@ -237,17 +237,30 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-brand">
-            <a href="index.html"><img src="legohat_logo.png" alt="Logo" class="site-logo"></a>
-            <h1>Write New Post</h1>
-        </div>
-        <nav>
-            <a href="index.html">← Back to Posts</a>
+    <div class="app-shell">
+    <aside class="left-rail">
+        <a href="index.html" class="rail-brand">
+            <img src="legohat_logo.png" alt="Logo" class="site-logo">
+            <span>Chinmay Deo</span>
+        </a>
+        <nav class="rail-nav" aria-label="Primary">
+            <a href="index.html">🏠 Home</a>
+            <a href="about.html">👤 About me</a>
+            <a href="side-projects.html">🚀 Side projects</a>
+            <a href="write.html" class="active">✍️ Write</a>
         </nav>
+        <section class="rail-widget">
+            <h2 class="rail-section-title">Writing Consistency</h2>
+            <div class="monthly-heatmap-root" aria-live="polite"></div>
+            <p class="rail-hat-tip">Hat tip to <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> for the original contribution graph inspiration.</p>
+        </section>
+    </aside>
+
+    <main class="main-panel">
+    <header class="page-header">
+        <h1>Write New Post</h1>
     </header>
 
-    <!-- Login Screen -->
     <div id="loginContainer" class="login-container">
         <h2>GitHub Authentication Required</h2>
         <div class="login-info">
@@ -259,7 +272,7 @@
             <p>3. Give it a name (e.g., "Blog Editor")</p>
             <p>4. Select scope: <strong>repo</strong> (Full control of private repositories)</p>
             <p>5. Click "Generate token" and copy the token</p>
-            <p><strong>Security:</strong> Your token will be stored in your browser's localStorage and never sent to any server except GitHub's API.</p>
+            <p><strong>Security:</strong> Your token is kept in session storage and never sent to any server except GitHub's API.</p>
         </div>
         <div class="form-group">
             <label for="githubToken">GitHub Personal Access Token:</label>
@@ -282,7 +295,6 @@
         <div id="loginStatus" class="status-message"></div>
     </div>
 
-    <!-- Editor Screen -->
     <div id="editorContainer" class="editor-container hidden">
         <div class="auth-status">
             <span>✓ Authenticated as <strong id="loggedInUser"></strong></span>
@@ -341,7 +353,10 @@
             <span class="theme-toggle-label">Light</span>
         </div>
     </footer>
+    </main>
+    </div>
 
+    <script src="monthly-heatmap.js"></script>
     <script src="theme-toggle.js"></script>
     <script>
         // Configuration
