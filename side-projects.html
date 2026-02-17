@@ -7,47 +7,62 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="header-brand">
-            <a href="index.html"><img src="legohat_logo.png" alt="Logo" class="site-logo"></a>
-            <h1>Side Projects</h1>
-        </div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="about.html">👤 About me</a>
-        </nav>
-    </header>
+    <div class="app-shell">
+        <aside class="left-rail">
+            <a href="index.html" class="rail-brand">
+                <img src="legohat_logo.png" alt="Logo" class="site-logo">
+                <span>Chinmay Deo</span>
+            </a>
+            <nav class="rail-nav" aria-label="Primary">
+                <a href="write.html">✍️ Write</a>
+                <a href="about.html">👤 About me</a>
+                <a href="side-projects.html" class="active">🚀 Side projects</a>
+            </nav>
+            <section class="rail-widget">
+                <h2 class="rail-section-title">Writing Consistency</h2>
+                <div class="monthly-heatmap-root" aria-live="polite"></div>
+                <p class="rail-hat-tip">Hat tip to <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> for the original contribution graph inspiration.</p>
+            </section>
+        </aside>
 
-    <main>
-        <p>A few experiments and side projects I'm tinkering with.</p>
-        <table class="projects-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a href="https://github.com/legodud3">Example project</a></td>
-                    <td>A lightweight demo project to document future updates and ideas.</td>
-                </tr>
-            </tbody>
-        </table>
-    </main>
+        <main class="main-panel">
+            <header class="page-header">
+                <h1>Side Projects</h1>
+            </header>
 
-    <footer class="site-footer">
-        <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
-        <div class="theme-toggle-container">
-            <span class="theme-toggle-label">Dark</span>
-            <label class="theme-toggle-switch">
-                <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
-                <span class="theme-toggle-slider"></span>
-            </label>
-            <span class="theme-toggle-label">Light</span>
-        </div>
-    </footer>
+            <section>
+                <p>A few experiments and side projects I'm tinkering with.</p>
+                <table class="projects-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="https://github.com/legodud3">Example project</a></td>
+                            <td>A lightweight demo project to document future updates and ideas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
 
+            <footer class="site-footer">
+                <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
+                <div class="theme-toggle-container">
+                    <span class="theme-toggle-label">Dark</span>
+                    <label class="theme-toggle-switch">
+                        <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
+                        <span class="theme-toggle-slider"></span>
+                    </label>
+                    <span class="theme-toggle-label">Light</span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="monthly-heatmap.js"></script>
     <script src="theme-toggle.js"></script>
 </body>
 </html>

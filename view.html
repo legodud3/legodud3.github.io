@@ -10,45 +10,60 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 </head>
 <body>
-    <header>
-        <div class="header-brand">
-            <a href="index.html"><img src="legohat_logo.png" alt="Logo" class="site-logo"></a>
-            <a href="index.html" class="back-link" style="margin: 0;">← Back to Posts</a>
-        </div>
-        <nav>
-            <a href="side-projects.html">🚀 Side projects</a>
-            <a href="about.html">👤 About me</a>
-        </nav>
-    </header>
-    
-    <div id="content" class="markdown-body">
-        Loading...
+    <div class="app-shell">
+        <aside class="left-rail">
+            <a href="index.html" class="rail-brand">
+                <img src="legohat_logo.png" alt="Logo" class="site-logo">
+                <span>Chinmay Deo</span>
+            </a>
+            <nav class="rail-nav" aria-label="Primary">
+                <a href="write.html">✍️ Write</a>
+                <a href="about.html">👤 About me</a>
+                <a href="side-projects.html">🚀 Side projects</a>
+            </nav>
+            <section class="rail-widget">
+                <h2 class="rail-section-title">Writing Consistency</h2>
+                <div class="monthly-heatmap-root" aria-live="polite"></div>
+                <p class="rail-hat-tip">Hat tip to <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> for the original contribution graph inspiration.</p>
+            </section>
+        </aside>
+
+        <main class="main-panel">
+            <header class="page-header page-header-slim">
+                <a href="index.html" class="back-link" style="margin: 0;">← Back to Posts</a>
+            </header>
+
+            <div id="content" class="markdown-body">
+                Loading...
+            </div>
+
+            <div class="post-nav">
+                <a id="newerPost" href="#"></a>
+                <a id="olderPost" href="#"></a>
+            </div>
+
+            <footer class="site-footer">
+                <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
+                <div class="theme-toggle-container">
+                    <span class="theme-toggle-label">Dark</span>
+                    <label class="theme-toggle-switch">
+                        <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
+                        <span class="theme-toggle-slider"></span>
+                    </label>
+                    <span class="theme-toggle-label">Light</span>
+                </div>
+            </footer>
+        </main>
     </div>
 
-    <div class="post-nav">
-        <a id="newerPost" href="#"></a>
-        <a id="olderPost" href="#"></a>
-    </div>
-
-    <footer class="site-footer">
-        <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
-        <div class="theme-toggle-container">
-            <span class="theme-toggle-label">Dark</span>
-            <label class="theme-toggle-switch">
-                <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
-                <span class="theme-toggle-slider"></span>
-            </label>
-            <span class="theme-toggle-label">Light</span>
-        </div>
-    </footer>
-
+    <script src="monthly-heatmap.js"></script>
     <script src="theme-toggle.js"></script>
 
     <script>
         async function loadPost() {
             const params = new URLSearchParams(window.location.search);
             const filename = params.get('post');
-            
+
             if (!filename) {
                 document.getElementById('content').innerHTML = 'Post not specified.';
                 return;
@@ -62,19 +77,19 @@
                 // Fetch the raw markdown content
                 const response = await fetch(`posts/${filename}`);
                 if (!response.ok) throw new Error('Post not found');
-                
+
                 const text = await response.text();
-                
+
                 // Parse Frontmatter (simple render, stripping it out mostly for the display)
                 let markdownContent = text;
-                
+
                 // Simple frontmatter extractor
                 if (text.startsWith('---')) {
                     const end = text.indexOf('---', 3);
                     if (end !== -1) {
                         const frontmatter = text.substring(0, end + 3);
                         markdownContent = text.substring(end + 3).trim();
-                        
+
                         // Parse title from YAML to set document title
                         try {
                             // Removing --- for yaml parser
@@ -94,13 +109,13 @@
                 const contentEl = document.getElementById('content');
                 const renderedHtml = marked.parse(markdownContent);
                 contentEl.innerHTML = DOMPurify.sanitize(renderedHtml);
-                
+
                 // Load Navigation and Meta
                 try {
                     const postsResponse = await fetch('posts.json?v=' + new Date().getTime());
                     const posts = await postsResponse.json();
                     const currentIndex = posts.findIndex(p => p.filename === filename);
-                    
+
                     if (currentIndex !== -1) {
                         const currentPost = posts[currentIndex];
 
@@ -127,14 +142,14 @@
 
                         const newerPost = posts[currentIndex - 1];
                         const olderPost = posts[currentIndex + 1];
-                        
+
                         if (newerPost) {
                             const newerLink = document.getElementById('newerPost');
                             newerLink.href = `view.html?post=${encodeURIComponent(newerPost.filename)}`;
                             newerLink.textContent = `← ${newerPost.title}`;
                             newerLink.classList.add('visible');
                         }
-                        
+
                         if (olderPost) {
                             const olderLink = document.getElementById('olderPost');
                             olderLink.href = `view.html?post=${encodeURIComponent(olderPost.filename)}`;
@@ -145,7 +160,7 @@
                 } catch (e) {
                     console.error('Error loading navigation', e);
                 }
-                
+
             } catch (error) {
                 document.getElementById('content').innerHTML = `Error loading post: ${error.message} <br> <small>Tried to load: posts/${filename}</small>`;
             }
