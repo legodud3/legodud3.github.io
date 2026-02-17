@@ -1,5 +1,6 @@
 (function () {
-    const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const MONTH_LABELS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+    const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     function toMonthKey(dateValue) {
         if (typeof dateValue !== 'string') return null;
@@ -23,7 +24,7 @@
     function createCell(year, monthIndex, count, level) {
         const cell = document.createElement('div');
         cell.className = `heatmap-cell heatmap-level-${level}`;
-        const label = `${year}-${String(monthIndex + 1).padStart(2, '0')} (${MONTH_LABELS[monthIndex]} ${year}): ${count} post${count === 1 ? '' : 's'}`;
+        const label = `${year}-${String(monthIndex + 1).padStart(2, '0')} (${MONTH_NAMES[monthIndex]} ${year}): ${count} post${count === 1 ? '' : 's'}`;
         cell.title = label;
         cell.setAttribute('role', 'img');
         cell.setAttribute('aria-label', label);
