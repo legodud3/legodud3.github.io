@@ -1,5 +1,13 @@
 [
   {
+    "title": "KGBaby (2/N)",
+    "date": "2026-02-25",
+    "filename": "2026/2026-02-25-kgbaby-2-n.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60"
+  },
+  {
     "title": "KGBaby (1/N)",
     "date": "2026-02-19",
     "filename": "2026/2026-02-19-kgbaby-1-n.md",
@@ -64,17 +72,17 @@
     "tag_color": "#27ae60"
   },
   {
-    "title": "AI for building software (3)",
+    "title": "AI for building software (2)",
     "date": "2026-01-23",
-    "filename": "2026/2026-01-23-ai-for-building-software-3.md",
+    "filename": "2026/2026-01-23-ai-for-building-software-backlog.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
     "tag_color": "#27ae60"
   },
   {
-    "title": "AI for building software (2)",
+    "title": "AI for building software (3)",
     "date": "2026-01-23",
-    "filename": "2026/2026-01-23-ai-for-building-software-backlog.md",
+    "filename": "2026/2026-01-23-ai-for-building-software-3.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
     "tag_color": "#27ae60"
