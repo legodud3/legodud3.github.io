@@ -50,6 +50,67 @@
             resize: vertical;
         }
 
+        .editor-toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .editor-btn {
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border-radius: 4px;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            font-size: 18px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .editor-btn:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .editor-btn:focus-visible {
+            outline: 2px solid var(--link-color);
+            outline-offset: 1px;
+        }
+
+        .editor-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            display: block;
+        }
+
+        .rich-editor {
+            min-height: 400px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-wrap: break-word;
+        }
+
+        .rich-editor:focus {
+            outline: 2px solid var(--link-color);
+            outline-offset: 1px;
+        }
+
+        .rich-editor:empty::before {
+            content: attr(data-placeholder);
+            color: #888;
+            pointer-events: none;
+        }
+
         .button-group {
             display: flex;
             gap: 10px;
@@ -320,8 +381,30 @@
             </div>
 
             <div class="form-group">
-                <label for="postBody">Content (Markdown):</label>
-                <textarea id="postBody" required placeholder="# Your content here&#x0a;&#x0a;Write your post in Markdown..."></textarea>
+                <label for="postBodyEditor">Content:</label>
+                <div class="editor-toolbar" aria-label="Formatting toolbar">
+                    <button type="button" class="editor-btn" title="Bulleted List" aria-label="Bulleted List" onclick="applyEditorFormat('insertUnorderedList')">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="5" cy="6" r="1.8"></circle>
+                            <circle cx="5" cy="12" r="1.8"></circle>
+                            <circle cx="5" cy="18" r="1.8"></circle>
+                            <rect x="9" y="4.8" width="10" height="2.4" rx="1.2"></rect>
+                            <rect x="9" y="10.8" width="10" height="2.4" rx="1.2"></rect>
+                            <rect x="9" y="16.8" width="10" height="2.4" rx="1.2"></rect>
+                        </svg>
+                    </button>
+                    <button type="button" class="editor-btn" title="Heading" aria-label="Heading" onclick="toggleHeading()"><strong>H</strong></button>
+                    <button type="button" class="editor-btn" title="Italic" aria-label="Italic" onclick="applyEditorFormat('italic')"><em>I</em></button>
+                    <button type="button" class="editor-btn" title="Bold" aria-label="Bold" onclick="applyEditorFormat('bold')"><strong>B</strong></button>
+                    <button type="button" class="editor-btn" title="Underline" aria-label="Underline" onclick="applyEditorFormat('underline')"><span style="text-decoration: underline;">U</span></button>
+                </div>
+                <div
+                    id="postBodyEditor"
+                    class="rich-editor"
+                    contenteditable="true"
+                    data-placeholder="Write your post..."
+                    role="textbox"
+                    aria-multiline="true"></div>
                 <div class="char-count">
                     <span id="charCount">0</span> characters
                 </div>
@@ -380,10 +463,39 @@
             checkAuth();
 
             // Character counter
-            document.getElementById('postBody').addEventListener('input', function() {
-                document.getElementById('charCount').textContent = this.value.length;
-            });
+            document.getElementById('postBodyEditor').addEventListener('input', updateCharCount);
         });
+
+        function updateCharCount() {
+            const body = getBodyMarkdown();
+            document.getElementById('charCount').textContent = body.length;
+        }
+
+        function ensureEditorFocus() {
+            const editor = document.getElementById('postBodyEditor');
+            editor.focus();
+        }
+
+        function applyEditorFormat(command) {
+            ensureEditorFocus();
+            document.execCommand(command, false, null);
+            updateCharCount();
+        }
+
+        function toggleHeading() {
+            ensureEditorFocus();
+
+            const selection = window.getSelection();
+            let currentNode = selection && selection.anchorNode ? selection.anchorNode : null;
+            if (currentNode && currentNode.nodeType === Node.TEXT_NODE) {
+                currentNode = currentNode.parentElement;
+            }
+
+            const headingNode = currentNode && currentNode.closest ? currentNode.closest('h1, h2, h3, h4, h5, h6') : null;
+            const isHeading = Boolean(headingNode);
+            document.execCommand('formatBlock', false, isHeading ? 'p' : 'h2');
+            updateCharCount();
+        }
 
         async function loadTags() {
             try {
@@ -530,11 +642,96 @@ tag: ${tag}
 `;
         }
 
+        function nodesToMarkdown(nodes, inList = false) {
+            let output = '';
+
+            for (const node of nodes) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    output += node.textContent;
+                    continue;
+                }
+
+                if (node.nodeType !== Node.ELEMENT_NODE) {
+                    continue;
+                }
+
+                const tag = node.tagName.toLowerCase();
+
+                if (tag === 'br') {
+                    output += '\n';
+                    continue;
+                }
+
+                if (tag === 'strong' || tag === 'b') {
+                    output += `**${nodesToMarkdown(node.childNodes, inList).trim()}**`;
+                    continue;
+                }
+
+                if (tag === 'em' || tag === 'i') {
+                    output += `*${nodesToMarkdown(node.childNodes, inList).trim()}*`;
+                    continue;
+                }
+
+                if (tag === 'u') {
+                    output += `<u>${nodesToMarkdown(node.childNodes, inList).trim()}</u>`;
+                    continue;
+                }
+
+                if (/^h[1-6]$/.test(tag)) {
+                    const level = Number(tag.slice(1));
+                    const text = nodesToMarkdown(node.childNodes, inList).trim();
+                    if (text) {
+                        output += `${'#'.repeat(level)} ${text}\n\n`;
+                    }
+                    continue;
+                }
+
+                if (tag === 'ul') {
+                    const items = Array.from(node.children)
+                        .filter((child) => child.tagName && child.tagName.toLowerCase() === 'li')
+                        .map((li) => `- ${nodesToMarkdown(li.childNodes, true).replace(/\n+/g, ' ').trim()}`)
+                        .filter(Boolean);
+                    if (items.length) {
+                        output += `${items.join('\n')}\n\n`;
+                    }
+                    continue;
+                }
+
+                if (tag === 'li') {
+                    output += nodesToMarkdown(node.childNodes, true);
+                    continue;
+                }
+
+                if (tag === 'div' || tag === 'p') {
+                    const text = nodesToMarkdown(node.childNodes, inList).trim();
+                    if (text) {
+                        output += inList ? text : `${text}\n\n`;
+                    } else if (!inList) {
+                        output += '\n';
+                    }
+                    continue;
+                }
+
+                output += nodesToMarkdown(node.childNodes, inList);
+            }
+
+            return output;
+        }
+
+        function getBodyMarkdown() {
+            const editor = document.getElementById('postBodyEditor');
+            const raw = nodesToMarkdown(editor.childNodes)
+                .replace(/\u00a0/g, ' ')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+            return raw;
+        }
+
         async function publishPost() {
             const title = document.getElementById('postTitle').value.trim();
             const date = document.getElementById('postDate').value;
             const tag = document.getElementById('postTag').value;
-            const body = document.getElementById('postBody').value.trim();
+            const body = getBodyMarkdown();
 
             if (!title || !date || !tag || !body) {
                 showStatus('Please fill in all fields.', 'error');
@@ -651,7 +848,7 @@ tag: ${tag}
             const title = document.getElementById('postTitle').value.trim();
             const date = document.getElementById('postDate').value;
             const tag = document.getElementById('postTag').value;
-            const body = document.getElementById('postBody').value.trim();
+            const body = getBodyMarkdown();
 
             if (!title && !body) {
                 showStatus('Nothing to preview. Please add some content.', 'info');
@@ -688,7 +885,7 @@ tag: ${safeTag}
             document.getElementById('postTitle').value = '';
             document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('postTag').value = '';
-            document.getElementById('postBody').value = '';
+            document.getElementById('postBodyEditor').innerHTML = '';
             document.getElementById('charCount').textContent = '0';
             document.getElementById('previewContainer').style.display = 'none';
             document.getElementById('statusMessage').className = 'status-message';
