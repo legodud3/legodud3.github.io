@@ -43,6 +43,11 @@
                 <a id="olderPost" href="#"></a>
             </div>
 
+            <section id="related-posts" class="related-posts-section" aria-label="Related posts" hidden>
+                <h2 class="related-posts-heading">Related Posts</h2>
+                <div id="related-posts-grid" class="related-posts-grid"></div>
+            </section>
+
             <footer class="site-footer">
                 <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
                 <div class="theme-toggle-container">
@@ -61,6 +66,60 @@
     <script src="theme-toggle.js"></script>
 
     <script>
+        function getRelatedPosts(posts, currentPost, count = 3) {
+            const significantWords = (text) => new Set(
+                text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 4)
+            );
+
+            const currentWords = currentPost.excerpt ? significantWords(currentPost.excerpt) : new Set();
+
+            const scored = posts
+                .filter(p => p.filename !== currentPost.filename)
+                .map(p => {
+                    let score = 0;
+                    if (p.tag_key && p.tag_key === currentPost.tag_key) score += 3;
+                    if (p.excerpt && currentWords.size > 0) {
+                        for (const word of significantWords(p.excerpt)) {
+                            if (currentWords.has(word)) score += 1;
+                        }
+                    }
+                    return { post: p, score };
+                })
+                .sort((a, b) => b.score - a.score);
+
+            if (scored.every(item => item.score === 0)) {
+                return posts.filter(p => p.filename !== currentPost.filename).slice(0, count);
+            }
+            return scored.slice(0, count).map(item => item.post);
+        }
+
+        function renderRelatedPosts(relatedPosts) {
+            const section = document.getElementById('related-posts');
+            const grid = document.getElementById('related-posts-grid');
+            if (!relatedPosts || relatedPosts.length === 0) return;
+
+            grid.innerHTML = '';
+            relatedPosts.forEach(post => {
+                const snippet = post.excerpt ? post.excerpt.substring(0, 100).trimEnd() + '…' : '';
+                const card = document.createElement('a');
+                card.className = 'related-post-card';
+                card.href = `view.html?post=${encodeURIComponent(post.filename)}`;
+
+                let tagHtml = '';
+                if (post.tag_name && post.tag_key) {
+                    tagHtml = `<span class="post-tag tag-${post.tag_key}">[${post.tag_name}]</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="related-post-title">${post.title}</div>
+                    <div><span class="post-date">[${post.date}]</span> ${tagHtml}</div>
+                    <div class="related-post-excerpt">${snippet}</div>
+                `;
+                grid.appendChild(card);
+            });
+            section.hidden = false;
+        }
+
         async function loadPost() {
             const params = new URLSearchParams(window.location.search);
             const filename = params.get('post');
@@ -157,6 +216,8 @@
                             olderLink.textContent = `${olderPost.title} →`;
                             olderLink.classList.add('visible');
                         }
+
+                        renderRelatedPosts(getRelatedPosts(posts, currentPost));
                     }
                 } catch (e) {
                     console.error('Error loading navigation', e);
