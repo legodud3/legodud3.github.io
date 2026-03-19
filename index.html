@@ -180,7 +180,8 @@
         function renderPosts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const filteredPosts = allPosts.filter(post => {
-                const matchesSearch = post.title.toLowerCase().includes(searchTerm);
+                const matchesSearch = post.title.toLowerCase().includes(searchTerm)
+                    || (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm));
                 const matchesTag = activeTag ? post.tag_key === activeTag : true;
                 return matchesSearch && matchesTag;
             });
@@ -240,7 +241,8 @@
         document.getElementById('nextBtn').addEventListener('click', () => {
              const searchTerm = document.getElementById('searchInput').value.toLowerCase();
              const filtered = allPosts.filter(post => {
-                const matchesSearch = post.title.toLowerCase().includes(searchTerm);
+                const matchesSearch = post.title.toLowerCase().includes(searchTerm)
+                    || (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm));
                 const matchesTag = activeTag ? post.tag_key === activeTag : true;
                 return matchesSearch && matchesTag;
             });

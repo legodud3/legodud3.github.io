@@ -5,7 +5,8 @@
     "filename": "2026/2026-03-17-first-trip-with-samay.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "We are currently in the middle of our first trip with Samay. Visiting Bombay and Delhi for a few days each. In addition to meeting family and friends, this trip is a great 'dry run' for future, longer trips with a newborn. Our parents love spending time with all three of us. Yes, they have expressed"
   },
   {
     "title": "What does the future software PDE org look like?",
@@ -13,7 +14,8 @@
     "filename": "2026/2026-03-12-what-does-the-future-software-pde-org-look-like.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "I was listening to a wonderful interview of Brett Taylor (https://www.youtube.com/watch?v=n4E4xNYCkYM) by John Collison. It got my brain gears spinning on this particular question: What does a software PDE org look like in the next 12-18 months? I think making predictions beyond this year is moot. S"
   },
   {
     "title": "Moats - stronger/weaker",
@@ -21,7 +23,8 @@
     "filename": "2026/2026-03-06-moats-stronger-weaker.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Now that everyone can vibe code (or 'agentic code' if you want to be posh) a company of their choice.... Stronger or at least similar as per-AI Network effects: Where users beget users, or where supply <> demand reinforce each other (e.g. social networks). Data: You can copy the app, algo, UI, marke"
   },
   {
     "title": "Pat leave reflections",
@@ -29,7 +32,8 @@
     "filename": "2026/2026-03-02-pat-leave-reflections.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "I had the unique privilege of getting paid to spend a couple of months with my family after my son arrived. I am glad I got it. Here are some thoughts about it on my first day back at work. We hotly debated if I should take it all in 'one go' or break it up. I am so happy I took it in one go. 0 regr"
   },
   {
     "title": "Start viewing \"agentic\" as equivalent to people management",
@@ -37,7 +41,8 @@
     "filename": "2026/2026-02-27-start-viewing-agentic-as-equivalent-to-people-management.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Intro I recently started employing a new, simple \"agentic\" workflow, which consists of four things. I am well aware that this is not a new \"insight\". Others much smarter and faster than me have come to the same realization long before me. However, it is still personally valuable to me to write it do"
   },
   {
     "title": "KGBaby (2/N)",
@@ -45,7 +50,8 @@
     "filename": "2026/2026-02-25-kgbaby-2-n.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Following on from my previous post, I took KGBaby on the road to our weekend vacation rental: Shoutout Honge on the rocks. And it failed. Spectacularly. I was, of course, very excited to try it out in the 'real world'. I had assumed some hiccups but not a complete failure. Given it was a weekend vac"
   },
   {
     "title": "KGBaby (1/N)",
@@ -53,7 +59,8 @@
     "filename": "2026/2026-02-19-kgbaby-1-n.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "A web browser based audio only baby monitor where one device functions as a broadcast unit (chid) and the other as a receiver unit (parent). Implemented the project with the aid of my three AI interns: Codex+Gemini CLI+VSCode. Hosted on GitHub Pages. Plan to do lots of real world testing over an upc"
   },
   {
     "title": "Copy shamelessly",
@@ -61,7 +68,8 @@
     "filename": "2026/2026-02-17-copy-shamelessly.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "My exploration with AI led software development continues. Each day I try to think of something new & useful to create and implement with AI coding agents (latest is codex-5.3). For the past ~3 weeks I have not added anything even mildly useful. I felt that all the ideas coming to me were bleh. Toda"
   },
   {
     "title": "Just look at the data",
@@ -69,7 +77,8 @@
     "filename": "2026/2026-02-12-just-look-at-the-data.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "\"Just look at the data\" is one of those lessons that is timeless, revealing, and unbiased. I recently did a quick budgeting exercise to get a better handle on my expenses. Mentally, I had a number in my head of what I \"thought\" I spent in a month. The real number was 30% higher. Reactions included:"
   },
   {
     "title": "Why My AI food logger lost out to Lose It!, and what I believe it means for the future of apps",
@@ -77,7 +86,8 @@
     "filename": "2026/2026-02-07-why-my-ai-food-logger-lost-out-to-lose-it-and-what-i-believe-it-means-for-the-future-of-apps.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Food logging experiment I got Gemini CLI to help me build a custom food tracking system that works through Powershell in plain English. I cooked up 1-2 custom \"skills,\" a csv file as my database, and Python scripts (using the magic of Pandas) to log meals, generate daily dashboards, and record every"
   },
   {
     "title": "What is love?",
@@ -85,7 +95,8 @@
     "filename": "2026/2026-01-31-what-is-love.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Self preservation is an axiom of humans. Love is when you willingly override the self preservation instinct for the preservation of someone or something else. While there are different types of love, they all share this characteristic. P.S. Maybe that's why the song goes \"...baby don't hurt me, no m"
   },
   {
     "title": "Why hiring and dating will always be vibes based",
@@ -93,7 +104,8 @@
     "filename": "2026/2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Hiring and dating are always frustrating but necessary matching processes we have to participate in. Cursory googling shows that 'matching' problems are a whole field of computer science theory (which I have not studied). Why do hiring (and dating) end up being 'vibes' based? 1. We don't know exactl"
   },
   {
     "title": "Growing pains",
@@ -101,7 +113,8 @@
     "filename": "2026/2026-01-27-growing-pains.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Our son will cross the 6 week mark this week. He has stopped fitting into his \"old\" clothes. About half of them were purchased by us, the other half were hand-me-downs. So we got out the new batch of bigger clothes. Some fit him well, some he is swimming in. It is an emotional time. It feels like a"
   },
   {
     "title": "Nearly empty gyms",
@@ -109,15 +122,8 @@
     "filename": "2026/2026-01-25-nearly-empty-gyms.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
-  },
-  {
-    "title": "AI for building software (3)",
-    "date": "2026-01-23",
-    "filename": "2026/2026-01-23-ai-for-building-software-3.md",
-    "tag_name": "Reflection",
-    "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "I love working out in nearly empty gyms, which I define as gyms that are operating at <20% but >0% capacity. I find I can lift more weights and get done quicker. I'm sure both of these are physically possible even if the gym is at 60% capacity. But I like it when I see a nearly empty gym. And so in"
   },
   {
     "title": "AI for building software (2)",
@@ -125,7 +131,17 @@
     "filename": "2026/2026-01-23-ai-for-building-software-backlog.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "I said in my previous post that I want to spend the next few weeks exploring how AI is changing distribution. Before I jump into that, I want to note down my AI for building software backlog that I plan to come back to: 1. Agent skills 2. Building custom agents 3. MCP 4. Connecting backends 5. Const"
+  },
+  {
+    "title": "AI for building software (3)",
+    "date": "2026-01-23",
+    "filename": "2026/2026-01-23-ai-for-building-software-3.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "PS: I am sharing a rearticulation of point 6 from my firstAI for building software post. As I re-read it, I realized I was not clear. Original: So who will be these external vendors who manufacture software? Many are throwing their hat in the ring: Cloud provider incumbents like Microsoft (Github Co"
   },
   {
     "title": "AI for building software",
@@ -133,7 +149,8 @@
     "filename": "2026/2026-01-22-ai-for-building-distribution.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "I have spent the past 4 weeks exploring AI for building software. It has been fun and enlightening. The output is this blog. I will be the first to admit that while I know more than I did 4 weeks ago, mine is still only a surface level understanding. However, I am now in 100% agreement with the broa"
   },
   {
     "title": "Frameworks vs manuals",
@@ -141,7 +158,8 @@
     "filename": "2026/2026-01-20-frameworks-vs-manuals.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Frameworks vs manuals I recommend having a newborn just for the moments of reflection it affords you. When faced with an issue that is bothering us, our minds want to find solutions. For many of us, we sprint to find solutions. Most advice suggests some version of pause, plan, and then execute. \"Slo"
   },
   {
     "title": "Division of labour",
@@ -149,7 +167,8 @@
     "filename": "2026/2026-01-17-division-of-labour.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Division of labour I recently began reading Adam Smith's \"Wealth of Nations\". His writing style is incompatible with the 2020s world we live in so you need to pause and process each long sentence he composes. Once you get over that hurdle you realize that the man did codify some wonderful ideas. One"
   },
   {
     "title": "Software manufacturing process",
@@ -157,7 +176,8 @@
     "filename": "2026/2026-01-14-software-manufacturing-process.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Software manufacturing process Coding used to be about syntax. Now it is about orchestration. Using agents has shifted the floor for human involvement. If you aren't acting as a Tech Lead, you are just a redundant relay for the LLM. The job has fundamentally changed in three ways: Management without"
   },
   {
     "title": "Your logic is not my logic",
@@ -165,7 +185,8 @@
     "filename": "2026/2026-01-15-yourlogicisnotmine copy.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Your logic is not my logic Today is 4 weeks since our son was born. The past 4 weeks have felt long, incredible, different from pre-newborn life, and tiring. We have had to make many shifts in our schedule and activities. More things need to be planned vs being spontaneous earlier (I don't like this"
   },
   {
     "title": "Baby monitors",
@@ -173,7 +194,8 @@
     "filename": "2026/2026-01-13-baby-monitors.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Baby monitors Most purchase decisions follow a pattern: they're driven by how well a product matches stated needs, its price, and how easy it is to get. But this framework breaks down fast. 1. Needs are non-exhaustive, not static, and not explicit. And they can be influenced by other people or exter"
   },
   {
     "title": "Less tools more use",
@@ -181,7 +203,8 @@
     "filename": "2026/2026-01-10-less-tools-more-use.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Less tools more use The history of humans is one where we continuosly get more and more leverage and choices with our time & energy which are two truly finite resources. Tools have been a major driver of leverage. People will often debate what is a tool/process/framework. That is a grammar debate an"
   },
   {
     "title": "Time",
@@ -189,7 +212,8 @@
     "filename": "2025/2025-12-30-time.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Time Is time absolute or relative? An hour is not the same for your brain, though it may be for the clock. An hour with a friend? Doing chores? Writing? Meeting at work? Traveling? Stuck in traffic? The first hour of a date? An hour in Paris? An hour in Paris with strangers? All of these are differe"
   },
   {
     "title": "Habit Retention",
@@ -197,7 +221,8 @@
     "filename": "2025/2025-11-28-habit-retention.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Habit Retention Writing after approximately 3 months. I forgot about writing for many days and never actually did it. It's a brutal reminder that habits have terrible retention curves unless there is an external stimulus or incentive, even when you are fully convinced and tell yourself that there ar"
   },
   {
     "title": "Providing Justification",
@@ -205,7 +230,8 @@
     "filename": "2025/2025-07-02-providing-justification.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Providing Justification I have begun internalizing that I don't need to give a reason for my thoughts or actions if I don't want to, and I don't owe anyone an explanation. Because this implies that I have the freedom to determine what is private to me and why, situations when an explanation or ratio"
   },
   {
     "title": "Spontaneous Days",
@@ -213,7 +239,8 @@
     "filename": "2025/2025-06-07-spontaneous-days.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Spontaneous Days June 6 (Friday) was a nice day! New shoes by Comet w/ 10% off in-store. Furniture store visits / black marble fronts. Nira Health Scammy but I found out about ultra low dose CT Scans & just leaf bean. Subko Craftery: Met a fun group and spoke to them(come initiated because I was rea"
   },
   {
     "title": "Colonies",
@@ -221,7 +248,8 @@
     "filename": "2025/2025-06-06-colonies.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Colonies Niccolo Machiavelli (author of \"The Prince\") is an advocate of using colonies to extend one's power as opposed to engaging in a full-fledged war to capture them. Why? a) Colonies (vs full-fledged war) don't completely affect (including destroy) the value of the target. And hence preserve th"
   },
   {
     "title": "What is a Calorie?",
@@ -229,7 +257,8 @@
     "filename": "2025/2025-05-31-what-is-a-calorie.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "What is a Calorie? We have become much more conscious of food labels and read the back of pack, focussing especially on one number: calories per serving. The calorie is actually a unit of energy. The energy in food is actually measured and reported in kilocalories ( what we mistakenly call \"calories"
   },
   {
     "title": "Prioritize Getting Sh*t Done",
@@ -237,7 +266,8 @@
     "filename": "2025/2025-05-30-prioritize-getting-sh-done.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Prioritize Getting Sh*t Done I finally started putting my daily writings online. It's been approximately two months of daily habits. I feel better knowing that I created something for the day. However, before the first word is put down, it's mostly bad. So now the goal is a simple three-step process"
   },
   {
     "title": "Binder Clips",
@@ -245,7 +275,8 @@
     "filename": "2025/2025-05-25-binder-clips.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Binder Clips One of the most well-designed everyday objects, the binder clip does one thing really well\u2014hold loose paper together. It's obvious how to use it. It features a beautifully simple spring mechanism, which means no maintenance and minimal chance of breakage. It can also be used to hold she"
   },
   {
     "title": "The World Progresses Because...",
@@ -253,7 +284,8 @@
     "filename": "2025/2025-05-24-world-progresses.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "The World Progresses Because... The world progresses because humans want more. We are evolutionarily wired to never be content with what we have. My guess is that this is because the human brain is always: Puts self preservation as the p0 goal, and there is never enough one can do to guarantee self"
   },
   {
     "title": "Gossip",
@@ -261,7 +293,8 @@
     "filename": "2025/2025-05-15-gossip.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Gossip Gossip\u2014whether narrating stories or opinions\u2014about other people is widespread and shared by approximately 100% of the world. It has perfect product-market fit. Why do we do it? It makes us feel better about ourselves It lets us play out how we would react in a particular situation, and establ"
   },
   {
     "title": "Fringe and Interesting Opinions",
@@ -269,7 +302,8 @@
     "filename": "2025/2025-05-14-fringe-and-interesting-opinions.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "Fringe and Interesting Opinions Fed up with the algorithm showing me the same predictable content across all popular media - especially digital. I am on the hunt for opinionated pieces and the opinionated people who write them. One potential answer: Break away from the algorithm! Set up direct acces"
   },
   {
     "title": "What writing improves",
@@ -277,6 +311,7 @@
     "filename": "2025/2025-05-01-what-writing-improves.md",
     "tag_name": "Reflection",
     "tag_key": "reflection",
-    "tag_color": "#27ae60"
+    "tag_color": "#27ae60",
+    "excerpt": "What writing improves The ability to write for the sake of it The ability to focus on 1 task at a time The ability to have a better conversation The ability to bullshit The ability to think about second order implications The ability to spread ideas asynchronously The ability to build a habit"
   }
 ]
