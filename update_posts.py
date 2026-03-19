@@ -24,6 +24,27 @@ def parse_front_matter(content):
     return meta
 
 
+def extract_excerpt(content, max_chars=300):
+    # Strip front matter
+    if content.startswith("---\n"):
+        end = content.find("\n---", 4)
+        if end != -1:
+            content = content[end + 4:]
+
+    # Remove markdown headings, links, images, inline code, bold/italic
+    content = re.sub(r"!\[.*?\]\(.*?\)", "", content)   # images
+    content = re.sub(r"\[([^\]]+)\]\(.*?\)", r"\1", content)  # links
+    content = re.sub(r"`[^`]*`", "", content)            # inline code
+    content = re.sub(r"#{1,6}\s*", "", content)          # headings
+    content = re.sub(r"[*_]{1,3}([^*_]+)[*_]{1,3}", r"\1", content)  # bold/italic
+    content = re.sub(r"^\s*[-*>|]+\s*", "", content, flags=re.MULTILINE)  # list/blockquote markers
+
+    # Collapse whitespace
+    content = " ".join(content.split())
+
+    return content[:max_chars].rstrip()
+
+
 def parse_date(date_str):
     try:
         return datetime.strptime(date_str, "%Y-%m-%d")
@@ -54,6 +75,7 @@ def main():
                     title = meta.get("title", filename)
                     date = meta.get("date", "Unknown")
                     manual_tag = meta.get("tag")
+                    excerpt = extract_excerpt(content)
 
                     tag_name = None
                     tag_key = None
@@ -75,7 +97,8 @@ def main():
                         "filename": rel_path,
                         "tag_name": tag_name,
                         "tag_key": tag_key,
-                        "tag_color": tag_color
+                        "tag_color": tag_color,
+                        "excerpt": excerpt
                     })
 
     # Sort by date descending
