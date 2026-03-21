@@ -120,6 +120,92 @@
             section.hidden = false;
         }
 
+        function formatTime(s) {
+            if (!isFinite(s) || isNaN(s)) return '--:--';
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60);
+            return `${m}:${sec.toString().padStart(2, '0')}`;
+        }
+
+        function createLegoPlayer(mp3Url, label) {
+            const BRICK_COUNT = 28;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'lego-audio-player';
+
+            const audio = document.createElement('audio');
+            audio.preload = 'metadata';
+            audio.src = mp3Url;
+            audio.style.display = 'none';
+
+            const controlsRow = document.createElement('div');
+            controlsRow.className = 'lego-controls-row';
+
+            const playBtn = document.createElement('button');
+            playBtn.className = 'lego-play-btn';
+            playBtn.setAttribute('aria-label', 'Play');
+            playBtn.innerHTML = '&#9654;';
+
+            const bricksRow = document.createElement('div');
+            bricksRow.className = 'lego-bricks-row';
+
+            const bricks = [];
+            for (let i = 0; i < BRICK_COUNT; i++) {
+                const brick = document.createElement('div');
+                brick.className = 'lego-brick';
+                brick.addEventListener('click', () => {
+                    if (audio.duration) audio.currentTime = (i / BRICK_COUNT) * audio.duration;
+                });
+                bricksRow.appendChild(brick);
+                bricks.push(brick);
+            }
+
+            const timeDisplay = document.createElement('span');
+            timeDisplay.className = 'lego-time';
+            timeDisplay.textContent = '--:--';
+
+            controlsRow.appendChild(playBtn);
+            controlsRow.appendChild(bricksRow);
+            controlsRow.appendChild(timeDisplay);
+
+            const labelEl = document.createElement('div');
+            labelEl.className = 'lego-audio-label';
+            labelEl.textContent = label;
+
+            playBtn.addEventListener('click', () => audio.paused ? audio.play() : audio.pause());
+            audio.addEventListener('play', () => {
+                playBtn.innerHTML = '&#9646;&#9646;';
+                playBtn.setAttribute('aria-label', 'Pause');
+            });
+            audio.addEventListener('pause', () => {
+                playBtn.innerHTML = '&#9654;';
+                playBtn.setAttribute('aria-label', 'Play');
+            });
+            audio.addEventListener('ended', () => {
+                playBtn.innerHTML = '&#9654;';
+                playBtn.setAttribute('aria-label', 'Play');
+            });
+
+            function updateBricks() {
+                const progress = audio.duration ? audio.currentTime / audio.duration : 0;
+                const playedCount = Math.floor(progress * BRICK_COUNT);
+                bricks.forEach((brick, i) =>
+                    brick.classList.toggle('lego-brick-played', i < playedCount)
+                );
+                timeDisplay.textContent =
+                    `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+            }
+
+            audio.addEventListener('timeupdate', updateBricks);
+            audio.addEventListener('loadedmetadata', updateBricks);
+
+            wrapper.appendChild(controlsRow);
+            wrapper.appendChild(labelEl);
+            wrapper.appendChild(audio);
+
+            return wrapper;
+        }
+
         async function loadPost() {
             const params = new URLSearchParams(window.location.search);
             const filename = params.get('post');
@@ -142,6 +228,7 @@
 
                 // Parse Frontmatter (simple render, stripping it out mostly for the display)
                 let markdownContent = text;
+                let postMeta = {};
 
                 // Simple frontmatter extractor
                 if (text.startsWith('---')) {
@@ -154,10 +241,9 @@
                         try {
                             // Removing --- for yaml parser
                             const yamlText = frontmatter.replace(/^---\n/, '').replace(/\n---$/, '');
-                            const meta = jsyaml.load(yamlText);
-                            if (meta.title) {
-                                document.title = meta.title;
-                                // Optionally inject title as H1 if not present in markdown
+                            postMeta = jsyaml.load(yamlText) || {};
+                            if (postMeta.title) {
+                                document.title = postMeta.title;
                             }
                         } catch (e) {
                             console.error('YAML parsing error', e);
@@ -197,6 +283,21 @@
                                 h1.parentNode.insertBefore(metaDiv, h1.nextSibling);
                             } else {
                                 contentEl.insertBefore(metaDiv, contentEl.firstChild);
+                            }
+
+                            // Inject audio player if a sibling audio file exists (.mp3, .m4a, .webm)
+                            const audioExts = ['.mp3', '.m4a', '.webm'];
+                            for (const ext of audioExts) {
+                                const audioUrl = `posts/${filename.replace(/\.md$/, ext)}`;
+                                try {
+                                    const audioCheck = await fetch(audioUrl, { method: 'HEAD' });
+                                    if (audioCheck.ok) {
+                                        const audioLabel = postMeta.audio_label || 'Listen to this post';
+                                        const audioWrapper = createLegoPlayer(audioUrl, audioLabel);
+                                        metaDiv.parentNode.insertBefore(audioWrapper, metaDiv.nextSibling);
+                                        break;
+                                    }
+                                } catch (e) { /* try next format */ }
                             }
                         }
 
