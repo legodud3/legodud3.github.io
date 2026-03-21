@@ -5,6 +5,10 @@
     --border-color: #333;
     --hover-bg: #2a2a2a;
     --code-bg: #111;
+    --lego-played: #FFD700;
+    --lego-played-stud: #D4A000;
+    --lego-unplayed: #2d2d2d;
+    --lego-unplayed-stud: #404040;
 }
 
 :root.light-mode {
@@ -14,6 +18,8 @@
     --border-color: #e0e0e0;
     --hover-bg: #f5f5f5;
     --code-bg: #f5f5f5;
+    --lego-unplayed: #d0d0d0;
+    --lego-unplayed-stud: #b8b8b8;
 }
 
 body {
@@ -578,35 +584,77 @@ a:hover {
     line-height: 1.5;
 }
 
-/* Audio Player */
-.post-audio-player {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 12px 0;
-    padding: 10px 14px;
+/* Lego Audio Player */
+.lego-audio-player {
+    margin: 16px 0;
+    padding: 12px 14px 8px;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 6px;
     background-color: var(--hover-bg);
 }
-
-.post-audio-player audio {
+.lego-controls-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding-top: 8px;
+}
+.lego-play-btn {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 3px;
+    background: var(--lego-played);
+    color: #000;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s;
+}
+.lego-play-btn:hover { opacity: 0.8; }
+.lego-bricks-row {
+    display: flex;
     flex: 1;
-    min-width: 0;
-    height: 36px;
-    accent-color: var(--link-color);
+    gap: 2px;
+    overflow: visible;
 }
-
-.post-audio-label {
-    font-size: 0.82rem;
+.lego-brick {
+    flex: 1;
+    height: 14px;
+    position: relative;
+    background: var(--lego-unplayed);
+    border-radius: 1px;
+    cursor: pointer;
+    transition: background 0.08s;
+}
+.lego-brick::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55%;
+    height: 6px;
+    background: var(--lego-unplayed-stud);
+    border-radius: 2px 2px 0 0;
+}
+.lego-brick.lego-brick-played { background: var(--lego-played); }
+.lego-brick.lego-brick-played::before { background: var(--lego-played-stud); }
+.lego-time {
+    flex-shrink: 0;
+    font-size: 0.75rem;
     color: #888;
+    font-variant-numeric: tabular-nums;
     white-space: nowrap;
+    line-height: 14px;
 }
-
+.lego-audio-label {
+    font-size: 0.78rem;
+    color: #888;
+    margin-top: 6px;
+}
 @media (max-width: 600px) {
-    .post-audio-player {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .post-audio-player audio { width: 100%; }
+    .lego-time { display: none; }
 }
