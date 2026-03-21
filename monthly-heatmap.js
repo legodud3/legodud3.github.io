@@ -21,9 +21,12 @@
         return 1;
     }
 
+    let cellIndex = 0;
     function createCell(year, monthIndex, count, level) {
         const cell = document.createElement('div');
         cell.className = `heatmap-cell heatmap-level-${level}`;
+        cell.style.animationDelay = `${cellIndex * 0.03}s`;
+        cellIndex++;
         const label = `${year}-${String(monthIndex + 1).padStart(2, '0')} (${MONTH_NAMES[monthIndex]} ${year}): ${count} post${count === 1 ? '' : 's'}`;
         cell.title = label;
         cell.setAttribute('role', 'img');
@@ -32,6 +35,7 @@
     }
 
     function renderHeatmap(root, posts) {
+        cellIndex = 0;
         const counts = new Map();
         let maxCount = 0;
 

@@ -2,5 +2,17 @@
   "reflection": {
     "name": "Reflection",
     "color": "#27ae60"
+  },
+  "tech": {
+    "name": "Tech",
+    "color": "#e67e22"
+  },
+  "life": {
+    "name": "Life",
+    "color": "#2980b9"
+  },
+  "learning": {
+    "name": "Learning",
+    "color": "#8e44ad"
   }
 }

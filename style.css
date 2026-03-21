@@ -1,3 +1,6 @@
+/* Google Fonts — Caveat (handwriting) + Source Serif 4 (body) */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap');
+
 /* Custom handwriting font — place handwriting.woff2 + handwriting.woff in /fonts/ */
 @font-face {
     font-family: 'Handwriting';
@@ -12,6 +15,8 @@
     --bg-color: #1a1a1a;
     --text-color: #e0e0e0;
     --link-color: #4da6ff;
+    --accent-color: #FFD700;
+    --accent-color-dark: #D4A000;
     --border-color: #333;
     --hover-bg: #2a2a2a;
     --code-bg: #111;
@@ -19,13 +24,16 @@
     --lego-played-stud: #D4A000;
     --lego-unplayed: #2d2d2d;
     --lego-unplayed-stud: #404040;
-    --font-handwriting: 'Handwriting', 'Comic Sans MS', cursive;
+    --font-handwriting: 'Handwriting', 'Caveat', cursive;
+    --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 }
 
 :root.light-mode {
     --bg-color: #ffffff;
     --text-color: #1a1a1a;
     --link-color: #0066cc;
+    --accent-color: #DAA520;
+    --accent-color-dark: #B8860B;
     --border-color: #e0e0e0;
     --hover-bg: #f5f5f5;
     --code-bg: #f5f5f5;
@@ -36,8 +44,8 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
+    font-family: var(--font-body);
+    line-height: 1.75;
     max-width: 1240px;
     margin: 0 auto;
     padding: 20px;
@@ -58,7 +66,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 16px;
-    background: linear-gradient(180deg, rgba(77, 166, 255, 0.06) 0%, rgba(77, 166, 255, 0.02) 100%);
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 215, 0, 0.01) 100%);
 }
 
 .main-panel {
@@ -82,11 +90,13 @@ body {
     gap: 10px;
     font-weight: 600;
     margin-bottom: 14px;
+    color: var(--text-color);
 }
 
 .rail-brand span {
     font-size: 1.5rem;
     line-height: 1.1;
+    color: var(--accent-color);
 }
 
 .rail-nav {
@@ -112,8 +122,9 @@ body {
 }
 
 .rail-nav a.active {
-    border-color: var(--link-color);
-    background-color: rgba(77, 166, 255, 0.18);
+    border-color: var(--accent-color);
+    background-color: rgba(255, 215, 0, 0.15);
+    color: var(--accent-color);
 }
 
 .rail-widget {
@@ -235,32 +246,109 @@ a:hover {
 
 .search-container {
     margin-bottom: 30px;
+    position: relative;
+}
+
+.search-container::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
 }
 
 #searchInput {
     width: 100%;
-    padding: 10px;
+    padding: 12px 14px 12px 40px;
     background-color: var(--bg-color);
     border: 1px solid var(--border-color);
     color: var(--text-color);
     font-size: 16px;
-    border-radius: 4px;
+    font-family: var(--font-body);
+    border-radius: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
 }
 
 .post-list {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .post-item {
-    padding: 15px 0;
-    border-bottom: 1px solid var(--border-color);
+    padding: 16px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.post-item:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--accent-color-dark);
+}
+
+.post-item .post-number {
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: #555;
+    margin-right: 14px;
+    font-family: var(--font-handwriting);
+    line-height: 1;
+    min-width: 28px;
+}
+
+.post-item .post-excerpt {
+    width: 100%;
+    font-size: 0.85rem;
+    color: #888;
+    line-height: 1.5;
+    margin-top: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.post-item.post-item-featured {
+    border-color: var(--accent-color-dark);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.04) 0%, transparent 60%);
+}
+
+.post-item.post-item-featured .post-title-link {
+    font-size: 1.15em;
+}
+
+.post-item.post-item-featured .post-excerpt {
+    -webkit-line-clamp: 3;
+}
+
+.post-title-link {
+    font-family: var(--font-handwriting);
+    font-size: 1.05em;
 }
 
 .post-date {
     color: #888;
     margin-left: 10px;
-    font-size: 0.9em;
+    font-size: 0.85em;
 }
 
 .pagination {
@@ -360,9 +448,9 @@ a:hover {
 
 .surprise-btn {
     padding: 8px 16px;
-    border: 1px solid var(--link-color);
+    border: 1px solid var(--accent-color);
     background-color: var(--bg-color);
-    color: var(--link-color);
+    color: var(--accent-color);
     cursor: pointer;
     border-radius: 15px;
     font-size: 0.9em;
@@ -372,8 +460,8 @@ a:hover {
 }
 
 .surprise-btn:hover {
-    background-color: var(--link-color);
-    color: var(--bg-color);
+    background-color: var(--accent-color);
+    color: #1a1a1a;
     transform: scale(1.05);
 }
 
@@ -400,6 +488,51 @@ a:hover {
 /* Tag color styles */
 .post-tag.tag-reflection {
     color: #27ae60;
+}
+
+.post-tag.tag-tech {
+    color: #e67e22;
+}
+
+.post-tag.tag-life {
+    color: #2980b9;
+}
+
+.post-tag.tag-learning {
+    color: #8e44ad;
+}
+
+.tag-filter-btn.tag-tech {
+    color: #e67e22;
+    border-color: #e67e22;
+}
+
+.tag-filter-btn.tag-tech.active {
+    background-color: #e67e22;
+    color: #fff;
+    border-color: #e67e22;
+}
+
+.tag-filter-btn.tag-life {
+    color: #2980b9;
+    border-color: #2980b9;
+}
+
+.tag-filter-btn.tag-life.active {
+    background-color: #2980b9;
+    color: #fff;
+    border-color: #2980b9;
+}
+
+.tag-filter-btn.tag-learning {
+    color: #8e44ad;
+    border-color: #8e44ad;
+}
+
+.tag-filter-btn.tag-learning.active {
+    background-color: #8e44ad;
+    color: #fff;
+    border-color: #8e44ad;
 }
 
 /* Navigation link styles */
@@ -496,31 +629,62 @@ a:hover {
     outline-offset: 2px;
 }
 
-/* Table Styles */
-.projects-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 20px 10px;
+/* Project Cards */
+.project-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
     margin: 20px 0;
 }
 
-.projects-table th,
-.projects-table td {
-    text-align: left;
-    padding: 12px;
+.project-card {
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    border-left: 4px solid var(--border-color);
+    transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
-.projects-table th {
-    font-weight: 600;
-    border-bottom: 2px solid var(--border-color);
+.project-card:hover {
+    background-color: var(--hover-bg);
+    transform: translateY(-2px);
 }
 
-.projects-table td {
-    border-bottom: 1px solid var(--border-color);
+.project-card-accent-1 { border-left-color: var(--accent-color); }
+.project-card-accent-2 { border-left-color: #2980b9; }
+.project-card-accent-3 { border-left-color: #27ae60; }
+
+.project-card-icon {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
 }
 
-.projects-table tr:last-child td {
-    border-bottom: none;
+.project-card-title {
+    font-family: var(--font-handwriting);
+    font-size: 1.2rem;
+    margin: 0 0 8px 0;
+}
+
+.project-card-desc {
+    font-size: 0.9rem;
+    color: #aaa;
+    line-height: 1.5;
+    margin: 0 0 12px 0;
+}
+
+:root.light-mode .project-card-desc {
+    color: #666;
+}
+
+.project-card-links {
+    font-size: 0.85rem;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.project-card-sep {
+    color: #555;
 }
 
 @media (max-width: 940px) {
@@ -530,7 +694,7 @@ a:hover {
 
     .app-shell {
         flex-direction: column;
-        gap: 18px;
+        gap: 12px;
     }
 
     .left-rail {
@@ -538,10 +702,42 @@ a:hover {
         min-width: 0;
         max-width: none;
         position: static;
+        padding: 12px 14px;
+        border-radius: 10px;
+    }
+
+    .rail-brand {
+        margin-bottom: 10px;
+    }
+
+    .rail-brand span {
+        font-size: 1.25rem;
+    }
+
+    .site-logo {
+        height: 36px;
+    }
+
+    .rail-nav {
+        margin-bottom: 0;
+    }
+
+    .rail-widget {
+        display: none;
     }
 
     .main-panel {
         width: 100%;
+    }
+
+    .post-item .post-number {
+        font-size: 1.2rem;
+        min-width: 22px;
+        margin-right: 10px;
+    }
+
+    .project-cards-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -698,4 +894,61 @@ a:hover {
 
 ol li::marker {
     font-family: var(--font-handwriting);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes brickBuild {
+    from {
+        opacity: 0;
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.3s ease forwards;
+}
+
+.fade-in {
+    animation: fadeIn 0.25s ease forwards;
+}
+
+.post-item {
+    opacity: 0;
+    animation: fadeInUp 0.3s ease forwards;
+}
+
+.heatmap-cell {
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.lego-brick {
+    opacity: 0;
+    animation: brickBuild 0.15s ease forwards;
+}
+
+.markdown-body {
+    animation: fadeIn 0.2s ease forwards;
 }
