@@ -577,3 +577,36 @@ a:hover {
     color: #888;
     line-height: 1.5;
 }
+
+/* Audio Player */
+.post-audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--hover-bg);
+}
+
+.post-audio-player audio {
+    flex: 1;
+    min-width: 0;
+    height: 36px;
+    accent-color: var(--link-color);
+}
+
+.post-audio-label {
+    font-size: 0.82rem;
+    color: #888;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .post-audio-player {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .post-audio-player audio { width: 100%; }
+}

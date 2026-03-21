@@ -198,6 +198,23 @@
                             } else {
                                 contentEl.insertBefore(metaDiv, contentEl.firstChild);
                             }
+
+                            // Inject audio player if a sibling .mp3 exists for this post
+                            const mp3Url = `posts/${filename.replace(/\.md$/, '.mp3')}`;
+                            try {
+                                const audioCheck = await fetch(mp3Url, { method: 'HEAD' });
+                                if (audioCheck.ok) {
+                                    const audioWrapper = document.createElement('div');
+                                    audioWrapper.className = 'post-audio-player';
+                                    audioWrapper.innerHTML = `
+                                        <audio controls preload="none">
+                                            <source src="${mp3Url}" type="audio/mpeg">
+                                        </audio>
+                                        <span class="post-audio-label">Listen to this post</span>
+                                    `;
+                                    metaDiv.parentNode.insertBefore(audioWrapper, metaDiv.nextSibling);
+                                }
+                            } catch (e) { /* silently skip if audio file is unavailable */ }
                         }
 
                         const newerPost = posts[currentIndex - 1];
