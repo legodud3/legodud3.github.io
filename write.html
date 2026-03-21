@@ -326,6 +326,19 @@
             font-weight: normal;
             margin-left: 4px;
         }
+
+        .audio-edit-banner {
+            padding: 14px 16px;
+            background-color: rgba(77, 166, 255, 0.1);
+            border: 1px solid var(--link-color);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .audio-edit-banner a {
+            color: var(--link-color);
+        }
     </style>
 </head>
 <body>
@@ -393,51 +406,55 @@
             <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
         </div>
 
+        <div id="audioEditBanner" class="audio-edit-banner" style="display:none"></div>
+
         <form id="postForm" onsubmit="return false;">
-            <div class="form-group">
-                <label for="postTitle">Title:</label>
-                <input type="text" id="postTitle" required placeholder="My Awesome Post">
-            </div>
-
-            <div class="form-group">
-                <label for="postDate">Date:</label>
-                <input type="date" id="postDate" required>
-            </div>
-
-            <div class="form-group">
-                <label for="postTag">Tag:</label>
-                <select id="postTag" required>
-                    <option value="">Select a tag...</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="postBodyEditor">Content:</label>
-                <div class="editor-toolbar" aria-label="Formatting toolbar">
-                    <button type="button" class="editor-btn" title="Bulleted List" aria-label="Bulleted List" onclick="applyEditorFormat('insertUnorderedList')">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="5" cy="6" r="1.8"></circle>
-                            <circle cx="5" cy="12" r="1.8"></circle>
-                            <circle cx="5" cy="18" r="1.8"></circle>
-                            <rect x="9" y="4.8" width="10" height="2.4" rx="1.2"></rect>
-                            <rect x="9" y="10.8" width="10" height="2.4" rx="1.2"></rect>
-                            <rect x="9" y="16.8" width="10" height="2.4" rx="1.2"></rect>
-                        </svg>
-                    </button>
-                    <button type="button" class="editor-btn" title="Heading" aria-label="Heading" onclick="toggleHeading()"><strong>H</strong></button>
-                    <button type="button" class="editor-btn" title="Italic" aria-label="Italic" onclick="applyEditorFormat('italic')"><em>I</em></button>
-                    <button type="button" class="editor-btn" title="Bold" aria-label="Bold" onclick="applyEditorFormat('bold')"><strong>B</strong></button>
-                    <button type="button" class="editor-btn" title="Underline" aria-label="Underline" onclick="applyEditorFormat('underline')"><span style="text-decoration: underline;">U</span></button>
+            <div id="composeFields">
+                <div class="form-group">
+                    <label for="postTitle">Title:</label>
+                    <input type="text" id="postTitle" required placeholder="My Awesome Post">
                 </div>
-                <div
-                    id="postBodyEditor"
-                    class="rich-editor"
-                    contenteditable="true"
-                    data-placeholder="Write your post..."
-                    role="textbox"
-                    aria-multiline="true"></div>
-                <div class="char-count">
-                    <span id="charCount">0</span> characters
+
+                <div class="form-group">
+                    <label for="postDate">Date:</label>
+                    <input type="date" id="postDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="postTag">Tag:</label>
+                    <select id="postTag" required>
+                        <option value="">Select a tag...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="postBodyEditor">Content:</label>
+                    <div class="editor-toolbar" aria-label="Formatting toolbar">
+                        <button type="button" class="editor-btn" title="Bulleted List" aria-label="Bulleted List" onclick="applyEditorFormat('insertUnorderedList')">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="5" cy="6" r="1.8"></circle>
+                                <circle cx="5" cy="12" r="1.8"></circle>
+                                <circle cx="5" cy="18" r="1.8"></circle>
+                                <rect x="9" y="4.8" width="10" height="2.4" rx="1.2"></rect>
+                                <rect x="9" y="10.8" width="10" height="2.4" rx="1.2"></rect>
+                                <rect x="9" y="16.8" width="10" height="2.4" rx="1.2"></rect>
+                            </svg>
+                        </button>
+                        <button type="button" class="editor-btn" title="Heading" aria-label="Heading" onclick="toggleHeading()"><strong>H</strong></button>
+                        <button type="button" class="editor-btn" title="Italic" aria-label="Italic" onclick="applyEditorFormat('italic')"><em>I</em></button>
+                        <button type="button" class="editor-btn" title="Bold" aria-label="Bold" onclick="applyEditorFormat('bold')"><strong>B</strong></button>
+                        <button type="button" class="editor-btn" title="Underline" aria-label="Underline" onclick="applyEditorFormat('underline')"><span style="text-decoration: underline;">U</span></button>
+                    </div>
+                    <div
+                        id="postBodyEditor"
+                        class="rich-editor"
+                        contenteditable="true"
+                        data-placeholder="Write your post..."
+                        role="textbox"
+                        aria-multiline="true"></div>
+                    <div class="char-count">
+                        <span id="charCount">0</span> characters
+                    </div>
                 </div>
             </div>
 
@@ -459,7 +476,7 @@
                 </div>
             </div>
 
-            <div class="button-group">
+            <div class="button-group" id="composeActions">
                 <button type="button" class="btn btn-primary" onclick="publishPost()">Publish Post</button>
                 <button type="button" class="btn btn-secondary" onclick="previewPost()">Preview</button>
                 <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
@@ -498,6 +515,11 @@
             username: null,
             repo: null
         };
+
+        // Audio-edit mode state (activated via ?audio_for=<filename>)
+        let audioEditMode = false;
+        let audioEditFilename = null;
+        let audioEditTitle = null;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -600,6 +622,31 @@
             document.getElementById('loginContainer').classList.add('hidden');
             document.getElementById('editorContainer').classList.remove('hidden');
             document.getElementById('loggedInUser').textContent = authConfig.username;
+            const params = new URLSearchParams(window.location.search);
+            const audioFor = params.get('audio_for');
+            if (audioFor) enterAudioEditMode(audioFor);
+        }
+
+        async function enterAudioEditMode(filename) {
+            audioEditMode = true;
+            audioEditFilename = filename;
+            document.querySelector('.page-header h1').textContent = 'Add Audio to Post';
+            document.title = 'Add Audio - Chinmay Deo';
+            document.getElementById('composeFields').style.display = 'none';
+            document.getElementById('composeActions').style.display = 'none';
+
+            let title = filename;
+            try {
+                const resp = await fetch('posts.json?v=' + Date.now());
+                const posts = await resp.json();
+                const post = posts.find(p => p.filename === filename);
+                if (post) title = post.title;
+            } catch (e) { /* use filename as fallback */ }
+            audioEditTitle = title;
+
+            const banner = document.getElementById('audioEditBanner');
+            banner.innerHTML = `Adding audio to: <strong>${escapeHtml(title)}</strong><a href="view.html?post=${encodeURIComponent(filename)}" style="margin-left:12px; font-size:0.9em">← Back to post</a>`;
+            banner.style.display = 'block';
         }
 
         async function login() {
@@ -1055,18 +1102,24 @@ tag: ${safeTag}
                 return;
             }
 
-            const title = document.getElementById('postTitle').value.trim();
-            const date = document.getElementById('postDate').value;
-
-            if (!title || !date) {
-                showStatus('Please fill in the post title and date before uploading audio.', 'error');
-                return;
+            let path, displayTitle;
+            if (audioEditMode) {
+                const ext = getMimeExtension(recordedMimeType);
+                path = `posts/${audioEditFilename.replace(/\.md$/, ext)}`;
+                displayTitle = audioEditTitle || audioEditFilename;
+            } else {
+                const title = document.getElementById('postTitle').value.trim();
+                const date = document.getElementById('postDate').value;
+                if (!title || !date) {
+                    showStatus('Please fill in the post title and date before uploading audio.', 'error');
+                    return;
+                }
+                const slug = generateSlug(title);
+                const year = date.split('-')[0];
+                const ext = getMimeExtension(recordedMimeType);
+                path = `posts/${year}/${date}-${slug}${ext}`;
+                displayTitle = title;
             }
-
-            const slug = generateSlug(title);
-            const year = date.split('-')[0];
-            const ext = getMimeExtension(recordedMimeType);
-            const path = `posts/${year}/${date}-${slug}${ext}`;
 
             showStatus('Uploading audio...', 'info');
 
@@ -1081,7 +1134,7 @@ tag: ${safeTag}
                     { headers: { 'Authorization': `token ${authConfig.token}`, 'Accept': 'application/vnd.github.v3+json' } }
                 );
 
-                const body = { message: `Add audio for: ${title}`, content: base64, branch: 'main' };
+                const body = { message: `Add audio for: ${displayTitle}`, content: base64, branch: 'main' };
                 if (checkResponse.ok) {
                     body.sha = (await checkResponse.json()).sha;
                 }
@@ -1106,9 +1159,69 @@ tag: ${safeTag}
 
                 showStatus(`✓ Audio uploaded as ${path}`, 'success');
                 uploadBtn.textContent = '✓ Uploaded';
+
+                // In audio-edit mode, patch the frontmatter with audio_label if provided
+                if (audioEditMode) {
+                    const label = document.getElementById('audioLabel').value.trim();
+                    if (label) await patchFrontmatterAudioLabel(audioEditFilename, label);
+                }
             } catch (err) {
                 showStatus(`Audio upload failed: ${err.message}`, 'error');
                 uploadBtn.disabled = false;
+            }
+        }
+
+        async function patchFrontmatterAudioLabel(filename, label) {
+            const path = `posts/${filename}`;
+            const { token, username, repo } = authConfig;
+            try {
+                const resp = await fetch(
+                    `${GITHUB_API}/repos/${username}/${repo}/contents/${path}`,
+                    { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } }
+                );
+                if (!resp.ok) return;
+                const file = await resp.json();
+
+                // Decode UTF-8 content from base64
+                const raw = atob(file.content.replace(/\n/g, ''));
+                const content = decodeURIComponent(Array.from(raw).map(
+                    c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')
+                ).join(''));
+
+                if (!content.startsWith('---')) return;
+                const end = content.indexOf('---', 3);
+                if (end === -1) return;
+
+                let fm = content.substring(3, end);
+                const body = content.substring(end + 3);
+
+                // Replace existing audio_label or append before closing ---
+                fm = fm.replace(/\naudio_label:.*$/m, '');
+                fm = fm.trimEnd() + `\naudio_label: "${label.replace(/"/g, '\\"')}"`;
+
+                const updated = `---${fm}\n---${body}`;
+                const encodedContent = btoa(encodeURIComponent(updated).replace(/%([0-9A-F]{2})/g,
+                    (match, p1) => String.fromCharCode('0x' + p1)));
+
+                await fetch(
+                    `${GITHUB_API}/repos/${username}/${repo}/contents/${path}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: `Add audio label for: ${audioEditTitle}`,
+                            content: encodedContent,
+                            sha: file.sha,
+                            branch: 'main'
+                        })
+                    }
+                );
+            } catch (e) {
+                console.warn('Could not patch audio_label frontmatter:', e);
             }
         }
 

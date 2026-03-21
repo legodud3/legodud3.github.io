@@ -1,3 +1,13 @@
+/* Custom handwriting font — place handwriting.woff2 + handwriting.woff in /fonts/ */
+@font-face {
+    font-family: 'Handwriting';
+    src: url('fonts/handwriting.woff2') format('woff2'),
+         url('fonts/handwriting.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --bg-color: #1a1a1a;
     --text-color: #e0e0e0;
@@ -9,6 +19,7 @@
     --lego-played-stud: #D4A000;
     --lego-unplayed: #2d2d2d;
     --lego-unplayed-stud: #404040;
+    --font-handwriting: 'Handwriting', 'Comic Sans MS', cursive;
 }
 
 :root.light-mode {
@@ -657,4 +668,34 @@ a:hover {
 }
 @media (max-width: 600px) {
     .lego-time { display: none; }
+}
+
+/* Add audio link — shown on posts with no audio */
+.add-audio-link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: #888;
+    text-decoration: none;
+}
+
+.add-audio-link:hover {
+    color: var(--link-color);
+}
+
+/* Handwriting font — applied once font file is placed in /fonts/ */
+.rail-brand span,
+.rail-nav a,
+.back-link,
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.post-title,
+.related-post-title,
+.page-header h1 {
+    font-family: var(--font-handwriting);
+}
+
+ol li::marker {
+    font-family: var(--font-handwriting);
 }
