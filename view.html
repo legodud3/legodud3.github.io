@@ -153,6 +153,7 @@
             for (let i = 0; i < BRICK_COUNT; i++) {
                 const brick = document.createElement('div');
                 brick.className = 'lego-brick';
+                brick.style.animationDelay = `${i * 0.015}s`;
                 brick.addEventListener('click', () => {
                     if (audio.duration) audio.currentTime = (i / BRICK_COUNT) * audio.duration;
                 });

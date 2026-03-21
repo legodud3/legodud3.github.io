@@ -202,19 +202,25 @@
             } else {
                 displayedPosts.forEach((post, index) => {
                     const li = document.createElement('li');
-                    li.className = 'post-item';
+                    const globalIndex = start + index;
+                    const isFeatured = globalIndex === 0 && currentPage === 1 && !activeTag && !document.getElementById('searchInput').value;
+                    li.className = 'post-item' + (isFeatured ? ' post-item-featured' : '');
 
                     let tagHtml = '';
                     if (post.tag_name && post.tag_key) {
                         tagHtml = `<span class="post-tag tag-${post.tag_key}">[${post.tag_name}]</span>`;
                     }
 
+                    const excerpt = post.excerpt ? post.excerpt.substring(0, 160).trimEnd() + '…' : '';
+
                     li.innerHTML = `
-                        ${start + index + 1}.
-                        <a href="view.html?post=${encodeURIComponent(post.filename)}">${post.title}</a>
+                        <span class="post-number">${globalIndex + 1}</span>
+                        <a href="view.html?post=${encodeURIComponent(post.filename)}" class="post-title-link">${post.title}</a>
                         <span class="post-date">[${post.date}]</span>
                         ${tagHtml}
+                        ${excerpt ? `<div class="post-excerpt">${excerpt}</div>` : ''}
                     `;
+                    li.style.animationDelay = `${index * 0.04}s`;
                     listEl.appendChild(li);
                 });
             }
