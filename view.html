@@ -285,16 +285,20 @@
                                 contentEl.insertBefore(metaDiv, contentEl.firstChild);
                             }
 
-                            // Inject audio player if a sibling .mp3 exists for this post
-                            const mp3Url = `posts/${filename.replace(/\.md$/, '.mp3')}`;
-                            try {
-                                const audioCheck = await fetch(mp3Url, { method: 'HEAD' });
-                                if (audioCheck.ok) {
-                                    const audioLabel = postMeta.audio_label || 'Listen to this post';
-                                    const audioWrapper = createLegoPlayer(mp3Url, audioLabel);
-                                    metaDiv.parentNode.insertBefore(audioWrapper, metaDiv.nextSibling);
-                                }
-                            } catch (e) { /* silently skip if audio file is unavailable */ }
+                            // Inject audio player if a sibling audio file exists (.mp3, .m4a, .webm)
+                            const audioExts = ['.mp3', '.m4a', '.webm'];
+                            for (const ext of audioExts) {
+                                const audioUrl = `posts/${filename.replace(/\.md$/, ext)}`;
+                                try {
+                                    const audioCheck = await fetch(audioUrl, { method: 'HEAD' });
+                                    if (audioCheck.ok) {
+                                        const audioLabel = postMeta.audio_label || 'Listen to this post';
+                                        const audioWrapper = createLegoPlayer(audioUrl, audioLabel);
+                                        metaDiv.parentNode.insertBefore(audioWrapper, metaDiv.nextSibling);
+                                        break;
+                                    }
+                                } catch (e) { /* try next format */ }
+                            }
                         }
 
                         const newerPost = posts[currentIndex - 1];
