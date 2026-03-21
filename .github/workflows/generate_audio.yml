@@ -75,7 +75,11 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add 'posts/**/*.mp3'
-          git commit -m "Generate audio for updated posts" || echo "No audio changes to commit"
-          git pull --rebase origin main
-          git push
+          find posts -name "*.mp3" -print0 | xargs -0 --no-run-if-empty git add
+          if git diff --cached --quiet; then
+            echo "No audio changes to commit"
+          else
+            git commit -m "Generate audio for updated posts"
+            git pull --rebase origin main
+            git push
+          fi
