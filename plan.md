@@ -57,6 +57,13 @@
 - Convert to WebP with PNG fallback using `<picture>` element, or just serve a compressed PNG
 - Target: under 30KB
 
+## 9. Documentation Update
+**Files:** `README.md` and any other relevant docs
+- Update or create README with project overview, tech stack, and setup instructions
+- Document the design system (color palette, typography, components)
+- Document CI/CD workflows (post indexing, audio generation)
+- Note any new dependencies (Google Fonts, etc.) added during redesign
+
 ---
 
-**Execution order:** 1 → 2 → 3 → 5 → 4 → 6 → 7 → 8 (typography and color first since they affect everything else; logo last since it's independent)
+**Execution order:** 1 → 2 → 3 → 5 → 4 → 6 → 7 → 8 → 9 (typography and color first since they affect everything else; logo last since it's independent; docs at the very end to capture all changes)
