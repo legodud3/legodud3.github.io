@@ -286,6 +286,7 @@
                             }
 
                             // Inject audio player if a sibling audio file exists (.mp3, .m4a, .webm)
+                            let hasAudio = false;
                             const audioExts = ['.mp3', '.m4a', '.webm'];
                             for (const ext of audioExts) {
                                 const audioUrl = `posts/${filename.replace(/\.md$/, ext)}`;
@@ -295,9 +296,17 @@
                                         const audioLabel = postMeta.audio_label || 'Listen to this post';
                                         const audioWrapper = createLegoPlayer(audioUrl, audioLabel);
                                         metaDiv.parentNode.insertBefore(audioWrapper, metaDiv.nextSibling);
+                                        hasAudio = true;
                                         break;
                                     }
                                 } catch (e) { /* try next format */ }
+                            }
+                            if (!hasAudio) {
+                                const addAudioLink = document.createElement('a');
+                                addAudioLink.href = `write.html?audio_for=${encodeURIComponent(filename)}`;
+                                addAudioLink.className = 'add-audio-link';
+                                addAudioLink.textContent = '+ Add audio';
+                                metaDiv.parentNode.insertBefore(addAudioLink, metaDiv.nextSibling);
                             }
                         }
 
