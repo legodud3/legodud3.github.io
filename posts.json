@@ -1,5 +1,14 @@
 [
   {
+    "title": "To learn something well, start small and follow historical evolution",
+    "date": "2026-04-24",
+    "filename": "2026/2026-04-24-to-learn-something-well-start-small-and-follow-historical-evolution.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "I have been heads down the past ~3 weeks understanding agents. I played around with them, I listened to podcasts, explored github repos. H/T to smol-agents (huggingface) and pi (mario zechner). I am on board with their phiosophy of building minimal coding agents and letting the models do the work, e"
+  },
+  {
     "title": "Selling the dream is the most significant driver of market cap",
     "date": "2026-04-10",
     "filename": "2026/2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.md",
