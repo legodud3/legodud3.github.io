@@ -1,5 +1,14 @@
 [
   {
+    "title": "Prepare for my analysis of the most awaited IPOs of our generation - SpaceX, OpenAI, Anthropic!",
+    "date": "2026-05-22",
+    "filename": "2026/2026-05-22-prepare-for-my-analysis-of-the-most-awaited-ipos-of-our-generation-spacex-openai-anthropic.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "Word on the street is that these are dropping soon. I plan to read the S-1s and form my own conclusions + with AI. Will share them here."
+  },
+  {
     "title": "To learn something well, start small and follow historical evolution",
     "date": "2026-04-24",
     "filename": "2026/2026-04-24-to-learn-something-well-start-small-and-follow-historical-evolution.md",
@@ -180,15 +189,6 @@
     "excerpt": "I love working out in nearly empty gyms, which I define as gyms that are operating at <20% but >0% capacity. I find I can lift more weights and get done quicker. I'm sure both of these are physically possible even if the gym is at 60% capacity. But I like it when I see a nearly empty gym. And so in"
   },
   {
-    "title": "AI for building software (2)",
-    "date": "2026-01-23",
-    "filename": "2026/2026-01-23-ai-for-building-software-backlog.md",
-    "tag_name": "Reflection",
-    "tag_key": "reflection",
-    "tag_color": "#27ae60",
-    "excerpt": "I said in my previous post that I want to spend the next few weeks exploring how AI is changing distribution. Before I jump into that, I want to note down my AI for building software backlog that I plan to come back to: 1. Agent skills 2. Building custom agents 3. MCP 4. Connecting backends 5. Const"
-  },
-  {
     "title": "AI for building software (3)",
     "date": "2026-01-23",
     "filename": "2026/2026-01-23-ai-for-building-software-3.md",
@@ -196,6 +196,15 @@
     "tag_key": "reflection",
     "tag_color": "#27ae60",
     "excerpt": "PS: I am sharing a rearticulation of point 6 from my firstAI for building software post. As I re-read it, I realized I was not clear. Original: So who will be these external vendors who manufacture software? Many are throwing their hat in the ring: Cloud provider incumbents like Microsoft (Github Co"
+  },
+  {
+    "title": "AI for building software (2)",
+    "date": "2026-01-23",
+    "filename": "2026/2026-01-23-ai-for-building-software-backlog.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "I said in my previous post that I want to spend the next few weeks exploring how AI is changing distribution. Before I jump into that, I want to note down my AI for building software backlog that I plan to come back to: 1. Agent skills 2. Building custom agents 3. MCP 4. Connecting backends 5. Const"
   },
   {
     "title": "AI for building software",
