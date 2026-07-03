@@ -1,5 +1,14 @@
 [
   {
+    "title": "Thai food & beverages",
+    "date": "2026-07-03",
+    "filename": "2026/2026-07-03-thai-food-beverages.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "First, an admission, I have not written a lot over the last 1 month. I can't make many excuses but for what it's worth we took Samay on his first international trip to Thailand in mid June (excellent!). I have had an aversion to Thai food because I had never had Thai food in Thailand. Also, I am all"
+  },
+  {
     "title": "Thoughts on the book \"Project Hail Mary",
     "date": "2026-05-29",
     "filename": "2026/2026-05-29-thoughts-on-the-book-project-hail-mary.md",
@@ -63,15 +72,6 @@
     "excerpt": "Today is my 36th birthday. Happy birthday to me! Physically, I am (near) the best shape of my life, though there is a long way to go. Mentally, I feel like I have just turned 30, so a long way to go there too. Samay is here too, to celebrate, which I love. Every morning he wakes up and gives me a wi"
   },
   {
-    "title": "Why I won't use AI to write first drafts",
-    "date": "2026-03-21",
-    "filename": "2026/2026-03-21-why-i-won-t-use-ai-to-write-first-drafts.md",
-    "tag_name": "Reflection",
-    "tag_key": "reflection",
-    "tag_color": "#27ae60",
-    "excerpt": "Unless you have been living under a rock, you know that AI can write better than you (the average person). AI can express ideas in a more simple, clear, and compelling fashion...or any fashion you want, really. Question is: Should you let it? It is useful to start by thinking about ghost writers. AI"
-  },
-  {
     "title": "Strategy formulation should be partly democratic",
     "date": "2026-03-21",
     "filename": "2026/2026-03-21-strategy-formulation-should-be-partly-democratic.md",
@@ -79,6 +79,15 @@
     "tag_key": "reflection",
     "tag_color": "#27ae60",
     "excerpt": "I recently interacted with a few senior folks (think top 10% of the org). Our company had announced a transformative decision - one that will change the trajectory of the company - a couple of months ago. (Execution will tell if trajectory change is minimal or meaningful). What struck me was:- How c"
+  },
+  {
+    "title": "Why I won't use AI to write first drafts",
+    "date": "2026-03-21",
+    "filename": "2026/2026-03-21-why-i-won-t-use-ai-to-write-first-drafts.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "Unless you have been living under a rock, you know that AI can write better than you (the average person). AI can express ideas in a more simple, clear, and compelling fashion...or any fashion you want, really. Question is: Should you let it? It is useful to start by thinking about ghost writers. AI"
   },
   {
     "title": "First trip with Samay!",
@@ -207,15 +216,6 @@
     "excerpt": "I love working out in nearly empty gyms, which I define as gyms that are operating at <20% but >0% capacity. I find I can lift more weights and get done quicker. I'm sure both of these are physically possible even if the gym is at 60% capacity. But I like it when I see a nearly empty gym. And so in"
   },
   {
-    "title": "AI for building software (3)",
-    "date": "2026-01-23",
-    "filename": "2026/2026-01-23-ai-for-building-software-3.md",
-    "tag_name": "Reflection",
-    "tag_key": "reflection",
-    "tag_color": "#27ae60",
-    "excerpt": "PS: I am sharing a rearticulation of point 6 from my firstAI for building software post. As I re-read it, I realized I was not clear. Original: So who will be these external vendors who manufacture software? Many are throwing their hat in the ring: Cloud provider incumbents like Microsoft (Github Co"
-  },
-  {
     "title": "AI for building software (2)",
     "date": "2026-01-23",
     "filename": "2026/2026-01-23-ai-for-building-software-backlog.md",
@@ -223,6 +223,15 @@
     "tag_key": "reflection",
     "tag_color": "#27ae60",
     "excerpt": "I said in my previous post that I want to spend the next few weeks exploring how AI is changing distribution. Before I jump into that, I want to note down my AI for building software backlog that I plan to come back to: 1. Agent skills 2. Building custom agents 3. MCP 4. Connecting backends 5. Const"
+  },
+  {
+    "title": "AI for building software (3)",
+    "date": "2026-01-23",
+    "filename": "2026/2026-01-23-ai-for-building-software-3.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "PS: I am sharing a rearticulation of point 6 from my firstAI for building software post. As I re-read it, I realized I was not clear. Original: So who will be these external vendors who manufacture software? Many are throwing their hat in the ring: Cloud provider incumbents like Microsoft (Github Co"
   },
   {
     "title": "AI for building software",
