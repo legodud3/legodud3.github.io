@@ -26,4 +26,5 @@ jobs:
           git config --global user.email 'action@github.com'
           git add posts.json
           git commit -m "Update posts index" || echo "No changes to commit"
+          git pull --rebase origin main
           git push
