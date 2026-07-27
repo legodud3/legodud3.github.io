@@ -521,20 +521,32 @@
         let audioEditFilename = null;
         let audioEditTitle = null;
 
+// Edit-post mode state (activated via ?edit=<filename>)
+        let editPostMode = false;
+        let editPostFilename = null;
+        let editPostPath = null;
+
         // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             // Set today's date as default
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('postDate').value = today;
 
             // Load tags
-            loadTags();
+            await loadTags();
 
             // Check if already logged in
             checkAuth();
 
             // Character counter
             document.getElementById('postBodyEditor').addEventListener('input', updateCharCount);
+
+            // Check for edit parameter
+            const params = new URLSearchParams(window.location.search);
+            const editParam = params.get('edit');
+            if (editParam) {
+                await loadPostForEdit(editParam);
+            }
         });
 
         function updateCharCount() {
@@ -589,6 +601,99 @@
                 option.value = 'Reflection';
                 option.textContent = 'Reflection';
                 select.appendChild(option);
+            }
+        }
+
+        async function loadPostForEdit(filename) {
+            try {
+                // Set edit mode
+                editPostMode = true;
+                editPostFilename = filename;
+                
+                // Construct the path (posts/YYYY/filename.md or similar)
+                // We'll determine the full path by fetching posts.json and finding the file
+                const response = await fetch('posts.json?v=' + Date.now());
+                if (!response.ok) throw new Error('Failed to load posts index');
+                
+                const posts = await response.json();
+                const post = posts.find(p => p.filename === filename);
+                
+                if (!post) {
+                    showStatus('Post not found: ' + filename, 'error');
+                    return;
+                }
+                
+                editPostPath = post.filename;
+                
+                // Fetch the actual markdown content
+                const contentResponse = await fetch('posts/' + encodeURIComponent(editPostPath));
+                if (!contentResponse.ok) throw new Error('Failed to load post content');
+                
+                const content = await contentResponse.text();
+                
+                // Parse frontmatter
+                let title = filename; // fallback
+                let date = new Date().toISOString().split('T')[0]; // fallback to today
+                let tag = ''; // fallback
+                let body = content;
+                
+                if (content.startsWith('---\n')) {
+                    const end = content.indexOf('\n---', 3);
+                    if (end !== -1) {
+                        const frontmatter = content.substring(3, end);
+                        body = content.substring(end + 3);
+                        
+                        // Parse YAML frontmatter (simple version)
+                        const lines = frontmatter.split('\n');
+                        for (const line of lines) {
+                            const match = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+                            if (match) {
+                                const key = match[1].trim().toLowerCase();
+                                let value = match[2].trim().replace(/^["']|['"]$/g, ''); // Remove quotes
+                                
+                                if (key === 'title') {
+                                    title = value;
+                                } else if (key === 'date') {
+                                    date = value;
+                                } else if (key === 'tag') {
+                                    tag = value;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Populate the form
+                document.getElementById('postTitle').value = title;
+                document.getElementById('postDate').value = date;
+                if (tag) {
+                    document.getElementById('postTag').value = tag;
+                }
+                
+                // Set the editor content
+                document.getElementById('postBodyEditor').innerHTML = body;
+                updateCharCount();
+                
+                // Update UI to indicate edit mode
+                document.querySelector('.page-header h1').textContent = 'Edit Post';
+                document.title = 'Edit Post - Chinmay Deo';
+                
+                // Show edit banner
+                const editBanner = document.createElement('div');
+                editBanner.id = 'editPostBanner';
+                editBanner.className = 'audio-edit-banner';
+                editBanner.innerHTML = `Editing: <strong>${escapeHtml(title)}</strong> <a href="view.html?post=${encodeURIComponent(editPostPath)}" style="margin-left:12px; font-size:0.9em">← View post</a>`;
+                document.getElementById('editorContainer').insertBefore(editBanner, document.getElementById('postForm'));
+                
+                // Update publish button text
+                const publishBtn = document.querySelector('.btn-primary[onclick="publishPost()"]');
+                if (publishBtn) {
+                    publishBtn.textContent = 'Update Post';
+                }
+                
+            } catch (error) {
+                console.error('Error loading post for edit:', error);
+                showStatus('Failed to load post for editing: ' + error.message, 'error');
             }
         }
 
@@ -821,7 +926,7 @@
             return raw;
         }
 
-        async function publishPost() {
+async function publishPost() {
             const title = document.getElementById('postTitle').value.trim();
             const date = document.getElementById('postDate').value;
             const tag = document.getElementById('postTag').value;
@@ -832,10 +937,20 @@
                 return;
             }
 
-            const slug = generateSlug(title);
-            const year = date.split('-')[0];
-            const filename = `${date}-${slug}.md`;
-            const path = `posts/${year}/${filename}`;
+            let path;
+            let isEdit = false;
+
+            if (editPostMode && editPostPath) {
+                // Editing existing post
+                path = `posts/${editPostPath}`;
+                isEdit = true;
+            } else {
+                // Creating new post
+                const slug = generateSlug(title);
+                const year = date.split('-')[0];
+                const filename = `${date}-${slug}.md`;
+                path = `posts/${year}/${filename}`;
+            }
 
             // Generate full content with front matter
             const frontMatter = generateFrontMatter(title, date, tag);
@@ -845,10 +960,10 @@
             const encodedContent = btoa(encodeURIComponent(fullContent).replace(/%([0-9A-F]{2})/g,
                 (match, p1) => String.fromCharCode('0x' + p1)));
 
-            showStatus('Publishing post...', 'info');
+            showStatus('Saving post...', 'info');
 
             try {
-                // Check if file already exists
+                // Check if file already exists (for new posts) or get existing file info (for edits)
                 const checkResponse = await fetch(
                     `${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`,
                     {
@@ -859,13 +974,21 @@
                     }
                 );
 
+                let existingFile = null;
                 if (checkResponse.ok) {
-                    if (!confirm('A post with this title and date already exists. Do you want to overwrite it?')) {
-                        showStatus('Publish cancelled.', 'info');
-                        return;
+                    // For new posts, ask if they want to overwrite
+                    // For edits, we always want to update
+                    if (!isEdit) {
+                        if (!confirm('A post with this title and date already exists. Do you want to overwrite it?')) {
+                            showStatus('Publish cancelled.', 'info');
+                            return;
+                        }
                     }
-                    const existingFile = await checkResponse.json();
-                    
+                    existingFile = await checkResponse.json();
+                }
+                // If file doesn't exist (404), we'll create it - this is fine for both new and edit modes
+
+                if (existingFile) {
                     // Update existing file
                     const updateResponse = await fetch(
                         `${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`,
@@ -889,10 +1012,10 @@
                         const errorData = await updateResponse.json();
                         throw new Error(errorData.message || 'Failed to update post');
                     }
-                    
+
                     const updateData = await updateResponse.json();
                     showStatus(
-                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="clearForm()" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">Write another post</button>`,
+                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="window.location.href='view.html?post=${encodeURIComponent(path)}'" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">View Post</button>`,
                         'success'
                     );
                 } else {
@@ -918,7 +1041,7 @@
                         const errorData = await createResponse.json();
                         throw new Error(errorData.message || 'Failed to create post');
                     }
-                    
+
                     const createData = await createResponse.json();
                     showStatus(
                         `✓ Post published successfully! GitHub Actions will update the site shortly. <a href="${createData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="clearForm()" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">Write another post</button>`,
@@ -969,6 +1092,27 @@ tag: ${safeTag}
         }
 
         function clearForm() {
+            // Reset edit mode
+            editPostMode = false;
+            editPostFilename = null;
+            editPostPath = null;
+            
+            // Remove edit banner if it exists
+            const editBanner = document.getElementById('editPostBanner');
+            if (editBanner) {
+                editBanner.remove();
+            }
+            
+            // Reset publish button text
+            const publishBtn = document.querySelector('.btn-primary[onclick="publishPost()"]');
+            if (publishBtn) {
+                publishBtn.textContent = 'Publish Post';
+            }
+            
+            // Reset header text
+            document.querySelector('.page-header h1').textContent = 'Write New Post';
+            document.title = 'Write New Post - Chinmay Deo';
+
             document.getElementById('postTitle').value = '';
             document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('postTag').value = '';
