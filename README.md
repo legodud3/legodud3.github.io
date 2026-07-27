@@ -24,9 +24,7 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 ## Design System
 
 ### Typography
-- **Headings & Navigation**: Handwriting font (custom woff2, with [Caveat](https://fonts.google.com/specimen/Caveat) as fallback)
-- **Body text**: [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) — a serif font for comfortable long-form reading
-- **Code**: Monaco / Menlo / Ubuntu Mono (system monospace stack)
+- **All text**: [Roboto](https://fonts.google.com/specimen/Roboto) — a clean, readable sans-serif
 
 ### Color Palette
 | Token | Dark Mode | Light Mode | Usage |
@@ -115,4 +113,4 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
 - [marked.js](https://marked.js.org/) — Client-side Markdown rendering (via CDN)
 - [DOMPurify](https://github.com/cure53/DOMPurify) — XSS sanitization (via CDN)
 - [js-yaml](https://github.com/nodeca/js-yaml) — YAML frontmatter parsing (via CDN)
-- [Google Fonts](https://fonts.google.com/) — Caveat (handwriting) + Source Serif 4 (body)
+- [Google Fonts](https://fonts.google.com/) — Roboto (body, headings)

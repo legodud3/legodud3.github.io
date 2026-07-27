@@ -1,15 +1,5 @@
-/* Google Fonts — Caveat (handwriting) + Source Serif 4 (body) */
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap');
-
-/* Custom handwriting font — place handwriting.woff2 + handwriting.woff in /fonts/ */
-@font-face {
-    font-family: 'Handwriting';
-    src: url('fonts/handwriting.woff2') format('woff2'),
-         url('fonts/handwriting.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+/* Google Fonts — Roboto (clean, readable sans-serif) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap');
 
 :root {
     --bg-color: #1a1a1a;
@@ -24,8 +14,8 @@
     --lego-played-stud: #D4A000;
     --lego-unplayed: #2d2d2d;
     --lego-unplayed-stud: #404040;
-    --font-handwriting: 'Handwriting', 'Caveat', cursive;
-    --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --font-handwriting: 'Roboto', sans-serif;
+    --font-body: 'Roboto', sans-serif;
 }
 
 :root.light-mode {
@@ -879,7 +869,7 @@ a:hover {
     color: var(--link-color);
 }
 
-/* Handwriting font — applied once font file is placed in /fonts/ */
+/* Roboto font — applied via --font-handwriting variable */
 .rail-brand span,
 .rail-nav a,
 .back-link,
