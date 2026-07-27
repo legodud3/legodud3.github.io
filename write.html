@@ -892,7 +892,7 @@
                     
                     const updateData = await updateResponse.json();
                     showStatus(
-                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a>`,
+                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="clearForm()" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">Write another post</button>`,
                         'success'
                     );
                 } else {
@@ -921,17 +921,10 @@
                     
                     const createData = await createResponse.json();
                     showStatus(
-                        `✓ Post published successfully! GitHub Actions will update the site shortly. <a href="${createData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a>`,
+                        `✓ Post published successfully! GitHub Actions will update the site shortly. <a href="${createData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="clearForm()" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">Write another post</button>`,
                         'success'
                     );
                 }
-
-                // Clear form after successful publish
-                setTimeout(() => {
-                    if (confirm('Post published! Do you want to write another post?')) {
-                        clearForm();
-                    }
-                }, 2000);
 
             } catch (error) {
                 showStatus(`Failed to publish: ${error.message}`, 'error');
