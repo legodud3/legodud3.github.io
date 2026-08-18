@@ -14,7 +14,7 @@ I said in my [previous post](https://legodud3.github.io/view.html?post=2026%2F20
 
 4. Connecting backends
 
-5. Constraining model output with fine tuning and other techniques
+5. Constraining model output with fine-tuning and other techniques
 
 6. Multi-agent collaboration in series and parallel
 

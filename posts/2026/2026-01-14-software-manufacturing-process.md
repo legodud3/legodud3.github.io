@@ -10,9 +10,9 @@ Coding used to be about syntax. Now it is about orchestration. Using agents has 
 
 The job has fundamentally changed in three ways:
 
-* Management without the "HR Garbage": Spend time managing a team? Agents don't need 1:1s, career coaching, or motivation. They need precise instructions and brutal code reviews. "Payroll" is an API bill. "HR issues" are model drift and hallucinations.
+* Management without the "HR Garbage": Do you spend time managing a team? Agents don't need 1:1s, career coaching, or motivation. They need precise instructions and brutal code reviews. "Payroll" is an API bill. "HR issues" are model drift and hallucinations.
 
-* Hyper-specialization at Scale: Don't need generalist juniors who are "okay" at everything. Deploy hundreds of specialized agents for specific tasks like SQL optimization or CSS. They work 24/7 without burnout.
+* Hyper-specialization at Scale: You don't need generalist juniors who are "okay" at everything. Deploy hundreds of specialized agents for specific tasks like SQL optimization or CSS. They work 24/7 without burnout.
 
 * The Human Bottleneck: Production is now infinite. The new restraining barrier is your own context window. The limit of the team is simply how much code I can personally verify and align with the organizational "why." My value isn't in writing lines. It is in keeping the fleet from flying into a mountain.
 

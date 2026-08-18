@@ -10,12 +10,12 @@ I recommend having a newborn just for the moments of reflection it affords you. 
 
 *STEP 1*: We should accept that most of our problems are not unique. They have been solved. They have solutions. So copy shamelessly.
 
-*STEP 2*: Understand the problem and the solution. Ask 'why this worked' a lot.
+*STEP 2*: Understand the problem and the solution. Ask "Why did this work?" a lot.
 
 *STEP 3*: Classify the solution as either a framework or a manual. A framework is a set of principles to solve a problem. A manual is a precise list of steps to solve a problem. It would be awesome if all problems had manuals, but they don't. That said, more of your problems have a manual than you think.
 
-*STEP 4*: IF manual, copy the steps blindly and trust the process. I repeat, TRUST THE PROCESS. There will be error bars (e.g. manual says 5 minutes but it takes 3 or 10), but the manual should have a high success rate (>70%). 
+*STEP 4*: IF it is a manual, copy the steps blindly and trust the process. I repeat, TRUST THE PROCESS. There will be error bars (e.g., the manual says five minutes, but it takes three or 10), but the manual should have a high success rate (>70%).
 
-*STEP 5*: IF framework, translate it into 2-3 manual options for yourself. Pick one of the options, do STEP 4. 
+*STEP 5*: IF it is a framework, translate it into 2–3 manual options for yourself. Pick one of the options and do STEP 4.
 
-*STEP 6*: Take the credit. If steps 1-5 don't work then please find someone to blame.
+*STEP 6*: Take the credit. If steps 1–5 don't work, then please find someone to blame.

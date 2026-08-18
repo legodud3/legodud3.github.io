@@ -4,4 +4,4 @@ date: 2026-05-22
 tag: Reflection
 ---
 
-Word on the street is that these are dropping soon. I plan to read the S-1s and form my own conclusions + with AI. Will share them here.
+Word on the street is that these are dropping soon. I plan to read the S-1s and form my own conclusions with help from AI. I will share them here.
