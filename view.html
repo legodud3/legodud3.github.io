@@ -170,6 +170,15 @@
                 const renderedHtml = marked.parse(markdownContent);
                 contentEl.innerHTML = DOMPurify.sanitize(renderedHtml);
 
+                // Front matter titles are metadata, not part of the Markdown body.
+                // Render the title explicitly so every post has a clear heading.
+                if (postMeta.title) {
+                    const titleEl = contentEl.querySelector('h1') || document.createElement('h1');
+                    titleEl.className = 'post-reader-title';
+                    titleEl.textContent = postMeta.title;
+                    if (!titleEl.parentNode) contentEl.insertBefore(titleEl, contentEl.firstChild);
+                }
+
                 // Load Navigation and Meta
                 try {
                     const postsResponse = await fetch('posts.json?v=' + new Date().getTime());

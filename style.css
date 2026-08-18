@@ -346,6 +346,13 @@ a:hover {
     padding-top: 20px;
 }
 
+.post-reader-title {
+    margin: 0 0 12px;
+    color: var(--text-color);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+}
+
 .markdown-body pre {
     background-color: var(--code-bg);
     padding: 15px;
