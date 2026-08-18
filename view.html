@@ -20,7 +20,6 @@
                 <a href="index.html">🏠 Home</a>
                 <a href="about.html">👤 About me</a>
                 <a href="side-projects.html">🚀 Side projects</a>
-                <a href="write.html">✍️ Write</a>
             </nav>
             <section class="rail-widget">
                 <h2 class="rail-section-title">Writing Consistency</h2>
@@ -50,6 +49,7 @@
 
             <footer class="site-footer">
                 <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
+                <a class="writing-desk-link" href="write.html">Open the writing desk</a>
                 <div class="theme-toggle-container">
                     <span class="theme-toggle-label">Dark</span>
                     <label class="theme-toggle-switch">
@@ -118,93 +118,6 @@
                 grid.appendChild(card);
             });
             section.hidden = false;
-        }
-
-        function formatTime(s) {
-            if (!isFinite(s) || isNaN(s)) return '--:--';
-            const m = Math.floor(s / 60);
-            const sec = Math.floor(s % 60);
-            return `${m}:${sec.toString().padStart(2, '0')}`;
-        }
-
-        function createLegoPlayer(mp3Url, label) {
-            const BRICK_COUNT = 28;
-
-            const wrapper = document.createElement('div');
-            wrapper.className = 'lego-audio-player';
-
-            const audio = document.createElement('audio');
-            audio.preload = 'metadata';
-            audio.src = mp3Url;
-            audio.style.display = 'none';
-
-            const controlsRow = document.createElement('div');
-            controlsRow.className = 'lego-controls-row';
-
-            const playBtn = document.createElement('button');
-            playBtn.className = 'lego-play-btn';
-            playBtn.setAttribute('aria-label', 'Play');
-            playBtn.innerHTML = '&#9654;';
-
-            const bricksRow = document.createElement('div');
-            bricksRow.className = 'lego-bricks-row';
-
-            const bricks = [];
-            for (let i = 0; i < BRICK_COUNT; i++) {
-                const brick = document.createElement('div');
-                brick.className = 'lego-brick';
-                brick.style.animationDelay = `${i * 0.015}s`;
-                brick.addEventListener('click', () => {
-                    if (audio.duration) audio.currentTime = (i / BRICK_COUNT) * audio.duration;
-                });
-                bricksRow.appendChild(brick);
-                bricks.push(brick);
-            }
-
-            const timeDisplay = document.createElement('span');
-            timeDisplay.className = 'lego-time';
-            timeDisplay.textContent = '--:--';
-
-            controlsRow.appendChild(playBtn);
-            controlsRow.appendChild(bricksRow);
-            controlsRow.appendChild(timeDisplay);
-
-            const labelEl = document.createElement('div');
-            labelEl.className = 'lego-audio-label';
-            labelEl.textContent = label;
-
-            playBtn.addEventListener('click', () => audio.paused ? audio.play() : audio.pause());
-            audio.addEventListener('play', () => {
-                playBtn.innerHTML = '&#9646;&#9646;';
-                playBtn.setAttribute('aria-label', 'Pause');
-            });
-            audio.addEventListener('pause', () => {
-                playBtn.innerHTML = '&#9654;';
-                playBtn.setAttribute('aria-label', 'Play');
-            });
-            audio.addEventListener('ended', () => {
-                playBtn.innerHTML = '&#9654;';
-                playBtn.setAttribute('aria-label', 'Play');
-            });
-
-            function updateBricks() {
-                const progress = audio.duration ? audio.currentTime / audio.duration : 0;
-                const playedCount = Math.floor(progress * BRICK_COUNT);
-                bricks.forEach((brick, i) =>
-                    brick.classList.toggle('lego-brick-played', i < playedCount)
-                );
-                timeDisplay.textContent =
-                    `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-            }
-
-            audio.addEventListener('timeupdate', updateBricks);
-            audio.addEventListener('loadedmetadata', updateBricks);
-
-            wrapper.appendChild(controlsRow);
-            wrapper.appendChild(labelEl);
-            wrapper.appendChild(audio);
-
-            return wrapper;
         }
 
         async function loadPost() {
@@ -286,29 +199,6 @@
                                 contentEl.insertBefore(metaDiv, contentEl.firstChild);
                             }
 
-                            // Inject audio player if a sibling audio file exists (.mp3, .m4a, .webm)
-                            let hasAudio = false;
-                            const audioExts = ['.mp3', '.m4a', '.webm'];
-                            for (const ext of audioExts) {
-                                const audioUrl = `posts/${filename.replace(/\.md$/, ext)}`;
-                                try {
-                                    const audioCheck = await fetch(audioUrl, { method: 'HEAD' });
-                                    if (audioCheck.ok) {
-                                        const audioLabel = postMeta.audio_label || 'Listen to this post';
-                                        const audioWrapper = createLegoPlayer(audioUrl, audioLabel);
-                                        metaDiv.parentNode.insertBefore(audioWrapper, metaDiv.nextSibling);
-                                        hasAudio = true;
-                                        break;
-                                    }
-                                } catch (e) { /* try next format */ }
-                            }
-                            if (!hasAudio) {
-                                const addAudioLink = document.createElement('a');
-                                addAudioLink.href = `write.html?audio_for=${encodeURIComponent(filename)}`;
-                                addAudioLink.className = 'add-audio-link';
-                                addAudioLink.textContent = '+ Add audio';
-                                metaDiv.parentNode.insertBefore(addAudioLink, metaDiv.nextSibling);
-                            }
                         }
 
                         const newerPost = posts[currentIndex - 1];

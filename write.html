@@ -8,9 +8,28 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
     <style>
+        .writing-workspace {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .writing-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 28px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .writing-topbar .rail-brand {
+            margin: 0;
+        }
+
         .login-container, .editor-container {
             max-width: 800px;
-            margin: 40px auto;
+            margin: 28px auto;
         }
 
         .login-container.hidden, .editor-container.hidden {
@@ -52,18 +71,52 @@
 
         .editor-toolbar {
             display: flex;
-            gap: 8px;
+            align-items: center;
+            gap: 6px;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--hover-bg);
+        }
+
+        .editor-toolbar select {
+            height: 36px;
+            padding: 0 28px 0 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font: inherit;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 24px;
+            margin: 0 2px;
+            background: var(--border-color);
         }
 
         .editor-btn {
             border: 1px solid var(--border-color);
             background-color: var(--bg-color);
             color: var(--text-color);
-            border-radius: 4px;
-            width: 38px;
-            height: 38px;
+            border-radius: 5px;
+            min-width: 36px;
+            height: 36px;
             padding: 0;
             font-size: 18px;
             cursor: pointer;
@@ -74,7 +127,13 @@
         }
 
         .editor-btn:hover {
-            background-color: var(--hover-bg);
+            border-color: var(--link-color);
+        }
+
+        .editor-btn[aria-pressed="true"] {
+            border-color: var(--accent-color);
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--accent-color);
         }
 
         .editor-btn:focus-visible {
@@ -90,10 +149,10 @@
         }
 
         .rich-editor {
-            min-height: 400px;
+            min-height: 460px;
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 12px;
+            border-radius: 8px;
+            padding: 18px;
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
@@ -213,11 +272,21 @@
         }
 
         .login-info {
-            background-color: rgba(77, 166, 255, 0.1);
-            border: 1px solid var(--link-color);
-            padding: 15px;
-            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            padding: 12px 14px;
+            border-radius: 8px;
             margin-bottom: 20px;
+        }
+
+        .login-info summary {
+            cursor: pointer;
+            color: var(--link-color);
+            font-weight: 500;
+        }
+
+        .login-info ol {
+            margin-bottom: 0;
+            padding-left: 22px;
         }
 
         .login-info p {
@@ -296,38 +365,7 @@
             margin-top: 5px;
         }
 
-        .recording-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .recording-timer {
-            font-size: 0.9rem;
-            color: #e74c3c;
-            font-variant-numeric: tabular-nums;
-            font-weight: 500;
-        }
-
-        .recording-playback {
-            margin-top: 12px;
-        }
-
-        .recording-playback audio {
-            width: 100%;
-            margin-bottom: 8px;
-            accent-color: var(--link-color);
-        }
-
-        .section-label {
-            font-size: 0.8rem;
-            color: #888;
-            font-weight: normal;
-            margin-left: 4px;
-        }
-
-        .audio-edit-banner {
+        .edit-banner {
             padding: 14px 16px;
             background-color: rgba(77, 166, 255, 0.1);
             border: 1px solid var(--link-color);
@@ -336,65 +374,55 @@
             font-size: 0.95rem;
         }
 
-        .audio-edit-banner a {
+        .edit-banner a {
             color: var(--link-color);
+        }
+
+        @media (max-width: 600px) {
+            .writing-topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .button-group {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .toolbar-divider {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="app-shell">
-    <aside class="left-rail">
+    <main class="writing-workspace">
+    <div class="writing-topbar">
         <a href="index.html" class="rail-brand">
             <img src="legohat_logo.png" alt="Logo" class="site-logo">
             <span>Chinmay Deo</span>
         </a>
-        <nav class="rail-nav" aria-label="Primary">
-            <a href="index.html">🏠 Home</a>
-            <a href="about.html">👤 About me</a>
-            <a href="side-projects.html">🚀 Side projects</a>
-            <a href="write.html" class="active">✍️ Write</a>
-        </nav>
-        <section class="rail-widget">
-            <h2 class="rail-section-title">Writing Consistency</h2>
-            <div class="monthly-heatmap-root" aria-live="polite"></div>
-            <p class="rail-hat-tip">Hat tip to <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> for the original contribution graph inspiration.</p>
-        </section>
-    </aside>
-
-    <main class="main-panel">
+        <a href="index.html" class="back-link">← Back to writing</a>
+    </div>
     <header class="page-header">
         <h1>Write New Post</h1>
     </header>
 
     <div id="loginContainer" class="login-container">
-        <h2>GitHub Authentication Required</h2>
-        <div class="login-info">
-            <p><strong>Why do I need a Personal Access Token?</strong></p>
-            <p>This editor uses the GitHub API to create posts directly in your repository. A Personal Access Token (PAT) allows the editor to authenticate with GitHub on your behalf.</p>
-            <p><strong>How to create a PAT:</strong></p>
-            <p>1. Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)</p>
-            <p>2. Click "Generate new token (classic)"</p>
-            <p>3. Give it a name (e.g., "Blog Editor")</p>
-            <p>4. Select scope: <strong>repo</strong> (Full control of private repositories)</p>
-            <p>5. Click "Generate token" and copy the token</p>
-            <p><strong>Security:</strong> Your token is kept in session storage and never sent to any server except GitHub's API.</p>
-        </div>
+        <h2>Unlock the writing desk</h2>
+        <p>Enter a GitHub token to publish directly to <strong>legodud3/legodud3.github.io</strong>. The token stays in this browser tab and is sent only to GitHub.</p>
+        <details class="login-info">
+            <summary>How to create a repository-scoped token</summary>
+            <ol>
+                <li>Open GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens.</li>
+                <li>Create a token that can access only <strong>legodud3.github.io</strong>.</li>
+                <li>Grant repository <strong>Contents: Read and write</strong> permission.</li>
+                <li>Copy the token and paste it below.</li>
+            </ol>
+        </details>
         <div class="form-group">
-            <label for="githubToken">GitHub Personal Access Token:</label>
-            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
-        </div>
-        <div class="form-group">
-            <label for="githubUsername">GitHub Username:</label>
-            <input type="text" id="githubUsername" placeholder="legodud3">
-        </div>
-        <div class="form-group">
-            <label for="githubRepo">Repository Name:</label>
-            <input type="text" id="githubRepo" placeholder="legodud3.github.io">
-        </div>
-        <div class="form-group">
-            <label>
-                <input type="checkbox" id="rememberRepo"> Remember username and repository on this device
-            </label>
+            <label for="githubToken">GitHub token</label>
+            <input type="password" id="githubToken" placeholder="github_pat_…" autocomplete="off">
         </div>
         <button class="btn btn-primary" onclick="login()">Login & Continue</button>
         <div id="loginStatus" class="status-message"></div>
@@ -406,10 +434,8 @@
             <button class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
         </div>
 
-        <div id="audioEditBanner" class="audio-edit-banner" style="display:none"></div>
-
         <form id="postForm" onsubmit="return false;">
-            <div id="composeFields">
+            <div>
                 <div class="form-group">
                     <label for="postTitle">Title:</label>
                     <input type="text" id="postTitle" required placeholder="My Awesome Post">
@@ -430,20 +456,26 @@
                 <div class="form-group">
                     <label for="postBodyEditor">Content:</label>
                     <div class="editor-toolbar" aria-label="Formatting toolbar">
-                        <button type="button" class="editor-btn" title="Bulleted List" aria-label="Bulleted List" onclick="applyEditorFormat('insertUnorderedList')">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="5" cy="6" r="1.8"></circle>
-                                <circle cx="5" cy="12" r="1.8"></circle>
-                                <circle cx="5" cy="18" r="1.8"></circle>
-                                <rect x="9" y="4.8" width="10" height="2.4" rx="1.2"></rect>
-                                <rect x="9" y="10.8" width="10" height="2.4" rx="1.2"></rect>
-                                <rect x="9" y="16.8" width="10" height="2.4" rx="1.2"></rect>
-                            </svg>
-                        </button>
-                        <button type="button" class="editor-btn" title="Heading" aria-label="Heading" onclick="toggleHeading()"><strong>H</strong></button>
-                        <button type="button" class="editor-btn" title="Italic" aria-label="Italic" onclick="applyEditorFormat('italic')"><em>I</em></button>
-                        <button type="button" class="editor-btn" title="Bold" aria-label="Bold" onclick="applyEditorFormat('bold')"><strong>B</strong></button>
-                        <button type="button" class="editor-btn" title="Underline" aria-label="Underline" onclick="applyEditorFormat('underline')"><span style="text-decoration: underline;">U</span></button>
+                        <button type="button" class="editor-btn" title="Undo (Ctrl+Z)" aria-label="Undo" onclick="applyEditorFormat('undo')">↶</button>
+                        <button type="button" class="editor-btn" title="Redo (Ctrl+Y)" aria-label="Redo" onclick="applyEditorFormat('redo')">↷</button>
+                        <span class="toolbar-divider" aria-hidden="true"></span>
+                        <label class="sr-only" for="blockFormat">Text style</label>
+                        <select id="blockFormat" title="Text style" aria-label="Text style" onchange="applyBlockFormat(this.value)">
+                            <option value="p">Paragraph</option>
+                            <option value="h2">Heading 2</option>
+                            <option value="h3">Heading 3</option>
+                        </select>
+                        <span class="toolbar-divider" aria-hidden="true"></span>
+                        <button type="button" class="editor-btn format-toggle" data-command="bold" title="Bold (Ctrl+B)" aria-label="Bold" aria-pressed="false" onclick="applyEditorFormat('bold')"><strong>B</strong></button>
+                        <button type="button" class="editor-btn format-toggle" data-command="italic" title="Italic (Ctrl+I)" aria-label="Italic" aria-pressed="false" onclick="applyEditorFormat('italic')"><em>I</em></button>
+                        <button type="button" class="editor-btn format-toggle" data-command="underline" title="Underline (Ctrl+U)" aria-label="Underline" aria-pressed="false" onclick="applyEditorFormat('underline')"><span style="text-decoration: underline;">U</span></button>
+                        <button type="button" class="editor-btn format-toggle" data-command="strikeThrough" title="Strikethrough" aria-label="Strikethrough" aria-pressed="false" onclick="applyEditorFormat('strikeThrough')"><s>S</s></button>
+                        <span class="toolbar-divider" aria-hidden="true"></span>
+                        <button type="button" class="editor-btn format-toggle" data-command="insertUnorderedList" title="Bulleted list" aria-label="Bulleted list" aria-pressed="false" onclick="applyEditorFormat('insertUnorderedList')">•≡</button>
+                        <button type="button" class="editor-btn format-toggle" data-command="insertOrderedList" title="Numbered list" aria-label="Numbered list" aria-pressed="false" onclick="applyEditorFormat('insertOrderedList')">1.</button>
+                        <button type="button" class="editor-btn" title="Blockquote" aria-label="Blockquote" onclick="toggleBlockquote()">❝</button>
+                        <button type="button" class="editor-btn" title="Insert link" aria-label="Insert link" onclick="insertLink()">🔗</button>
+                        <button type="button" class="editor-btn" title="Clear formatting" aria-label="Clear formatting" onclick="clearEditorFormatting()">Tx</button>
                     </div>
                     <div
                         id="postBodyEditor"
@@ -458,26 +490,8 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="audioLabel">Audio Label <span class="section-label">(optional — shown under the player)</span></label>
-                <input type="text" id="audioLabel" placeholder="e.g. Some extra thoughts I recorded">
-            </div>
-
-            <div class="form-group">
-                <label>Record Supplementary Audio <span class="section-label">(optional)</span></label>
-                <div class="recording-controls">
-                    <button type="button" class="btn btn-secondary" id="recordBtn" onclick="startRecording()">● Record</button>
-                    <button type="button" class="btn btn-secondary" id="stopBtn" onclick="stopRecording()" disabled>■ Stop</button>
-                    <span id="recordingTimer" class="recording-timer" style="display:none">0:00</span>
-                </div>
-                <div id="recordingPlaybackSection" class="recording-playback" style="display:none">
-                    <audio id="recordingPlayback" controls></audio>
-                    <button type="button" class="btn btn-secondary" id="uploadAudioBtn" onclick="uploadAudio()">Upload Audio to GitHub</button>
-                </div>
-            </div>
-
-            <div class="button-group" id="composeActions">
-                <button type="button" class="btn btn-primary" onclick="publishPost()">Publish Post</button>
+            <div class="button-group">
+                <button type="button" id="publishBtn" class="btn btn-primary" onclick="publishPost()">Publish Post</button>
                 <button type="button" class="btn btn-secondary" onclick="previewPost()">Preview</button>
                 <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
             </div>
@@ -503,23 +517,18 @@
         </div>
     </footer>
     </main>
-    </div>
 
-    <script src="monthly-heatmap.js"></script>
     <script src="theme-toggle.js"></script>
     <script>
         // Configuration
         const GITHUB_API = 'https://api.github.com';
+        const GITHUB_OWNER = 'legodud3';
+        const GITHUB_REPO = 'legodud3.github.io';
         let authConfig = {
             token: null,
-            username: null,
-            repo: null
+            username: GITHUB_OWNER,
+            repo: GITHUB_REPO
         };
-
-        // Audio-edit mode state (activated via ?audio_for=<filename>)
-        let audioEditMode = false;
-        let audioEditFilename = null;
-        let audioEditTitle = null;
 
 // Edit-post mode state (activated via ?edit=<filename>)
         let editPostMode = false;
@@ -539,7 +548,11 @@
             checkAuth();
 
             // Character counter
-            document.getElementById('postBodyEditor').addEventListener('input', updateCharCount);
+            const editor = document.getElementById('postBodyEditor');
+            editor.addEventListener('input', updateCharCount);
+            editor.addEventListener('keyup', updateToolbarState);
+            editor.addEventListener('mouseup', updateToolbarState);
+            document.addEventListener('selectionchange', updateToolbarState);
 
             // Check for edit parameter
             const params = new URLSearchParams(window.location.search);
@@ -563,21 +576,79 @@
             ensureEditorFocus();
             document.execCommand(command, false, null);
             updateCharCount();
+            updateToolbarState();
         }
 
-        function toggleHeading() {
+        function applyBlockFormat(tagName) {
             ensureEditorFocus();
+            document.execCommand('formatBlock', false, tagName);
+            updateCharCount();
+            updateToolbarState();
+        }
 
+        function getCurrentBlock() {
             const selection = window.getSelection();
             let currentNode = selection && selection.anchorNode ? selection.anchorNode : null;
             if (currentNode && currentNode.nodeType === Node.TEXT_NODE) {
                 currentNode = currentNode.parentElement;
             }
+            if (!currentNode || !currentNode.closest) return null;
+            return currentNode.closest('blockquote') || currentNode.closest('p, h2, h3, div');
+        }
 
-            const headingNode = currentNode && currentNode.closest ? currentNode.closest('h1, h2, h3, h4, h5, h6') : null;
-            const isHeading = Boolean(headingNode);
-            document.execCommand('formatBlock', false, isHeading ? 'p' : 'h2');
+        function toggleBlockquote() {
+            const block = getCurrentBlock();
+            applyBlockFormat(block && block.tagName.toLowerCase() === 'blockquote' ? 'p' : 'blockquote');
+        }
+
+        function insertLink() {
+            ensureEditorFocus();
+            const selection = window.getSelection();
+            if (!selection || selection.rangeCount === 0) return;
+
+            const url = window.prompt('Link URL (https://, http://, mailto:, or a relative path):');
+            if (!url) return;
+            const safeUrl = url.trim();
+            if (!/^(https?:\/\/|mailto:|[./#])/i.test(safeUrl)) {
+                showStatus('Use an http(s), mailto, anchor, or relative URL.', 'error');
+                return;
+            }
+
+            if (selection.isCollapsed) {
+                document.execCommand('insertHTML', false, `<a href="${escapeHtml(safeUrl)}">${escapeHtml(safeUrl)}</a>`);
+            } else {
+                document.execCommand('createLink', false, safeUrl);
+            }
             updateCharCount();
+            updateToolbarState();
+        }
+
+        function clearEditorFormatting() {
+            ensureEditorFocus();
+            document.execCommand('removeFormat', false, null);
+            document.execCommand('unlink', false, null);
+            updateCharCount();
+            updateToolbarState();
+        }
+
+        function updateToolbarState() {
+            const editor = document.getElementById('postBodyEditor');
+            const selection = window.getSelection();
+            if (!selection || !selection.anchorNode || !editor.contains(selection.anchorNode)) return;
+
+            document.querySelectorAll('.format-toggle').forEach(button => {
+                let active = false;
+                try {
+                    active = document.queryCommandState(button.dataset.command);
+                } catch (error) {
+                    active = false;
+                }
+                button.setAttribute('aria-pressed', String(active));
+            });
+
+            const block = getCurrentBlock();
+            const tagName = block ? block.tagName.toLowerCase() : 'p';
+            document.getElementById('blockFormat').value = ['h2', 'h3'].includes(tagName) ? tagName : 'p';
         }
 
         async function loadTags() {
@@ -671,7 +742,7 @@
                 }
                 
                 // Set the editor content
-                document.getElementById('postBodyEditor').innerHTML = body;
+                document.getElementById('postBodyEditor').innerHTML = DOMPurify.sanitize(marked.parse(body.trim()));
                 updateCharCount();
                 
                 // Update UI to indicate edit mode
@@ -681,12 +752,12 @@
                 // Show edit banner
                 const editBanner = document.createElement('div');
                 editBanner.id = 'editPostBanner';
-                editBanner.className = 'audio-edit-banner';
+                editBanner.className = 'edit-banner';
                 editBanner.innerHTML = `Editing: <strong>${escapeHtml(title)}</strong> <a href="view.html?post=${encodeURIComponent(editPostPath)}" style="margin-left:12px; font-size:0.9em">← View post</a>`;
                 document.getElementById('editorContainer').insertBefore(editBanner, document.getElementById('postForm'));
                 
                 // Update publish button text
-                const publishBtn = document.querySelector('.btn-primary[onclick="publishPost()"]');
+                const publishBtn = document.getElementById('publishBtn');
                 if (publishBtn) {
                     publishBtn.textContent = 'Update Post';
                 }
@@ -699,18 +770,9 @@
 
         function checkAuth() {
             const sessionToken = sessionStorage.getItem('github_token');
-            const savedUsername = sessionStorage.getItem('github_username') || localStorage.getItem('github_username') || '';
-            const savedRepo = sessionStorage.getItem('github_repo') || localStorage.getItem('github_repo') || '';
 
-            // Pre-fill login form
-            document.getElementById('githubUsername').value = savedUsername;
-            document.getElementById('githubRepo').value = savedRepo;
-            document.getElementById('rememberRepo').checked = Boolean(savedUsername || savedRepo);
-
-            if (sessionToken && savedUsername && savedRepo) {
+            if (sessionToken) {
                 authConfig.token = sessionToken;
-                authConfig.username = savedUsername;
-                authConfig.repo = savedRepo;
                 showEditor();
                 return;
             }
@@ -727,41 +789,13 @@
             document.getElementById('loginContainer').classList.add('hidden');
             document.getElementById('editorContainer').classList.remove('hidden');
             document.getElementById('loggedInUser').textContent = authConfig.username;
-            const params = new URLSearchParams(window.location.search);
-            const audioFor = params.get('audio_for');
-            if (audioFor) enterAudioEditMode(audioFor);
-        }
-
-        async function enterAudioEditMode(filename) {
-            audioEditMode = true;
-            audioEditFilename = filename;
-            document.querySelector('.page-header h1').textContent = 'Add Audio to Post';
-            document.title = 'Add Audio - Chinmay Deo';
-            document.getElementById('composeFields').style.display = 'none';
-            document.getElementById('composeActions').style.display = 'none';
-
-            let title = filename;
-            try {
-                const resp = await fetch('posts.json?v=' + Date.now());
-                const posts = await resp.json();
-                const post = posts.find(p => p.filename === filename);
-                if (post) title = post.title;
-            } catch (e) { /* use filename as fallback */ }
-            audioEditTitle = title;
-
-            const banner = document.getElementById('audioEditBanner');
-            banner.innerHTML = `Adding audio to: <strong>${escapeHtml(title)}</strong><a href="view.html?post=${encodeURIComponent(filename)}" style="margin-left:12px; font-size:0.9em">← Back to post</a>`;
-            banner.style.display = 'block';
         }
 
         async function login() {
             const token = document.getElementById('githubToken').value.trim();
-            const username = document.getElementById('githubUsername').value.trim();
-            const repo = document.getElementById('githubRepo').value.trim();
-            const rememberRepo = document.getElementById('rememberRepo').checked;
 
-            if (!token || !username || !repo) {
-                showStatus('Please fill in all fields.', 'error', 'loginStatus');
+            if (!token) {
+                showStatus('Enter a GitHub token.', 'error', 'loginStatus');
                 return;
             }
 
@@ -769,7 +803,7 @@
             showStatus('Validating credentials...', 'info', 'loginStatus');
             
             try {
-                const response = await fetch(`${GITHUB_API}/repos/${username}/${repo}`, {
+                const response = await fetch(`${GITHUB_API}/repos/${GITHUB_OWNER}/${GITHUB_REPO}`, {
                     headers: {
                         'Authorization': `token ${token}`,
                         'Accept': 'application/vnd.github.v3+json'
@@ -782,19 +816,7 @@
 
                 // Keep token in session storage only; this avoids long-lived auth in localStorage.
                 sessionStorage.setItem('github_token', token);
-                sessionStorage.setItem('github_username', username);
-                sessionStorage.setItem('github_repo', repo);
-                if (rememberRepo) {
-                    localStorage.setItem('github_username', username);
-                    localStorage.setItem('github_repo', repo);
-                } else {
-                    localStorage.removeItem('github_username');
-                    localStorage.removeItem('github_repo');
-                }
-
                 authConfig.token = token;
-                authConfig.username = username;
-                authConfig.repo = repo;
 
                 showStatus('Login successful!', 'success', 'loginStatus');
                 setTimeout(() => {
@@ -808,9 +830,7 @@
         function logout() {
             if (confirm('Are you sure you want to logout? Your GitHub token will be removed from this browser.')) {
                 sessionStorage.removeItem('github_token');
-                sessionStorage.removeItem('github_username');
-                sessionStorage.removeItem('github_repo');
-                authConfig = { token: null, username: null, repo: null };
+                authConfig = { token: null, username: GITHUB_OWNER, repo: GITHUB_REPO };
                 document.getElementById('githubToken').value = '';
                 clearForm();
                 showLogin();
@@ -834,11 +854,7 @@
         }
 
         function generateFrontMatter(title, date, tag) {
-            const audioLabel = document.getElementById('audioLabel').value.trim();
-            let fm = `---\ntitle: ${title}\ndate: ${date}\ntag: ${tag}`;
-            if (audioLabel) fm += `\naudio_label: "${audioLabel}"`;
-            fm += `\n---\n\n`;
-            return fm;
+            return `---\ntitle: ${title}\ndate: ${date}\ntag: ${tag}\n---\n\n`;
         }
 
         function nodesToMarkdown(nodes, inList = false) {
@@ -876,6 +892,18 @@
                     continue;
                 }
 
+                if (tag === 's' || tag === 'strike' || tag === 'del') {
+                    output += `~~${nodesToMarkdown(node.childNodes, inList).trim()}~~`;
+                    continue;
+                }
+
+                if (tag === 'a') {
+                    const text = nodesToMarkdown(node.childNodes, inList).trim() || node.getAttribute('href');
+                    const href = (node.getAttribute('href') || '').replace(/\)/g, '\\)');
+                    output += href ? `[${text}](${href})` : text;
+                    continue;
+                }
+
                 if (/^h[1-6]$/.test(tag)) {
                     const level = Number(tag.slice(1));
                     const text = nodesToMarkdown(node.childNodes, inList).trim();
@@ -885,10 +913,13 @@
                     continue;
                 }
 
-                if (tag === 'ul') {
+                if (tag === 'ul' || tag === 'ol') {
                     const items = Array.from(node.children)
                         .filter((child) => child.tagName && child.tagName.toLowerCase() === 'li')
-                        .map((li) => `- ${nodesToMarkdown(li.childNodes, true).replace(/\n+/g, ' ').trim()}`)
+                        .map((li, index) => {
+                            const marker = tag === 'ol' ? `${index + 1}.` : '-';
+                            return `${marker} ${nodesToMarkdown(li.childNodes, true).replace(/\n+/g, ' ').trim()}`;
+                        })
                         .filter(Boolean);
                     if (items.length) {
                         output += `${items.join('\n')}\n\n`;
@@ -898,6 +929,14 @@
 
                 if (tag === 'li') {
                     output += nodesToMarkdown(node.childNodes, true);
+                    continue;
+                }
+
+                if (tag === 'blockquote') {
+                    const text = nodesToMarkdown(node.childNodes).trim();
+                    if (text) {
+                        output += `${text.split('\n').map(line => `> ${line}`).join('\n')}\n\n`;
+                    }
                     continue;
                 }
 
@@ -961,6 +1000,9 @@ async function publishPost() {
                 (match, p1) => String.fromCharCode('0x' + p1)));
 
             showStatus('Saving post...', 'info');
+            const publishBtn = document.getElementById('publishBtn');
+            publishBtn.disabled = true;
+            publishBtn.textContent = isEdit ? 'Updating…' : 'Publishing…';
 
             try {
                 // Check if file already exists (for new posts) or get existing file info (for edits)
@@ -1051,6 +1093,9 @@ async function publishPost() {
 
             } catch (error) {
                 showStatus(`Failed to publish: ${error.message}`, 'error');
+            } finally {
+                publishBtn.disabled = false;
+                publishBtn.textContent = isEdit ? 'Update Post' : 'Publish Post';
             }
         }
 
@@ -1104,7 +1149,7 @@ tag: ${safeTag}
             }
             
             // Reset publish button text
-            const publishBtn = document.querySelector('.btn-primary[onclick="publishPost()"]');
+            const publishBtn = document.getElementById('publishBtn');
             if (publishBtn) {
                 publishBtn.textContent = 'Publish Post';
             }
@@ -1118,251 +1163,10 @@ tag: ${safeTag}
             document.getElementById('postTag').value = '';
             document.getElementById('postBodyEditor').innerHTML = '';
             document.getElementById('charCount').textContent = '0';
-            document.getElementById('audioLabel').value = '';
             document.getElementById('previewContainer').style.display = 'none';
             document.getElementById('statusMessage').className = 'status-message';
-            resetRecording();
+            updateToolbarState();
         }
-
-        // --- Audio Recording ---
-
-        let mediaRecorder = null;
-        let recordedChunks = [];
-        let recordedBlob = null;
-        let recordedMimeType = null;
-        let recordingTimerInterval = null;
-        let recordingStartTime = null;
-
-        function getSupportedMimeType() {
-            const types = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg'];
-            for (const type of types) {
-                if (MediaRecorder.isTypeSupported(type)) return type;
-            }
-            return '';
-        }
-
-        function getMimeExtension(mimeType) {
-            if (mimeType.includes('mp4')) return '.m4a';
-            if (mimeType.includes('webm')) return '.webm';
-            if (mimeType.includes('ogg')) return '.ogg';
-            return '.audio';
-        }
-
-        async function startRecording() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const mimeType = getSupportedMimeType();
-                recordedChunks = [];
-                recordedMimeType = mimeType;
-                mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
-
-                mediaRecorder.ondataavailable = (e) => {
-                    if (e.data.size > 0) recordedChunks.push(e.data);
-                };
-
-                mediaRecorder.onstop = () => {
-                    recordedBlob = new Blob(recordedChunks, { type: recordedMimeType || mediaRecorder.mimeType });
-                    recordedMimeType = recordedBlob.type;
-                    const url = URL.createObjectURL(recordedBlob);
-                    document.getElementById('recordingPlayback').src = url;
-                    setRecordingState('stopped');
-                };
-
-                mediaRecorder.start(250);
-                recordingStartTime = Date.now();
-                recordingTimerInterval = setInterval(() => {
-                    const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
-                    const m = Math.floor(elapsed / 60);
-                    const s = elapsed % 60;
-                    document.getElementById('recordingTimer').textContent =
-                        `${m}:${s.toString().padStart(2, '0')}`;
-                }, 500);
-                setRecordingState('recording');
-            } catch (err) {
-                showStatus(`Microphone access denied: ${err.message}`, 'error');
-            }
-        }
-
-        function stopRecording() {
-            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-                mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(t => t.stop());
-                clearInterval(recordingTimerInterval);
-            }
-        }
-
-        function resetRecording() {
-            stopRecording();
-            recordedBlob = null;
-            recordedMimeType = null;
-            recordedChunks = [];
-            document.getElementById('recordingPlayback').src = '';
-            setRecordingState('idle');
-        }
-
-        function setRecordingState(state) {
-            const recordBtn = document.getElementById('recordBtn');
-            const stopBtn = document.getElementById('stopBtn');
-            const timer = document.getElementById('recordingTimer');
-            const playbackSection = document.getElementById('recordingPlaybackSection');
-
-            if (state === 'recording') {
-                recordBtn.disabled = true;
-                stopBtn.disabled = false;
-                timer.style.display = 'inline';
-                playbackSection.style.display = 'none';
-            } else if (state === 'stopped') {
-                recordBtn.disabled = false;
-                stopBtn.disabled = true;
-                timer.style.display = 'none';
-                playbackSection.style.display = 'block';
-            } else {
-                recordBtn.disabled = false;
-                stopBtn.disabled = true;
-                timer.style.display = 'none';
-                playbackSection.style.display = 'none';
-            }
-        }
-
-        function blobToBase64(blob) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-            });
-        }
-
-        async function uploadAudio() {
-            if (!recordedBlob) {
-                showStatus('No recording to upload.', 'error');
-                return;
-            }
-
-            let path, displayTitle;
-            if (audioEditMode) {
-                const ext = getMimeExtension(recordedMimeType);
-                path = `posts/${audioEditFilename.replace(/\.md$/, ext)}`;
-                displayTitle = audioEditTitle || audioEditFilename;
-            } else {
-                const title = document.getElementById('postTitle').value.trim();
-                const date = document.getElementById('postDate').value;
-                if (!title || !date) {
-                    showStatus('Please fill in the post title and date before uploading audio.', 'error');
-                    return;
-                }
-                const slug = generateSlug(title);
-                const year = date.split('-')[0];
-                const ext = getMimeExtension(recordedMimeType);
-                path = `posts/${year}/${date}-${slug}${ext}`;
-                displayTitle = title;
-            }
-
-            showStatus('Uploading audio...', 'info');
-
-            const uploadBtn = document.getElementById('uploadAudioBtn');
-            uploadBtn.disabled = true;
-
-            try {
-                const base64 = await blobToBase64(recordedBlob);
-
-                const checkResponse = await fetch(
-                    `${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`,
-                    { headers: { 'Authorization': `token ${authConfig.token}`, 'Accept': 'application/vnd.github.v3+json' } }
-                );
-
-                const body = { message: `Add audio for: ${displayTitle}`, content: base64, branch: 'main' };
-                if (checkResponse.ok) {
-                    body.sha = (await checkResponse.json()).sha;
-                }
-
-                const uploadResponse = await fetch(
-                    `${GITHUB_API}/repos/${authConfig.username}/${authConfig.repo}/contents/${path}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${authConfig.token}`,
-                            'Accept': 'application/vnd.github.v3+json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(body)
-                    }
-                );
-
-                if (!uploadResponse.ok) {
-                    const err = await uploadResponse.json();
-                    throw new Error(err.message || 'Upload failed');
-                }
-
-                showStatus(`✓ Audio uploaded as ${path}`, 'success');
-                uploadBtn.textContent = '✓ Uploaded';
-
-                // In audio-edit mode, patch the frontmatter with audio_label if provided
-                if (audioEditMode) {
-                    const label = document.getElementById('audioLabel').value.trim();
-                    if (label) await patchFrontmatterAudioLabel(audioEditFilename, label);
-                }
-            } catch (err) {
-                showStatus(`Audio upload failed: ${err.message}`, 'error');
-                uploadBtn.disabled = false;
-            }
-        }
-
-        async function patchFrontmatterAudioLabel(filename, label) {
-            const path = `posts/${filename}`;
-            const { token, username, repo } = authConfig;
-            try {
-                const resp = await fetch(
-                    `${GITHUB_API}/repos/${username}/${repo}/contents/${path}`,
-                    { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } }
-                );
-                if (!resp.ok) return;
-                const file = await resp.json();
-
-                // Decode UTF-8 content from base64
-                const raw = atob(file.content.replace(/\n/g, ''));
-                const content = decodeURIComponent(Array.from(raw).map(
-                    c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')
-                ).join(''));
-
-                if (!content.startsWith('---')) return;
-                const end = content.indexOf('---', 3);
-                if (end === -1) return;
-
-                let fm = content.substring(3, end);
-                const body = content.substring(end + 3);
-
-                // Replace existing audio_label or append before closing ---
-                fm = fm.replace(/\naudio_label:.*$/m, '');
-                fm = fm.trimEnd() + `\naudio_label: "${label.replace(/"/g, '\\"')}"`;
-
-                const updated = `---${fm}\n---${body}`;
-                const encodedContent = btoa(encodeURIComponent(updated).replace(/%([0-9A-F]{2})/g,
-                    (match, p1) => String.fromCharCode('0x' + p1)));
-
-                await fetch(
-                    `${GITHUB_API}/repos/${username}/${repo}/contents/${path}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: `Add audio label for: ${audioEditTitle}`,
-                            content: encodedContent,
-                            sha: file.sha,
-                            branch: 'main'
-                        })
-                    }
-                );
-            } catch (e) {
-                console.warn('Could not patch audio_label frontmatter:', e);
-            }
-        }
-
-        // --- End Audio Recording ---
 
         function showStatus(message, type, elementId = 'statusMessage') {
             const statusEl = document.getElementById(elementId);

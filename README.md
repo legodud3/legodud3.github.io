@@ -5,7 +5,7 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 ## Features
 
 *   **Zero-Backend Architecture**: No database to maintain. The site is purely HTML, CSS, and JavaScript, making it extremely fast and secure.
-*   **Browser-Based Editor**: Write and publish posts directly from browser at `../write.html` using the GitHub API - no command line needed.
+*   **Browser-Based Editor**: Write, format, preview, and publish posts directly from `write.html` using the GitHub API—no command line needed.
 *   **Automated Content Pipeline**:
     *   Posts are written in **Markdown** and stored in the `posts/` directory (organized by year).
     *   A **GitHub Action** triggers on every push, running a Python script to scan files and regenerate the `posts.json` index automatically.
@@ -19,7 +19,6 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
     *   Client-side Markdown rendering.
     *   Previous/Next post navigation in the footer.
     *   Clean, distraction-free design with dark and light modes.
-*   **Audio**: ElevenLabs-powered text-to-speech for posts, displayed via a custom LEGO-brick audio player.
 
 ## Design System
 
@@ -44,10 +43,9 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 | Learning | `#8e44ad` (purple) |
 
 ### Key Components
-- **LEGO Audio Player**: Brick-based progress bar with gold studs
 - **Writing Consistency Heatmap**: GitHub-style contribution graph for posts
 - **Project Cards**: Card grid with colored accent borders
-- **Post Cards**: Card-based post list with excerpts and featured first post
+- **Post List**: Compact, searchable post rows with metadata and excerpts
 
 ## CI/CD Workflows
 
@@ -55,12 +53,6 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 - **Trigger**: Push to `posts/**/*.md`, `tags.json`, or `update_posts.py`
 - **Action**: Runs `update_posts.py` to regenerate `posts.json`
 - **Output**: Auto-commits updated `posts.json`
-
-### Audio Generation (`generate_audio.yml`)
-- **Trigger**: Push to `posts/**/*.md` or manual dispatch
-- **Action**: Runs `generate_audio.py` using ElevenLabs API (multilingual v2 model)
-- **Secrets Required**: `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`
-- **Output**: Auto-commits `.mp3` files alongside posts
 
 ## Getting Started
 
@@ -70,20 +62,15 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
 
 ### Option 1: Browser-Based Editor (Recommended)
 
-1. Navigate to `https://legodud3.github.io/write.html` (or click "Write" in the navigation)
+1. Navigate to `https://legodud3.github.io/write.html` or use “Open the writing desk” in the site footer.
 2. **First-time setup**:
-   - Create a GitHub Personal Access Token (PAT):
-     - Go to GitHub Settings > Developer settings > Personal access tokens > Tokens (classic)
-     - Click "Generate new token (classic)"
-     - Give it a name (e.g., "Blog Editor")
-     - Select scope: **repo** (Full control of private repositories)
-     - Click "Generate token" and copy it
-   - Enter your PAT, GitHub username, and repository name
-   - Optional: save only username/repository on the device for convenience
+   - Create a fine-grained GitHub Personal Access Token limited to `legodud3.github.io`.
+   - Grant repository permission **Contents: Read and write**.
+   - Enter the token; the owner and repository are fixed by the editor.
    - Click "Login & Continue"
 3. **Write your post**:
    - Enter a title, select date (defaults to today), and choose a tag
-   - Write your content in Markdown
+   - Use the rich-text toolbar for headings, emphasis, lists, quotes, and links
    - Click "Preview" to see how it will look
    - Click "Publish Post" to commit directly to GitHub
 4. GitHub Actions will automatically update the site index
@@ -91,7 +78,7 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
 ### Security notes
 
 - The editor keeps your GitHub PAT in session storage only (cleared when browser session ends).
-- Username and repository can be optionally stored in local storage for convenience.
+- The token is sent only to GitHub's API and is never persisted in local storage.
 
 ### Option 2: Manual File Creation
 

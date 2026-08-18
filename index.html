@@ -17,7 +17,6 @@
                 <a href="index.html" class="active">🏠 Home</a>
                 <a href="about.html">👤 About me</a>
                 <a href="side-projects.html">🚀 Side projects</a>
-                <a href="write.html">✍️ Write</a>
             </nav>
             <section class="rail-widget">
                 <h2 class="rail-section-title">Writing Consistency</h2>
@@ -54,6 +53,7 @@
 
             <footer class="site-footer">
                 <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
+                <a class="writing-desk-link" href="write.html">Open the writing desk</a>
                 <div class="theme-toggle-container">
                     <span class="theme-toggle-label">Dark</span>
                     <label class="theme-toggle-switch">
@@ -202,9 +202,7 @@
             } else {
                 displayedPosts.forEach((post, index) => {
                     const li = document.createElement('li');
-                    const globalIndex = start + index;
-                    const isFeatured = globalIndex === 0 && currentPage === 1 && !activeTag && !document.getElementById('searchInput').value;
-                    li.className = 'post-item' + (isFeatured ? ' post-item-featured' : '');
+                    li.className = 'post-item';
 
                     let tagHtml = '';
                     if (post.tag_name && post.tag_key) {
@@ -214,10 +212,11 @@
                     const excerpt = post.excerpt ? post.excerpt.substring(0, 160).trimEnd() + '…' : '';
 
                     li.innerHTML = `
-                        <span class="post-number">${globalIndex + 1}</span>
                         <a href="view.html?post=${encodeURIComponent(post.filename)}" class="post-title-link">${post.title}</a>
-                        <span class="post-date">[${post.date}]</span>
-                        ${tagHtml}
+                        <div class="post-list-meta">
+                            <span class="post-date">${post.date}</span>
+                            ${tagHtml}
+                        </div>
                         ${excerpt ? `<div class="post-excerpt">${excerpt}</div>` : ''}
                     `;
                     li.style.animationDelay = `${index * 0.04}s`;

@@ -10,10 +10,6 @@
     --border-color: #333;
     --hover-bg: #2a2a2a;
     --code-bg: #111;
-    --lego-played: #FFD700;
-    --lego-played-stud: #D4A000;
-    --lego-unplayed: #2d2d2d;
-    --lego-unplayed-stud: #404040;
     --font-handwriting: 'Roboto', sans-serif;
     --font-body: 'Roboto', sans-serif;
 }
@@ -27,8 +23,12 @@
     --border-color: #e0e0e0;
     --hover-bg: #f5f5f5;
     --code-bg: #f5f5f5;
-    --lego-unplayed: #d0d0d0;
-    --lego-unplayed-stud: #b8b8b8;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
@@ -48,7 +48,7 @@ body {
 }
 
 .left-rail {
-    width: 25%;
+    flex: 0 0 clamp(250px, 25%, 320px);
     min-width: 250px;
     max-width: 320px;
     position: sticky;
@@ -60,7 +60,7 @@ body {
 }
 
 .main-panel {
-    width: 75%;
+    flex: 1 1 0;
     min-width: 0;
 }
 
@@ -235,7 +235,7 @@ a:hover {
 }
 
 .search-container {
-    margin-bottom: 30px;
+    margin-bottom: 14px;
     position: relative;
 }
 
@@ -276,69 +276,49 @@ a:hover {
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
+    border-top: 1px solid var(--border-color);
 }
 
 .post-item {
-    padding: 16px 18px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 4px;
+    padding: 18px 4px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.15s ease;
 }
 
 .post-item:hover {
-    background-color: var(--hover-bg);
-    border-color: var(--accent-color-dark);
-}
-
-.post-item .post-number {
-    font-size: 1.6rem;
-    font-weight: 300;
-    color: #555;
-    margin-right: 14px;
-    font-family: var(--font-handwriting);
-    line-height: 1;
-    min-width: 28px;
+    background: linear-gradient(90deg, var(--hover-bg), transparent);
 }
 
 .post-item .post-excerpt {
-    width: 100%;
+    display: -webkit-box;
     font-size: 0.85rem;
     color: #888;
     line-height: 1.5;
-    margin-top: 4px;
-    display: -webkit-box;
+    margin-top: 7px;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-.post-item.post-item-featured {
-    border-color: var(--accent-color-dark);
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.04) 0%, transparent 60%);
-}
-
-.post-item.post-item-featured .post-title-link {
-    font-size: 1.15em;
-}
-
-.post-item.post-item-featured .post-excerpt {
-    -webkit-line-clamp: 3;
-}
-
 .post-title-link {
+    display: inline-block;
     font-family: var(--font-handwriting);
-    font-size: 1.05em;
+    font-size: 1.08em;
+    font-weight: 500;
 }
 
 .post-date {
     color: #888;
-    margin-left: 10px;
-    font-size: 0.85em;
+    font-size: 0.8rem;
+}
+
+.post-list-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 3px;
 }
 
 .pagination {
@@ -399,7 +379,7 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 }
 
 .tag-filter-container {
@@ -410,7 +390,7 @@ a:hover {
 }
 
 .tag-filter-btn {
-    padding: 6px 12px;
+    padding: 5px 10px;
     border: 1px solid var(--border-color);
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -437,7 +417,7 @@ a:hover {
 }
 
 .surprise-btn {
-    padding: 8px 16px;
+    padding: 6px 12px;
     border: 1px solid var(--accent-color);
     background-color: var(--bg-color);
     color: var(--accent-color);
@@ -456,9 +436,9 @@ a:hover {
 }
 
 .post-tag {
-    font-size: 0.85em;
-    margin-left: 8px;
-    font-weight: bold;
+    font-size: 0.8rem;
+    margin-left: 0;
+    font-weight: 500;
 }
 
 .post-meta {
@@ -542,6 +522,19 @@ a:hover {
     text-align: center;
     color: #888;
     font-size: 0.8rem;
+}
+
+.writing-desk-link {
+    display: inline-block;
+    margin-top: 4px;
+    color: #888;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.writing-desk-link:hover,
+.writing-desk-link:focus-visible {
+    color: var(--link-color);
 }
 
 /* Theme Toggle */
@@ -688,6 +681,7 @@ a:hover {
     }
 
     .left-rail {
+        flex-basis: auto;
         width: 100%;
         min-width: 0;
         max-width: none;
@@ -720,10 +714,9 @@ a:hover {
         width: 100%;
     }
 
-    .post-item .post-number {
-        font-size: 1.2rem;
-        min-width: 22px;
-        margin-right: 10px;
+    .tag-and-surprise-container {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
     .project-cards-grid {
@@ -781,94 +774,6 @@ a:hover {
     line-height: 1.5;
 }
 
-/* Lego Audio Player */
-.lego-audio-player {
-    margin: 16px 0;
-    padding: 12px 14px 8px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background-color: var(--hover-bg);
-}
-.lego-controls-row {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    padding-top: 8px;
-}
-.lego-play-btn {
-    flex-shrink: 0;
-    width: 28px;
-    height: 28px;
-    border: none;
-    border-radius: 3px;
-    background: var(--lego-played);
-    color: #000;
-    font-size: 0.75rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.15s;
-}
-.lego-play-btn:hover { opacity: 0.8; }
-.lego-bricks-row {
-    display: flex;
-    flex: 1;
-    gap: 2px;
-    overflow: visible;
-}
-.lego-brick {
-    flex: 1;
-    height: 14px;
-    position: relative;
-    background: var(--lego-unplayed);
-    border-radius: 1px;
-    cursor: pointer;
-    transition: background 0.08s;
-}
-.lego-brick::before {
-    content: '';
-    position: absolute;
-    top: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 55%;
-    height: 6px;
-    background: var(--lego-unplayed-stud);
-    border-radius: 2px 2px 0 0;
-}
-.lego-brick.lego-brick-played { background: var(--lego-played); }
-.lego-brick.lego-brick-played::before { background: var(--lego-played-stud); }
-.lego-time {
-    flex-shrink: 0;
-    font-size: 0.75rem;
-    color: #888;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    line-height: 14px;
-}
-.lego-audio-label {
-    font-size: 0.78rem;
-    color: #888;
-    margin-top: 6px;
-}
-@media (max-width: 600px) {
-    .lego-time { display: none; }
-}
-
-/* Add audio link — shown on posts with no audio */
-.add-audio-link {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 0.8rem;
-    color: #888;
-    text-decoration: none;
-}
-
-.add-audio-link:hover {
-    color: var(--link-color);
-}
-
 /* Roboto font — applied via --font-handwriting variable */
 .rail-brand span,
 .rail-nav a,
@@ -903,19 +808,6 @@ ol li::marker {
     to { opacity: 1; }
 }
 
-@keyframes brickBuild {
-    from {
-        opacity: 0;
-        transform: scaleY(0);
-        transform-origin: bottom;
-    }
-    to {
-        opacity: 1;
-        transform: scaleY(1);
-        transform-origin: bottom;
-    }
-}
-
 .fade-in-up {
     animation: fadeInUp 0.3s ease forwards;
 }
@@ -932,11 +824,6 @@ ol li::marker {
 .heatmap-cell {
     opacity: 0;
     animation: fadeIn 0.3s ease forwards;
-}
-
-.lego-brick {
-    opacity: 0;
-    animation: brickBuild 0.15s ease forwards;
 }
 
 .markdown-body {
