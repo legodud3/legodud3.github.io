@@ -1,5 +1,14 @@
 [
   {
+    "title": "Intelligence may not follow division of labour",
+    "date": "2026-09-28",
+    "filename": "2026/2026-09-28-intelligence-may-not-follow-division-of-labour.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "I spent 90 minutes skimming through the deepseek-coder paper. It was released in early 2024. Deepseek (& others) had started giving signals that coding is a great \"agentic\" use case of foundation models. It's a fascinating paper, even for a non-technical person like me, because of how intuitive, sim"
+  },
+  {
     "title": "BLR8",
     "date": "2026-09-16",
     "filename": "2026/2026-09-16-blr8.md",
@@ -126,15 +135,6 @@
     "excerpt": "Today is my 36th birthday. Happy birthday to me! Physically, I am (near) the best shape of my life, though there is a long way to go. Mentally, I feel like I have just turned 30, so a long way to go there too. Samay is here too, to celebrate, which I love. Every morning he wakes up and gives me a wi"
   },
   {
-    "title": "Why I won't use AI to write first drafts",
-    "date": "2026-03-21",
-    "filename": "2026/2026-03-21-why-i-won-t-use-ai-to-write-first-drafts.md",
-    "tag_name": "Reflection",
-    "tag_key": "reflection",
-    "tag_color": "#27ae60",
-    "excerpt": "Unless you have been living under a rock, you know that AI can write better than you (the average person). AI can express ideas in a simpler, clearer, and more compelling fashion...or any fashion you want, really. The question is: Should you let it? It is useful to start by thinking about ghostwrite"
-  },
-  {
     "title": "Strategy formulation should be partly democratic",
     "date": "2026-03-21",
     "filename": "2026/2026-03-21-strategy-formulation-should-be-partly-democratic.md",
@@ -142,6 +142,15 @@
     "tag_key": "reflection",
     "tag_color": "#27ae60",
     "excerpt": "I recently interacted with a few senior folks (think top 10% of the org). Our company had announced a transformative decision\u2014one that will change the trajectory of the company\u2014a couple of months ago. (Execution will tell whether the trajectory change is minimal or meaningful.) What struck me was: H"
+  },
+  {
+    "title": "Why I won't use AI to write first drafts",
+    "date": "2026-03-21",
+    "filename": "2026/2026-03-21-why-i-won-t-use-ai-to-write-first-drafts.md",
+    "tag_name": "Reflection",
+    "tag_key": "reflection",
+    "tag_color": "#27ae60",
+    "excerpt": "Unless you have been living under a rock, you know that AI can write better than you (the average person). AI can express ideas in a simpler, clearer, and more compelling fashion...or any fashion you want, really. The question is: Should you let it? It is useful to start by thinking about ghostwrite"
   },
   {
     "title": "First trip with Samay!",
