@@ -6,6 +6,15 @@
     <title>Opening post… - Chinmay Deo</title>
     <meta name="robots" content="noindex">
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
+    <!-- GA4: view.html is the one page that doesn't load layout.js (it redirects
+         immediately), so the shared loader there can't cover it. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0R7GSH6T00"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-0R7GSH6T00');
+    </script>
     <link rel="icon" type="image/png" href="legohat_logo.png">
     <link rel="stylesheet" href="style.css">
 </head>

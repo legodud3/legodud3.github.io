@@ -10,8 +10,16 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://legodud3.github.io/p/2026-01-13-baby-monitors.html">
     <meta property="article:published_time" content="2026-01-13T00:00:00Z">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://legodud3.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chinmay Deo — personal blog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Baby monitors">
+    <meta name="twitter:description" content="Most purchase decisions follow a pattern: they&#x27;re driven by how well a product matches stated needs, its price, and how easy it is to get. But this framework breaks down fast. 1. Needs are non-exhaust">
+    <meta name="twitter:image" content="https://legodud3.github.io/og-image.png">
     <link rel="canonical" href="https://legodud3.github.io/p/2026-01-13-baby-monitors.html">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Baby monitors","datePublished":"2026-01-13T00:00:00Z","url":"https://legodud3.github.io/p/2026-01-13-baby-monitors.html","mainEntityOfPage":"https://legodud3.github.io/p/2026-01-13-baby-monitors.html","image":"https://legodud3.github.io/og-image.png","author":{"@type":"Person","name":"Chinmay Deo","url":"https://legodud3.github.io/about.html"},"publisher":{"@type":"Person","name":"Chinmay Deo"}}</script>
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
@@ -42,6 +50,14 @@
 <li>But here's the flip side: sometimes customers <em>gladly</em> pay more and wait longer because the feature-needs fit is just that good. See Hermès Birkin bags and Ferraris. This brings us to the Motorola AM21 baby monitor. I just bought one, and it's a masterclass in feature-needs matching—and it achieves this by doing <em>less</em>, not more (hello margins). No screen (good: parents get a break from constant surveillance). No camera (good: babies deserve privacy, and yes, it's unhackable). Three buttons: power, volume up, volume down. That's it. No app. No setup beyond plugging it in. No Wi-Fi. Parents are tired—they want things that work, not "smart" things that require a PhD or apps that look like cockpits. The AM21 costs INR 5,000 for what's essentially 50-year-old technology (and probably costs INR 50 to manufacture). It takes 15 days to ship. And none of that matters.</li>
 </ol>
             </article>
+
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-13-baby-monitors.html&amp;t=Baby%20monitors" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-13-baby-monitors.html&amp;text=Baby%20monitors" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-13-baby-monitors.html" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="https://legodud3.github.io/p/2026-01-13-baby-monitors.html">Copy link</button>
+            </div>
 
             <div class="post-nav">
                 <a class="visible" href="/p/2026-01-15-yourlogicisnotmine.html">← Your logic is not my logic</a>
@@ -76,5 +92,30 @@
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+
 </body>
 </html>

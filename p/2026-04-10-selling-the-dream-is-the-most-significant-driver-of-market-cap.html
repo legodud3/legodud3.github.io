@@ -10,8 +10,16 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://legodud3.github.io/p/2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html">
     <meta property="article:published_time" content="2026-04-10T00:00:00Z">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://legodud3.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chinmay Deo — personal blog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Selling the dream is the most significant driver of market cap">
+    <meta name="twitter:description" content="We live in a capitalist world. Consumers, corporations, and the state (i.e., government via laws and regulation) are the most important groups in this world. Consumers have value because they generate">
+    <meta name="twitter:image" content="https://legodud3.github.io/og-image.png">
     <link rel="canonical" href="https://legodud3.github.io/p/2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Selling the dream is the most significant driver of market cap","datePublished":"2026-04-10T00:00:00Z","url":"https://legodud3.github.io/p/2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html","mainEntityOfPage":"https://legodud3.github.io/p/2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html","image":"https://legodud3.github.io/og-image.png","author":{"@type":"Person","name":"Chinmay Deo","url":"https://legodud3.github.io/about.html"},"publisher":{"@type":"Person","name":"Chinmay Deo"}}</script>
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
@@ -38,6 +46,14 @@
 <p>One of the QUIRKS of this method is that you can do this profit forecasting—quite reliably—for maybe the next year or two. You can do it a little less reliably for years three to five. What about year 50? How do I know what HDFC Bank, Asian Paints, or Google will make in the year 2076? I don't. No one does. It could be 0, i.e., the company doesn't exist, or it could be 50 times what it is today. So what do we do? Give up? Nope. We use a modelling trick called "terminal value," whereby you model for a few years and then just..."assume a number" for the rest of time. This feels like a shaky modelling approach—and it is—but it's the best solution we have today.</p>
 <p>OK, so terminal value is a quirk of discounted cash flow analysis. Does terminal value matter? Hell yes, because it accounts for anywhere between 50–80% of the value of most well-known companies. For startup companies, terminal value is actually &gt;100% of market cap because their profits are -ve. Woah, hang on. So we are saying that more than half of the value of the world's most important companies is just...a completely made-up number?! Yes, it is. And that is why it is so important for a company to "sell the dream."</p>
             </article>
+
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html&amp;t=Selling%20the%20dream%20is%20the%20most%20significant%20driver%20of%20market%20cap" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html&amp;text=Selling%20the%20dream%20is%20the%20most%20significant%20driver%20of%20market%20cap" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="https://legodud3.github.io/p/2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html">Copy link</button>
+            </div>
 
             <div class="post-nav">
                 <a class="visible" href="/p/2026-04-24-to-learn-something-well-start-small-and-follow-historical-evolution.html">← To learn something well, start small and follow historical evolution</a>
@@ -72,5 +88,30 @@
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+
 </body>
 </html>

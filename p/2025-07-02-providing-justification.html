@@ -10,8 +10,16 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://legodud3.github.io/p/2025-07-02-providing-justification.html">
     <meta property="article:published_time" content="2025-07-02T00:00:00Z">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://legodud3.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chinmay Deo — personal blog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Providing Justification">
+    <meta name="twitter:description" content="I have begun internalizing that I don&#x27;t need to give a reason for my thoughts or actions if I don&#x27;t want to, and I don&#x27;t owe anyone an explanation. This implies that I have the freedom to determine wh">
+    <meta name="twitter:image" content="https://legodud3.github.io/og-image.png">
     <link rel="canonical" href="https://legodud3.github.io/p/2025-07-02-providing-justification.html">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Providing Justification","datePublished":"2025-07-02T00:00:00Z","url":"https://legodud3.github.io/p/2025-07-02-providing-justification.html","mainEntityOfPage":"https://legodud3.github.io/p/2025-07-02-providing-justification.html","image":"https://legodud3.github.io/og-image.png","author":{"@type":"Person","name":"Chinmay Deo","url":"https://legodud3.github.io/about.html"},"publisher":{"@type":"Person","name":"Chinmay Deo"}}</script>
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
@@ -36,6 +44,14 @@
 <p>I have begun internalizing that I don't need to give a reason for my thoughts or actions if I don't want to, and I don't owe anyone an explanation. </p>
 <p>This implies that I have the freedom to determine what is private to me and why, when an explanation or rationale undermines my own objectives, and who does or does not deserve an explanation. I believe that who I choose to share my why with—and in which situations—is something I have authority over. It's a gradual process to recognize this vs. "answer by default." Baby steps!</p>
             </article>
+
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Flegodud3.github.io%2Fp%2F2025-07-02-providing-justification.html&amp;t=Providing%20Justification" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2025-07-02-providing-justification.html&amp;text=Providing%20Justification" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2025-07-02-providing-justification.html" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="https://legodud3.github.io/p/2025-07-02-providing-justification.html">Copy link</button>
+            </div>
 
             <div class="post-nav">
                 <a class="visible" href="/p/2025-11-28-habit-retention.html">← Habit Retention</a>
@@ -70,5 +86,30 @@
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+
 </body>
 </html>

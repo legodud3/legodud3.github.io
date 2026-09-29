@@ -4,10 +4,15 @@ import re
 import sys
 from datetime import datetime, timezone
 from html import escape as html_escape
+from urllib.parse import quote as url_quote
 from xml.sax.saxutils import escape as xml_escape
 
 SITE_URL = "https://legodud3.github.io"
 SITE_TITLE = "Chinmay Deo"
+SITE_AUTHOR = "Chinmay Deo"
+# Static share card (1200x630) used for og:image / twitter:image on every page.
+OG_IMAGE_URL = f"{SITE_URL}/og-image.png"
+OG_IMAGE_ALT = "Chinmay Deo — personal blog"
 SITE_DESCRIPTION = "Personal blog of Chinmay Deo — short posts on learning, tech, and life."
 FEED_FILE = "feed.xml"
 FEED_ENTRIES = 20
@@ -250,13 +255,61 @@ def build_related_html(related):
     )
 
 
+# Copy-link behavior for the static share row on post pages. Kept as a constant
+# so the page template stays a plain f-string without doubled braces.
+SHARE_ROW_SCRIPT = """
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+"""
+
+
 def build_post_page(post, posts):
     """Render a fully static HTML page for a post (real <title>, OG tags,
-    canonical URL, baked-in prev/next nav and related posts). Rail and footer
-    come from layout.js at view time, same as the hand-written pages."""
+    canonical URL, JSON-LD, baked-in prev/next nav and related posts). Rail and
+    footer come from layout.js at view time, same as the hand-written pages."""
     title = html_escape(post["title"])
     description = html_escape((post["excerpt"] or "")[:200])
     absolute_url = f'{SITE_URL}{post["url"]}'
+
+    # URL-encoded parts for the static share links (safe to splice into hrefs).
+    share_url = url_quote(absolute_url, safe="")
+    share_text = url_quote(post["title"], safe="")
+
+    # Article structured data. "<" is escaped as a JSON unicode escape so post
+    # titles (untrusted input) can never break out of the <script> context.
+    json_ld = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": post["title"][:110],
+        "datePublished": iso_date(post["date"]),
+        "url": absolute_url,
+        "mainEntityOfPage": absolute_url,
+        "image": OG_IMAGE_URL,
+        "author": {"@type": "Person", "name": SITE_AUTHOR, "url": f"{SITE_URL}/about.html"},
+        "publisher": {"@type": "Person", "name": SITE_AUTHOR},
+    }, separators=(",", ":"), ensure_ascii=False).replace("<", "\\u003c")
 
     index = posts.index(post)
     newer_post = posts[index - 1] if index > 0 else None
@@ -290,8 +343,16 @@ def build_post_page(post, posts):
     <meta property="og:type" content="article">
     <meta property="og:url" content="{absolute_url}">
     <meta property="article:published_time" content="{iso_date(post["date"])}">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="{OG_IMAGE_URL}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{OG_IMAGE_ALT}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{title}">
+    <meta name="twitter:description" content="{description}">
+    <meta name="twitter:image" content="{OG_IMAGE_URL}">
     <link rel="canonical" href="{absolute_url}">
+    <script type="application/ld+json">{json_ld}</script>
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
@@ -315,6 +376,14 @@ def build_post_page(post, posts):
 {content_html}
             </article>
 
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u={share_url}&amp;t={share_text}" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url={share_url}&amp;text={share_text}" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url={share_url}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="{absolute_url}">Copy link</button>
+            </div>
+
             <div class="post-nav">
                 {newer_link}
                 {older_link}
@@ -326,7 +395,7 @@ def build_post_page(post, posts):
 
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
-    <script src="/theme-toggle.js"></script>
+    <script src="/theme-toggle.js"></script>{SHARE_ROW_SCRIPT}
 </body>
 </html>
 """

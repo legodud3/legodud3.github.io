@@ -10,8 +10,16 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://legodud3.github.io/p/2026-07-27-xteink.html">
     <meta property="article:published_time" content="2026-07-27T00:00:00Z">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://legodud3.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chinmay Deo — personal blog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="xteink">
+    <meta name="twitter:description" content="I am tempted to pick up an xteink device. xteink looked at a mature market (e-readers) and had a unique set of insights about that market: Miniatures: Miniature size, not miniature features. This is p">
+    <meta name="twitter:image" content="https://legodud3.github.io/og-image.png">
     <link rel="canonical" href="https://legodud3.github.io/p/2026-07-27-xteink.html">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"xteink","datePublished":"2026-07-27T00:00:00Z","url":"https://legodud3.github.io/p/2026-07-27-xteink.html","mainEntityOfPage":"https://legodud3.github.io/p/2026-07-27-xteink.html","image":"https://legodud3.github.io/og-image.png","author":{"@type":"Person","name":"Chinmay Deo","url":"https://legodud3.github.io/about.html"},"publisher":{"@type":"Person","name":"Chinmay Deo"}}</script>
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
@@ -42,6 +50,14 @@
 </ul>
 <p>Xteink will likely enjoy a brief hype cycle driven by social media vanity, but the long-term unit economics are going to be brutal. Hardware margins are famously paper-thin, and unlike Amazon—which uses cheap Kindles as a customer-acquisition hook to sell books—Xteink has no content ecosystem to monetize because they are insisting that users bring their own books. And most importantly, is device size the long-term barrier to reading?</p>
             </article>
+
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-07-27-xteink.html&amp;t=xteink" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-07-27-xteink.html&amp;text=xteink" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-07-27-xteink.html" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="https://legodud3.github.io/p/2026-07-27-xteink.html">Copy link</button>
+            </div>
 
             <div class="post-nav">
                 <a class="visible" href="/p/2026-08-15-talk-less-and-listen-more.html">← Talk less and listen more</a>
@@ -76,5 +92,30 @@
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+
 </body>
 </html>

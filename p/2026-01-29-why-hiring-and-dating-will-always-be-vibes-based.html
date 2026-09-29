@@ -10,8 +10,16 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://legodud3.github.io/p/2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.html">
     <meta property="article:published_time" content="2026-01-29T00:00:00Z">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://legodud3.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chinmay Deo — personal blog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Why hiring and dating will always be vibes based">
+    <meta name="twitter:description" content="Hiring and dating are always frustrating but necessary matching processes we have to participate in. Cursory googling shows that &#x27;matching&#x27; problems are a whole field of computer science theory (which">
+    <meta name="twitter:image" content="https://legodud3.github.io/og-image.png">
     <link rel="canonical" href="https://legodud3.github.io/p/2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.html">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Why hiring and dating will always be vibes based","datePublished":"2026-01-29T00:00:00Z","url":"https://legodud3.github.io/p/2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.html","mainEntityOfPage":"https://legodud3.github.io/p/2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.html","image":"https://legodud3.github.io/og-image.png","author":{"@type":"Person","name":"Chinmay Deo","url":"https://legodud3.github.io/about.html"},"publisher":{"@type":"Person","name":"Chinmay Deo"}}</script>
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
@@ -55,6 +63,14 @@ I believe that nature intended for people-to-people matching processes to BE fuz
 Hiring managers are risk minimizers. Unless it is truly helpful (say, in a very creative team or a real 0-to-1 team), hiring managers do not want a "wild" candidate for their "unique perspective and ideas." No, hiring managers want Rahul/John/Ahmed from another company's accounting team to come join their accounting team so that nothing breaks and they aren't blamed for it. Butt in the seat &gt; snowflake.</p>
             </article>
 
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.html&amp;t=Why%20hiring%20and%20dating%20will%20always%20be%20vibes%20based" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.html&amp;text=Why%20hiring%20and%20dating%20will%20always%20be%20vibes%20based" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.html" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="https://legodud3.github.io/p/2026-01-29-why-hiring-and-dating-will-always-be-vibes-based.html">Copy link</button>
+            </div>
+
             <div class="post-nav">
                 <a class="visible" href="/p/2026-01-31-what-is-love.html">← What is love?</a>
                 <a class="visible" href="/p/2026-01-27-growing-pains.html">Growing pains →</a>
@@ -88,5 +104,30 @@ Hiring managers are risk minimizers. Unless it is truly helpful (say, in a very 
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+
 </body>
 </html>

@@ -10,8 +10,16 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://legodud3.github.io/p/2026-01-25-nearly-empty-gyms.html">
     <meta property="article:published_time" content="2026-01-25T00:00:00Z">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://legodud3.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chinmay Deo — personal blog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nearly empty gyms">
+    <meta name="twitter:description" content="I love working out in nearly empty gyms, which I define as gyms that are operating at &lt;20% but &gt;0% capacity. I find I can lift heavier weights and finish quicker. I&#x27;m sure both of these are physically">
+    <meta name="twitter:image" content="https://legodud3.github.io/og-image.png">
     <link rel="canonical" href="https://legodud3.github.io/p/2026-01-25-nearly-empty-gyms.html">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Nearly empty gyms","datePublished":"2026-01-25T00:00:00Z","url":"https://legodud3.github.io/p/2026-01-25-nearly-empty-gyms.html","mainEntityOfPage":"https://legodud3.github.io/p/2026-01-25-nearly-empty-gyms.html","image":"https://legodud3.github.io/og-image.png","author":{"@type":"Person","name":"Chinmay Deo","url":"https://legodud3.github.io/about.html"},"publisher":{"@type":"Person","name":"Chinmay Deo"}}</script>
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
@@ -36,6 +44,14 @@
 <p>I love working out in nearly empty gyms, which I define as gyms that are operating at &lt;20% but &gt;0% capacity. I find I can lift heavier weights and finish quicker. I'm sure both of these are physically possible even if the gym is at 60% capacity. But I like it when I see a nearly empty gym.</p>
 <p>And so, in the grand tradition of generalization, my hypothesis is that I function best in nearly-empty-gym-like environments. There should be SOMETHING going on in the arena: a thought or memory I've held on to, some not-crazy background activity (like a dishwasher), or some light, non-overstimulating music. I will try to make as many hours of the day as I can feel like nearly empty gyms.</p>
             </article>
+
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-25-nearly-empty-gyms.html&amp;t=Nearly%20empty%20gyms" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-25-nearly-empty-gyms.html&amp;text=Nearly%20empty%20gyms" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-01-25-nearly-empty-gyms.html" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="https://legodud3.github.io/p/2026-01-25-nearly-empty-gyms.html">Copy link</button>
+            </div>
 
             <div class="post-nav">
                 <a class="visible" href="/p/2026-01-27-growing-pains.html">← Growing pains</a>
@@ -70,5 +86,30 @@
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+
 </body>
 </html>

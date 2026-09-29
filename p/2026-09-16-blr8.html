@@ -10,8 +10,16 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://legodud3.github.io/p/2026-09-16-blr8.html">
     <meta property="article:published_time" content="2026-09-16T00:00:00Z">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://legodud3.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chinmay Deo — personal blog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BLR8">
+    <meta name="twitter:description" content="My current hypothesis for generating new ideas is to put myself in new situations. Today, I used Amazon Tours to visit Amazon&#x27;s Bangalore Fulfillment Center (FC) BLR8. Took me back to ITC days and the">
+    <meta name="twitter:image" content="https://legodud3.github.io/og-image.png">
     <link rel="canonical" href="https://legodud3.github.io/p/2026-09-16-blr8.html">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"BLR8","datePublished":"2026-09-16T00:00:00Z","url":"https://legodud3.github.io/p/2026-09-16-blr8.html","mainEntityOfPage":"https://legodud3.github.io/p/2026-09-16-blr8.html","image":"https://legodud3.github.io/og-image.png","author":{"@type":"Person","name":"Chinmay Deo","url":"https://legodud3.github.io/about.html"},"publisher":{"@type":"Person","name":"Chinmay Deo"}}</script>
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
@@ -39,6 +47,14 @@ It's a huge space (~0.4M sq ft) for a normal person like me. But tiny in the Ama
 <p>Low automation: Amazon FC's in India are quite low automation. Yes, they are neat and organized (vs other warehouses I have seen), but there's so few machines. Why? Because (apparently) low labor costs break all cost-benefit analyses.</p>
 <p>Sad life: Being a warehouse worker is quite a sad job. Essential but sad. You have no phone, no colleagues or teammates per se so you are lonely, and you basically follow the instructions given by a machine (go to X and do Y). But there is non-zero value to it, and we have an endless pool or labor which will accept that non-zero value, even if they know it's unfulfilling. I wish we get to a place where Amazon and others struggle to hire such workers because they have better options, but I know that is decades away (at current pace).</p>
             </article>
+
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-09-16-blr8.html&amp;t=BLR8" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-09-16-blr8.html&amp;text=BLR8" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-09-16-blr8.html" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="https://legodud3.github.io/p/2026-09-16-blr8.html">Copy link</button>
+            </div>
 
             <div class="post-nav">
                 <a class="visible" href="/p/2026-09-28-intelligence-may-not-follow-division-of-labour.html">← Intelligence may not follow division of labour</a>
@@ -73,5 +89,30 @@ It's a huge space (~0.4M sq ft) for a normal person like me. But tiny in the Ama
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+
 </body>
 </html>
