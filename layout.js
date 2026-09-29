@@ -12,9 +12,9 @@
 // point and #themeToggle exist when those scripts initialize.
 window.Layout = (function () {
     const NAV_ITEMS = [
-        { key: 'home', href: '/index.html', icon: 'ð ', label: 'Home' },
-        { key: 'about', href: '/about.html', icon: 'ð¤', label: 'About me' },
-        { key: 'projects', href: '/side-projects.html', icon: 'ð', label: 'Side projects' },
+        { key: 'home', href: '/index.html', icon: '🏠', label: 'Home' },
+        { key: 'about', href: '/about.html', icon: '👤', label: 'About me' },
+        { key: 'projects', href: '/side-projects.html', icon: '🚀', label: 'Side projects' },
     ];
 
     function el(tag, className, text) {
