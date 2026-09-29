@@ -8,7 +8,7 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 *   **Browser-Based Editor**: Write, format, preview, and publish posts directly from `write.html` using the GitHub API—no command line needed.
 *   **Automated Content Pipeline**:
     *   Posts are written in **Markdown** and stored in the `posts/` directory (organized by year).
-    *   A **GitHub Action** triggers on every push, running a Python script to scan files and regenerate the `posts.json` index automatically.
+    *   A **GitHub Action** triggers on every push, running a Python script that regenerates the `posts.json` index, the `feed.xml` Atom feed, and **pre-rendered static HTML pages** for every post under `p/` (real titles, descriptions, canonical URLs, and baked-in prev/next navigation).
 *   **Smart Organization**:
     *   **Tagging System**: Supports multiple tags — Reflection, Tech, Life, Learning — each with a distinct color.
     *   **Search & Filtering**: The homepage features real-time search and tag filtering.
@@ -16,9 +16,10 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
     *   **Surprise Me**: A button to jump to a random post for serendipitous discovery.
 *   **Reading Experience**:
     *   **Side Projects Page**: A dedicated section to showcase ongoing and completed side projects with card-based layout.
-    *   Client-side Markdown rendering.
+    *   **Static post pages**: every post is served as a pre-rendered page at `/p/<slug>.html` — fast first paint, per-post SEO metadata, and no client-side Markdown parsing on the reader path.
     *   Previous/Next post navigation in the footer.
     *   Clean, distraction-free design with dark and light modes.
+*   **Shared Layout Module**: `layout.js` builds the left rail (brand, nav, writing heatmap) and footer from mount points, so no page duplicates that markup.
 
 ## Design System
 
@@ -51,8 +52,14 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 
 ### Post Index (`update_posts.yml`)
 - **Trigger**: Push to `posts/**/*.md`, `tags.json`, or `update_posts.py`
-- **Action**: Runs `update_posts.py` to regenerate `posts.json`
-- **Output**: Auto-commits updated `posts.json`
+- **Action**: Installs `markdown`, then runs `update_posts.py` to regenerate `posts.json`, `feed.xml` (Atom feed), and the static post pages in `p/`
+- **Output**: Auto-commits updated `posts.json` + `feed.xml` + `p/`
+- **Concurrency**: Serialized (`posts-index` group) so rapid publishes queue instead of racing
+- **Note**: `p/` is fully regenerated (and wiped) on each run, so deleted or renamed posts don't leave stale pages behind
+
+### Post Validation (`validate_posts.yml`)
+- **Trigger**: Pull requests touching `posts/**/*.md` or `tags.json`
+- **Action**: Runs `update_posts.py --validate`, failing on missing titles, invalid dates, unknown tags, or misnamed files
 
 ## Getting Started
 
@@ -97,7 +104,14 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
 
 ## Dependencies
 
-- [marked.js](https://marked.js.org/) — Client-side Markdown rendering (via CDN)
-- [DOMPurify](https://github.com/cure53/DOMPurify) — XSS sanitization (via CDN)
-- [js-yaml](https://github.com/nodeca/js-yaml) — YAML frontmatter parsing (via CDN)
+**Build (Python, used by the GitHub Action):**
+- [markdown](https://pypi.org/project/Markdown/) — renders posts to HTML for the static pages (`pip install markdown`)
+
+**Runtime (CDN, only loaded by the browser-based editor `write.html` for its preview):**
+- [marked.js](https://marked.js.org/) — Markdown rendering (via CDN, version-pinned + SRI)
+- [DOMPurify](https://github.com/cure53/DOMPurify) — XSS sanitization (via CDN, version-pinned + SRI)
+
+**Fonts:**
 - [Google Fonts](https://fonts.google.com/) — Roboto (body, headings)
+
+Post pages are pre-rendered, so `view.html` is only a small legacy redirect shim that forwards old `view.html?post=…` links to `/p/<slug>.html`. `js-yaml` is no longer needed at runtime.

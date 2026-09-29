@@ -11,20 +11,66 @@ on:
 permissions:
   contents: write
 
+# Serialize runs per branch: two quick publishes in a row must queue, not race
+# (the pull --rebase + push below would otherwise fail intermittently).
+concurrency:
+  group: posts-index-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate posts.json
+      - name: Install Python dependencies
+        run: python3 -m pip install markdown
+
+      - name: Generate posts.json, feed.xml, and static post pages
         run: python3 update_posts.py
 
-      - name: Commit posts.json
+      - name: Commit generated files
+        shell: bash
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add posts.json
-          git commit -m "Update posts index" || echo "No changes to commit"
-          git pull --rebase origin main
-          git push
+
+          # Stage generated artifacts that exist (an older checkout may not have
+          # p/ or feed.xml yet, and a missing pathspec would abort under -e).
+          existing=""
+          for path in posts.json feed.xml p; do
+            if [ -e "$path" ]; then existing="$existing $path"; fi
+          done
+          if [ -z "$existing" ]; then
+            echo "::error::No generated artifacts found — did the generation step run?"
+            exit 1
+          fi
+          git add -- $existing
+
+          # Nothing to publish when regeneration is byte-identical to what's committed.
+          if git diff --cached --quiet; then
+            echo "Generated output already up to date."
+            exit 0
+          fi
+
+          git commit -m "Update posts index, feed, and static pages"
+
+          # Rebase onto the branch being built (not a hardcoded 'main'): rebasing
+          # a feature branch onto main rewrites its commits and turns the next
+          # push into a non-fast-forward rejection. Retry so a concurrent push
+          # (e.g. another workflow run) can't fail the build.
+          for attempt in 1 2 3; do
+            if ! pull_out=$(git pull --rebase origin "${GITHUB_REF_NAME}" 2>&1); then
+              echo "::error::git pull --rebase failed: ${pull_out}"
+              exit 1
+            fi
+            if push_out=$(git push origin "HEAD:${GITHUB_REF_NAME}" 2>&1); then
+              echo "Pushed generated files to ${GITHUB_REF_NAME}."
+              exit 0
+            fi
+            echo "Push attempt ${attempt} failed, retrying after rebase: ${push_out}"
+            sleep 5
+          done
+
+          echo "::error::git push failed after 3 attempts: ${push_out}"
+          exit 1

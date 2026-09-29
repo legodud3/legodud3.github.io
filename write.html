@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Write New Post - Chinmay Deo</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
+    <link rel="icon" type="image/png" href="legohat_logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+    <!-- Pinned versions + SRI hashes (used for the post preview only) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/marked@18.0.14/lib/marked.umd.min.js"
+        integrity="sha384-1KNqLSVIIDocc7NKjWP/vfNnoRSAenAfiLA3OnW7YOebcl46U/07fZMCkfzuBa+a"
+        crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"
+        integrity="sha384-JEyTNhjM6R1ElGoJns4U2Ln4ofPcqzSsynQkmEc/KGy6336qAZl70tDLufbkla+3"
+        crossorigin="anonymous"></script>
     <style>
         .writing-workspace {
             max-width: 900px;
@@ -130,25 +141,16 @@
             border-color: var(--link-color);
         }
 
-        .editor-btn[aria-pressed="true"] {
-            border-color: var(--accent-color);
-            background: rgba(255, 215, 0, 0.15);
-            color: var(--accent-color);
-        }
-
         .editor-btn:focus-visible {
             outline: 2px solid var(--link-color);
             outline-offset: 1px;
         }
 
-        .editor-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-            display: block;
-        }
-
+        /* The editor is a plain <textarea> holding raw Markdown. This keeps the
+           edit round-trip (markdown in, markdown out) lossless — no reliance on
+           deprecated execCommand HTML serialization. */
         .rich-editor {
+            width: 100%;
             min-height: 460px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -157,17 +159,15 @@
             color: var(--text-color);
             line-height: 1.6;
             overflow-wrap: break-word;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 15px;
+            resize: vertical;
+            box-sizing: border-box;
         }
 
         .rich-editor:focus {
             outline: 2px solid var(--link-color);
             outline-offset: 1px;
-        }
-
-        .rich-editor:empty::before {
-            content: attr(data-placeholder);
-            color: #888;
-            pointer-events: none;
         }
 
         .button-group {
@@ -466,24 +466,21 @@
                             <option value="h3">Heading 3</option>
                         </select>
                         <span class="toolbar-divider" aria-hidden="true"></span>
-                        <button type="button" class="editor-btn format-toggle" data-command="bold" title="Bold (Ctrl+B)" aria-label="Bold" aria-pressed="false" onclick="applyEditorFormat('bold')"><strong>B</strong></button>
-                        <button type="button" class="editor-btn format-toggle" data-command="italic" title="Italic (Ctrl+I)" aria-label="Italic" aria-pressed="false" onclick="applyEditorFormat('italic')"><em>I</em></button>
-                        <button type="button" class="editor-btn format-toggle" data-command="underline" title="Underline (Ctrl+U)" aria-label="Underline" aria-pressed="false" onclick="applyEditorFormat('underline')"><span style="text-decoration: underline;">U</span></button>
-                        <button type="button" class="editor-btn format-toggle" data-command="strikeThrough" title="Strikethrough" aria-label="Strikethrough" aria-pressed="false" onclick="applyEditorFormat('strikeThrough')"><s>S</s></button>
+                        <button type="button" class="editor-btn" title="Bold (Ctrl+B)" aria-label="Bold" onclick="mdWrap('**', '**')"><strong>B</strong></button>
+                        <button type="button" class="editor-btn" title="Italic (Ctrl+I)" aria-label="Italic" onclick="mdWrap('*', '*')"><em>I</em></button>
+                        <button type="button" class="editor-btn" title="Strikethrough" aria-label="Strikethrough" onclick="mdWrap('~~', '~~')"><s>S</s></button>
+                        <button type="button" class="editor-btn" title="Inline code" aria-label="Inline code" onclick="mdWrap('`', '`')"><span style="font-family: monospace;">&lt;&gt;</span></button>
                         <span class="toolbar-divider" aria-hidden="true"></span>
-                        <button type="button" class="editor-btn format-toggle" data-command="insertUnorderedList" title="Bulleted list" aria-label="Bulleted list" aria-pressed="false" onclick="applyEditorFormat('insertUnorderedList')">•≡</button>
-                        <button type="button" class="editor-btn format-toggle" data-command="insertOrderedList" title="Numbered list" aria-label="Numbered list" aria-pressed="false" onclick="applyEditorFormat('insertOrderedList')">1.</button>
-                        <button type="button" class="editor-btn" title="Blockquote" aria-label="Blockquote" onclick="toggleBlockquote()">❝</button>
-                        <button type="button" class="editor-btn" title="Insert link" aria-label="Insert link" onclick="insertLink()">🔗</button>
-                        <button type="button" class="editor-btn" title="Clear formatting" aria-label="Clear formatting" onclick="clearEditorFormatting()">Tx</button>
+                        <button type="button" class="editor-btn" title="Bulleted list" aria-label="Bulleted list" onclick="mdPrefix('- ')">•≡</button>
+                        <button type="button" class="editor-btn" title="Numbered list" aria-label="Numbered list" onclick="mdNumberedList()">1.</button>
+                        <button type="button" class="editor-btn" title="Blockquote" aria-label="Blockquote" onclick="mdPrefix('&gt; ')">❝</button>
+                        <button type="button" class="editor-btn" title="Insert link (Ctrl+K)" aria-label="Insert link" onclick="insertLink()">🔗</button>
                     </div>
-                    <div
+                    <textarea
                         id="postBodyEditor"
                         class="rich-editor"
-                        contenteditable="true"
-                        data-placeholder="Write your post..."
-                        role="textbox"
-                        aria-multiline="true"></div>
+                        placeholder="Write your post in Markdown..."
+                        aria-label="Post content (Markdown)"></textarea>
                     <div class="char-count">
                         <span id="charCount">0</span> characters
                     </div>
@@ -505,19 +502,10 @@
         </div>
     </div>
 
-    <footer class="site-footer">
-        <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
-        <div class="theme-toggle-container">
-            <span class="theme-toggle-label">Dark</span>
-            <label class="theme-toggle-switch">
-                <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
-                <span class="theme-toggle-slider"></span>
-            </label>
-            <span class="theme-toggle-label">Light</span>
-        </div>
-    </footer>
+    <footer class="site-footer" data-layout-footer="minimal"></footer>
     </main>
 
+    <script src="layout.js"></script>
     <script src="theme-toggle.js"></script>
     <script>
         // Configuration
@@ -547,12 +535,16 @@
             // Check if already logged in
             checkAuth();
 
-            // Character counter
+            // Character counter + Markdown keyboard shortcuts
             const editor = document.getElementById('postBodyEditor');
             editor.addEventListener('input', updateCharCount);
-            editor.addEventListener('keyup', updateToolbarState);
-            editor.addEventListener('mouseup', updateToolbarState);
-            document.addEventListener('selectionchange', updateToolbarState);
+            editor.addEventListener('keydown', (event) => {
+                if (!(event.ctrlKey || event.metaKey)) return;
+                const key = event.key.toLowerCase();
+                if (key === 'b') { event.preventDefault(); mdWrap('**', '**'); }
+                else if (key === 'i') { event.preventDefault(); mdWrap('*', '*'); }
+                else if (key === 'k') { event.preventDefault(); insertLink(); }
+            });
 
             // Check for edit parameter
             const params = new URLSearchParams(window.location.search);
@@ -562,49 +554,82 @@
             }
         });
 
+        function getEditor() {
+            return document.getElementById('postBodyEditor');
+        }
+
         function updateCharCount() {
-            const body = getBodyMarkdown();
-            document.getElementById('charCount').textContent = body.length;
+            document.getElementById('charCount').textContent = getEditor().value.length;
         }
 
-        function ensureEditorFocus() {
-            const editor = document.getElementById('postBodyEditor');
+        // --- Markdown toolbar helpers ---
+        // The editor is a plain <textarea> holding raw Markdown, so formatting
+        // is deterministic string splicing instead of deprecated execCommand
+        // calls on contenteditable HTML (which varied per browser and could
+        // mangle posts on the edit round-trip).
+
+        // Replace the current selection, then place a sensible cursor.
+        function replaceSelection(replacement, cursorStartOffset, cursorEndOffset) {
+            const editor = getEditor();
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            editor.value = editor.value.slice(0, start) + replacement + editor.value.slice(end);
             editor.focus();
-        }
-
-        function applyEditorFormat(command) {
-            ensureEditorFocus();
-            document.execCommand(command, false, null);
+            editor.selectionStart = start + cursorStartOffset;
+            editor.selectionEnd = start + cursorEndOffset;
             updateCharCount();
-            updateToolbarState();
         }
 
+        // Wrap the selection in Markdown markers, e.g. **bold**, *italic*, `code`.
+        function mdWrap(before, after) {
+            const editor = getEditor();
+            const selected = editor.value.slice(editor.selectionStart, editor.selectionEnd) || 'text';
+            replaceSelection(before + selected + after, before.length, before.length + selected.length);
+        }
+
+        // Prefix every selected line (lists, quotes). Toggles off when every
+        // non-empty selected line already carries the prefix.
+        function mdPrefix(prefix) {
+            const editor = getEditor();
+            const selected = editor.value.slice(editor.selectionStart, editor.selectionEnd) || 'text';
+            const lines = selected.split('\n');
+            const allPrefixed = lines.every(line => line.trim() === '' || line.startsWith(prefix));
+            const next = lines
+                .map(line => {
+                    if (line.trim() === '') return line;
+                    return allPrefixed ? line.slice(prefix.length) : prefix + line;
+                })
+                .join('\n');
+            replaceSelection(next, 0, next.length);
+        }
+
+        // Numbered list: prefixes lines with 1. 2. 3. … (strips existing numbers first).
+        function mdNumberedList() {
+            const editor = getEditor();
+            const selected = editor.value.slice(editor.selectionStart, editor.selectionEnd) || 'item';
+            const next = selected.split('\n')
+                .map((line, i) => line.trim() === '' ? line : `${i + 1}. ${line.replace(/^\d+\.\s+/, '')}`)
+                .join('\n');
+            replaceSelection(next, 0, next.length);
+        }
+
+        // Headings: 'h2'/'h3' apply ## / ### to each selected line; 'p' strips them.
         function applyBlockFormat(tagName) {
-            ensureEditorFocus();
-            document.execCommand('formatBlock', false, tagName);
-            updateCharCount();
-            updateToolbarState();
-        }
-
-        function getCurrentBlock() {
-            const selection = window.getSelection();
-            let currentNode = selection && selection.anchorNode ? selection.anchorNode : null;
-            if (currentNode && currentNode.nodeType === Node.TEXT_NODE) {
-                currentNode = currentNode.parentElement;
-            }
-            if (!currentNode || !currentNode.closest) return null;
-            return currentNode.closest('blockquote') || currentNode.closest('p, h2, h3, div');
-        }
-
-        function toggleBlockquote() {
-            const block = getCurrentBlock();
-            applyBlockFormat(block && block.tagName.toLowerCase() === 'blockquote' ? 'p' : 'blockquote');
+            const editor = getEditor();
+            const selected = editor.value.slice(editor.selectionStart, editor.selectionEnd) || 'Heading';
+            const prefix = tagName === 'h2' ? '## ' : tagName === 'h3' ? '### ' : '';
+            const next = selected.split('\n')
+                .map(line => {
+                    const stripped = line.replace(/^#{1,6}\s+/, '');
+                    return stripped.trim() === '' ? stripped : prefix + stripped;
+                })
+                .join('\n');
+            replaceSelection(next, 0, next.length);
         }
 
         function insertLink() {
-            ensureEditorFocus();
-            const selection = window.getSelection();
-            if (!selection || selection.rangeCount === 0) return;
+            const editor = getEditor();
+            const selected = editor.value.slice(editor.selectionStart, editor.selectionEnd);
 
             const url = window.prompt('Link URL (https://, http://, mailto:, or a relative path):');
             if (!url) return;
@@ -614,41 +639,17 @@
                 return;
             }
 
-            if (selection.isCollapsed) {
-                document.execCommand('insertHTML', false, `<a href="${escapeHtml(safeUrl)}">${escapeHtml(safeUrl)}</a>`);
-            } else {
-                document.execCommand('createLink', false, safeUrl);
-            }
-            updateCharCount();
-            updateToolbarState();
+            const text = selected || safeUrl;
+            replaceSelection(`[${text}](${safeUrl})`, 1, 1 + text.length);
         }
 
-        function clearEditorFormatting() {
-            ensureEditorFocus();
-            document.execCommand('removeFormat', false, null);
-            document.execCommand('unlink', false, null);
+        // Undo/redo: execCommand is deprecated, but remains the practical way to
+        // invoke the browser's native textarea undo stack from a toolbar button.
+        function applyEditorFormat(command) {
+            const editor = getEditor();
+            editor.focus();
+            document.execCommand(command, false, null);
             updateCharCount();
-            updateToolbarState();
-        }
-
-        function updateToolbarState() {
-            const editor = document.getElementById('postBodyEditor');
-            const selection = window.getSelection();
-            if (!selection || !selection.anchorNode || !editor.contains(selection.anchorNode)) return;
-
-            document.querySelectorAll('.format-toggle').forEach(button => {
-                let active = false;
-                try {
-                    active = document.queryCommandState(button.dataset.command);
-                } catch (error) {
-                    active = false;
-                }
-                button.setAttribute('aria-pressed', String(active));
-            });
-
-            const block = getCurrentBlock();
-            const tagName = block ? block.tagName.toLowerCase() : 'p';
-            document.getElementById('blockFormat').value = ['h2', 'h3'].includes(tagName) ? tagName : 'p';
         }
 
         async function loadTags() {
@@ -683,7 +684,7 @@
                 
                 // Construct the path (posts/YYYY/filename.md or similar)
                 // We'll determine the full path by fetching posts.json and finding the file
-                const response = await fetch('posts.json?v=' + Date.now());
+                const response = await fetch('posts.json');
                 if (!response.ok) throw new Error('Failed to load posts index');
                 
                 const posts = await response.json();
@@ -696,8 +697,9 @@
                 
                 editPostPath = post.filename;
                 
-                // Fetch the actual markdown content
-                const contentResponse = await fetch('posts/' + encodeURIComponent(editPostPath));
+                // Fetch the actual markdown content (encode each segment, keep the / separators)
+                const encodedPath = editPostPath.split('/').map(encodeURIComponent).join('/');
+                const contentResponse = await fetch('posts/' + encodedPath);
                 if (!contentResponse.ok) throw new Error('Failed to load post content');
                 
                 const content = await contentResponse.text();
@@ -720,7 +722,13 @@
                             const match = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
                             if (match) {
                                 const key = match[1].trim().toLowerCase();
-                                let value = match[2].trim().replace(/^["']|['"]$/g, ''); // Remove quotes
+                                let value = match[2].trim();
+                                // Remove surrounding quotes; unescape YAML double-quote escapes
+                                if (value.length >= 2 && value.startsWith('"') && value.endsWith('"')) {
+                                    value = value.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+                                } else if (value.length >= 2 && value.startsWith("'") && value.endsWith("'")) {
+                                    value = value.slice(1, -1);
+                                }
                                 
                                 if (key === 'title') {
                                     title = value;
@@ -741,8 +749,9 @@
                     document.getElementById('postTag').value = tag;
                 }
                 
-                // Set the editor content
-                document.getElementById('postBodyEditor').innerHTML = DOMPurify.sanitize(marked.parse(body.trim()));
+                // Set the editor content. The textarea holds raw Markdown, so
+                // editing is a lossless round-trip (no HTML serialization).
+                document.getElementById('postBodyEditor').value = body.trim();
                 updateCharCount();
                 
                 // Update UI to indicate edit mode
@@ -753,7 +762,7 @@
                 const editBanner = document.createElement('div');
                 editBanner.id = 'editPostBanner';
                 editBanner.className = 'edit-banner';
-                editBanner.innerHTML = `Editing: <strong>${escapeHtml(title)}</strong> <a href="view.html?post=${encodeURIComponent(editPostPath)}" style="margin-left:12px; font-size:0.9em">← View post</a>`;
+                editBanner.innerHTML = `Editing: <strong>${escapeHtml(title)}</strong> <a href="${staticPostUrl(editPostPath)}" style="margin-left:12px; font-size:0.9em">← View post</a>`;
                 document.getElementById('editorContainer').insertBefore(editBanner, document.getElementById('postForm'));
                 
                 // Update publish button text
@@ -846,6 +855,12 @@
                 .replace(/'/g, '&#39;');
         }
 
+        // Static page URL for a post path: posts/2026/2026-09-28-slug.md -> /p/2026-09-28-slug.html
+        function staticPostUrl(postPath) {
+            const slug = postPath.split('/').pop().replace(/\.md$/, '');
+            return '/p/' + encodeURIComponent(slug) + '.html';
+        }
+
         function generateSlug(title) {
             return title
                 .toLowerCase()
@@ -853,116 +868,21 @@
                 .replace(/^-+|-+$/g, '');
         }
 
+        // Titles are emitted as quoted YAML scalars so titles containing ':',
+        // '#', quotes, etc. stay parseable by js-yaml, this editor's regex
+        // parser, and update_posts.py alike.
         function generateFrontMatter(title, date, tag) {
-            return `---\ntitle: ${title}\ndate: ${date}\ntag: ${tag}\n---\n\n`;
+            const safeTitle = title.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+            return `---\ntitle: "${safeTitle}"\ndate: ${date}\ntag: ${tag}\n---\n\n`;
         }
 
-        function nodesToMarkdown(nodes, inList = false) {
-            let output = '';
-
-            for (const node of nodes) {
-                if (node.nodeType === Node.TEXT_NODE) {
-                    output += node.textContent;
-                    continue;
-                }
-
-                if (node.nodeType !== Node.ELEMENT_NODE) {
-                    continue;
-                }
-
-                const tag = node.tagName.toLowerCase();
-
-                if (tag === 'br') {
-                    output += '\n';
-                    continue;
-                }
-
-                if (tag === 'strong' || tag === 'b') {
-                    output += `**${nodesToMarkdown(node.childNodes, inList).trim()}**`;
-                    continue;
-                }
-
-                if (tag === 'em' || tag === 'i') {
-                    output += `*${nodesToMarkdown(node.childNodes, inList).trim()}*`;
-                    continue;
-                }
-
-                if (tag === 'u') {
-                    output += `<u>${nodesToMarkdown(node.childNodes, inList).trim()}</u>`;
-                    continue;
-                }
-
-                if (tag === 's' || tag === 'strike' || tag === 'del') {
-                    output += `~~${nodesToMarkdown(node.childNodes, inList).trim()}~~`;
-                    continue;
-                }
-
-                if (tag === 'a') {
-                    const text = nodesToMarkdown(node.childNodes, inList).trim() || node.getAttribute('href');
-                    const href = (node.getAttribute('href') || '').replace(/\)/g, '\\)');
-                    output += href ? `[${text}](${href})` : text;
-                    continue;
-                }
-
-                if (/^h[1-6]$/.test(tag)) {
-                    const level = Number(tag.slice(1));
-                    const text = nodesToMarkdown(node.childNodes, inList).trim();
-                    if (text) {
-                        output += `${'#'.repeat(level)} ${text}\n\n`;
-                    }
-                    continue;
-                }
-
-                if (tag === 'ul' || tag === 'ol') {
-                    const items = Array.from(node.children)
-                        .filter((child) => child.tagName && child.tagName.toLowerCase() === 'li')
-                        .map((li, index) => {
-                            const marker = tag === 'ol' ? `${index + 1}.` : '-';
-                            return `${marker} ${nodesToMarkdown(li.childNodes, true).replace(/\n+/g, ' ').trim()}`;
-                        })
-                        .filter(Boolean);
-                    if (items.length) {
-                        output += `${items.join('\n')}\n\n`;
-                    }
-                    continue;
-                }
-
-                if (tag === 'li') {
-                    output += nodesToMarkdown(node.childNodes, true);
-                    continue;
-                }
-
-                if (tag === 'blockquote') {
-                    const text = nodesToMarkdown(node.childNodes).trim();
-                    if (text) {
-                        output += `${text.split('\n').map(line => `> ${line}`).join('\n')}\n\n`;
-                    }
-                    continue;
-                }
-
-                if (tag === 'div' || tag === 'p') {
-                    const text = nodesToMarkdown(node.childNodes, inList).trim();
-                    if (text) {
-                        output += inList ? text : `${text}\n\n`;
-                    } else if (!inList) {
-                        output += '\n';
-                    }
-                    continue;
-                }
-
-                output += nodesToMarkdown(node.childNodes, inList);
-            }
-
-            return output;
-        }
-
+        // The textarea already holds raw Markdown, so this is just a light
+        // whitespace cleanup — no HTML→Markdown serialization needed.
         function getBodyMarkdown() {
-            const editor = document.getElementById('postBodyEditor');
-            const raw = nodesToMarkdown(editor.childNodes)
+            return getEditor().value
                 .replace(/\u00a0/g, ' ')
                 .replace(/\n{3,}/g, '\n\n')
                 .trim();
-            return raw;
         }
 
 async function publishPost() {
@@ -1057,7 +977,7 @@ async function publishPost() {
 
                     const updateData = await updateResponse.json();
                     showStatus(
-                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="window.location.href='view.html?post=${encodeURIComponent(path)}'" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">View Post</button>`,
+                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="window.location.href='${staticPostUrl(path)}'" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">View Post</button>`,
                         'success'
                     );
                 } else {
@@ -1161,11 +1081,10 @@ tag: ${safeTag}
             document.getElementById('postTitle').value = '';
             document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('postTag').value = '';
-            document.getElementById('postBodyEditor').innerHTML = '';
+            document.getElementById('postBodyEditor').value = '';
             document.getElementById('charCount').textContent = '0';
             document.getElementById('previewContainer').style.display = 'none';
             document.getElementById('statusMessage').className = 'status-message';
-            updateToolbarState();
         }
 
         function showStatus(message, type, elementId = 'statusMessage') {

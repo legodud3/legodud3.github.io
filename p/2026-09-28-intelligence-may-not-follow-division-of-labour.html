@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligence may not follow division of labour - Chinmay Deo</title>
+    <meta name="description" content="I spent 90 minutes skimming through the deepseek-coder paper. It was released in early 2024. Deepseek (&amp; others) had started giving signals that coding is a great &quot;agentic&quot; use case of foundation mode">
+    <meta property="og:title" content="Intelligence may not follow division of labour">
+    <meta property="og:description" content="I spent 90 minutes skimming through the deepseek-coder paper. It was released in early 2024. Deepseek (&amp; others) had started giving signals that coding is a great &quot;agentic&quot; use case of foundation mode">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://legodud3.github.io/p/2026-09-28-intelligence-may-not-follow-division-of-labour.html">
+    <meta property="article:published_time" content="2026-09-28T00:00:00Z">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://legodud3.github.io/p/2026-09-28-intelligence-may-not-follow-division-of-labour.html">
+    <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
+    <link rel="icon" type="image/png" href="/legohat_logo.png">
+    <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body data-page="post">
+    <div class="app-shell">
+        <aside class="left-rail" data-layout-rail></aside>
+
+        <main class="main-panel">
+            <header class="page-header page-header-slim">
+                <a href="/index.html" class="back-link" style="margin: 0;">← Back to Posts</a>
+            </header>
+
+            <article class="markdown-body">
+                <h1 class="post-reader-title">Intelligence may not follow division of labour</h1>
+                <div class="post-meta"><span class="post-tag tag-reflection">[Reflection]</span>
+                [2026-09-28]</div>
+<p>I spent 90 minutes skimming through the deepseek-coder <a href="https://arxiv.org/abs/2401.14196">paper</a>. It was released in early 2024. Deepseek (&amp; others) had started giving signals that coding is a great "agentic" use case of foundation models. It's a fascinating paper, even for a non-technical person like me, because of how intuitive, simple, and effective some of their techniques are. I was particularly impressed with them training a coding generation model in two ways - namely next-token generation (good for new code generation) and fill-in-the-middle (good for edits, debugging errors in an existing code). The technique had been applied before, but Deepseek went on to produce the kill shot of testing the right mix between these two techniques for optimal performance.
+Anyway, my brain went off on various tangents before I landed on one that has stuck with me for the past few days. Why didn't Deepseek - or the industry at large - use a chain of smaller, specialized models vs one 'big blob' model? This is extremely counterintuitve to me, a business generalist. Why? Because it has been drilled in my brain that specialization of labor increases output, improves quality, AND lowers cost. Our entire world is designed around the specialization of labor. And yet, here we have an example of a task where specialization <em>not only does not work, but actively fails vs generalization</em>. The common reasons cited are: (a) many models = Chinese whispers (lol) and errors compounding (b) faster inference (since you don't need to call multiple models) and (c) reduced time and cost to train (I can see why this mattered to Deepseek in the early days).</p>
+<p>I will be honest that I have not intuitively grasped why this should be the case, I will continue holding this thought in my head. My inability to grasp the "big blob of intelligence" concept aside, it is clearly the direction that the foundation labs have taken over the past ~3 years. Train one big blob model and it will be the best at every task. Foundation lab direction aside, there's anecdotes to suggest this is true, my favourite one being that Bloomberg spent reasonable time and money training BloombergGPT, only to be beaten hands down by GPT4 a few weeks later at tasks BloombergGPT was designed to excel at.</p>
+<p>Here are some 'non-duh' implications of 'big blob' &gt; specialized:</p>
+<ol>
+<li>When creating a new piece of software (or agent) from scratch, it is stupid to NOT start with the best model, no matter the cost. The best model will be the best at <em>any</em>task. When your software is released to the world, start with that best model, and keep stepping down the capability (and by definition cost) ladder until it's good enough.</li>
+<li>Companies or countries training or fine tuning custom models for 'their fields', 'their nuances', 'their audience' is a dumb idea. Just use the best model because it will be better than anything you can train.</li>
+<li>Companies gatekeeping models from accessing their data or executing their workflows are smart. Because that's the only thing the 'best models' don't have. Companies in the business of data<em>streams</em>, whereby the data keeps getting continuously refreshed are even smarter. (You should assume that your stale data will enter model training datasets...at some point.).</li>
+<li>Does this hint that our entire theory of knowledge work whereby we have applied the specialization of labor concept from the industrial revolution is plain wrong? And that knowledge workers - and the corporations that employ them - benefit from generalization, not specialization?</li>
+</ol>
+            </article>
+
+            <div class="post-nav">
+                <span></span>
+                <a class="visible" href="/p/2026-09-16-blr8.html">BLR8 →</a>
+            </div>
+
+            <section class="related-posts-section" aria-label="Related posts">
+                <h2 class="related-posts-heading">Related Posts</h2>
+                <div class="related-posts-grid">
+                    <a class="related-post-card" href="/p/2026-07-10-kindle.html">
+                        <div class="related-post-title">Kindle</div>
+                        <div><span class="post-date">[2026-07-10]</span> <span class="post-tag tag-reflection">[Reflection]</span></div>
+                        <div class="related-post-excerpt">I enjoy reading on the Kindle. It&#x27;s a great experience because it does only one thing and nothing el…</div>
+                    </a>
+                    <a class="related-post-card" href="/p/2026-02-27-start-viewing-agentic-as-equivalent-to-people-management.html">
+                        <div class="related-post-title">Start viewing &quot;agentic&quot; as equivalent to people management</div>
+                        <div><span class="post-date">[2026-02-27]</span> <span class="post-tag tag-reflection">[Reflection]</span></div>
+                        <div class="related-post-excerpt">Intro I recently started employing a new, simple &quot;agentic&quot; workflow, which consists of four things.…</div>
+                    </a>
+                    <a class="related-post-card" href="/p/2026-04-24-to-learn-something-well-start-small-and-follow-historical-evolution.html">
+                        <div class="related-post-title">To learn something well, start small and follow historical evolution</div>
+                        <div><span class="post-date">[2026-04-24]</span> <span class="post-tag tag-reflection">[Reflection]</span></div>
+                        <div class="related-post-excerpt">I have been heads-down for the past ~3 weeks understanding agents. I played around with them, listen…</div>
+                    </a>
+                </div>
+            </section>
+
+            <footer class="site-footer" data-layout-footer></footer>
+        </main>
+    </div>
+
+    <script src="/layout.js"></script>
+    <script src="/monthly-heatmap.js"></script>
+    <script src="/theme-toggle.js"></script>
+</body>
+</html>

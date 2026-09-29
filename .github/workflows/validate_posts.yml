@@ -1,0 +1,21 @@
+name: Validate Posts
+
+on:
+  pull_request:
+    paths:
+      - 'posts/**/*.md'
+      - 'tags.json'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Fails the PR on missing/invalid dates, unknown tags, or bad filenames
+      # instead of letting posts silently sort to the bottom of the index.
+      - name: Validate post metadata
+        run: python3 update_posts.py --validate

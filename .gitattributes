@@ -1,0 +1,13 @@
+# Normalize line endings so generated artifacts (posts.json, feed.xml, p/) are
+# byte-identical whether built on a Windows workstation or the Linux CI runner.
+# Without this, core.autocrlf differences can make a local build look "dirty"
+# compared to what the Action commits.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg text eol=lf
