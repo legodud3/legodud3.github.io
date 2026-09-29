@@ -323,9 +323,12 @@ def main(validate_only=False):
         for key, data in tags_data.items():
             TAG_RULES[data["name"]] = {"color": data["color"], "key": key}
 
-    # Loop through files in posts/ directory recursively
+    # Loop through files in posts/ directory recursively.
+    # os.walk yields entries in filesystem order, which varies between machines,
+    # so sort dirs/files to keep the build byte-for-byte reproducible.
     for root, dirs, files in os.walk(posts_dir):
-        for filename in files:
+        dirs.sort()
+        for filename in sorted(files):
             if filename.endswith(".md"):
                 filepath = os.path.join(root, filename)
                 with open(filepath, "r", encoding="utf-8") as f:
@@ -365,7 +368,9 @@ def main(validate_only=False):
                     "_body": strip_front_matter(content)  # internal: used for static pages, stripped from posts.json
                 })
 
-    # Sort by date descending
+    # Sort by date descending. Sort by filename first so posts sharing a date keep a
+    # stable, reproducible order (the date sort is stable and preserves it).
+    posts.sort(key=lambda x: x["filename"])
     posts.sort(key=lambda x: parse_date(x["date"]), reverse=True)
 
     for problem in problems:
