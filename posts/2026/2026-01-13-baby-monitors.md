@@ -4,8 +4,6 @@ date: 2026-01-13
 tag: Reflection
 ---
 
-# Baby monitors
-
 Most purchase decisions follow a pattern: they're driven by how well a product matches stated needs, its price, and how easy it is to get. But this framework breaks down fast. 
 
 1. Needs are non-exhaustive, not static, and not explicit. And they can be influenced by other people or external events. And some needs are "must-have," while others are "nice-to-have." Oops.

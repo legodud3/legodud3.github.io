@@ -4,8 +4,6 @@ date: 2026-01-15
 tag: Reflection
 ---
 
-# Your logic is not my logic
-
 Today marks 4 weeks since our son was born. The past 4 weeks have felt long, incredible, different from pre-newborn life, and tiring. We have had to make many shifts in our schedule and activities. More things need to be planned vs. being spontaneous earlier (I don't like this part). But these are all doable shifts and ones we were aware would happen, though we were not prepared for them.
 
 > The underappreciated shift has been throwing all logic -- or as I call it "adult logic" -- out of the window.

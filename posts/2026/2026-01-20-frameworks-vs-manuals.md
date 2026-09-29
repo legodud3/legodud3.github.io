@@ -4,8 +4,6 @@ date: 2026-01-20
 tag: Reflection
 ---
 
-# Frameworks vs manuals
-
 I recommend having a newborn just for the moments of reflection it affords you. When faced with an issue that is bothering us, our minds want to find solutions. For many of us, we sprint to find solutions. Most advice suggests some version of pause, plan, and then execute. "Slow is fast" and things of this general nature. I would like to add an additional perspective of 'frameworks vs manuals' to this generalized topic of problem-solving. 
 
 *STEP 1*: We should accept that most of our problems are not unique. They have been solved. They have solutions. So copy shamelessly.

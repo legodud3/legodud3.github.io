@@ -4,8 +4,6 @@ date: 2026-01-16
 tag: Reflection
 ---
 
-# Software manufacturing process
-
 Coding used to be about syntax. Now it is about orchestration. Using agents has shifted the floor for human involvement. If you aren't acting as a Tech Lead, you are just a redundant relay for the LLM.
 
 The job has fundamentally changed in three ways:
