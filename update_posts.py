@@ -153,13 +153,75 @@ def render_markdown(text):
     return markdown.markdown(text, extensions=["fenced_code", "tables"])
 
 
-def build_post_page(post, newer_post, older_post):
+def significant_words(text):
+    """Words longer than 4 chars, used for excerpt-overlap scoring."""
+    return {word for word in re.sub(r"[^a-z0-9\s]", " ", (text or "").lower()).split() if len(word) > 4}
+
+
+def find_related_posts(posts, current, count=3):
+    """Related posts: same tag first, then excerpt keyword overlap.
+    Mirrors the heuristic the old client-side reader used."""
+    current_words = significant_words(current.get("excerpt"))
+    scored = []
+    for post in posts:
+        if post["filename"] == current["filename"]:
+            continue
+        score = 0
+        if post.get("tag_key") and post["tag_key"] == current.get("tag_key"):
+            score += 3
+        if current_words:
+            score += len(current_words & significant_words(post.get("excerpt")))
+        scored.append((score, post))
+
+    # Stable sort keeps newest-first order for ties.
+    scored.sort(key=lambda item: item[0], reverse=True)
+    ranked = [post for _, post in scored]
+    if scored and all(score == 0 for score, _ in scored):
+        return ranked[:count]  # nothing in common — fall back to newest posts
+    matched = [post for score, post in scored if score > 0]
+    return (matched or ranked)[:count]
+
+
+def build_related_html(related):
+    if not related:
+        return ""
+    cards = []
+    for post in related:
+        tag_html = ""
+        if post["tag_name"] and post["tag_key"]:
+            tag_html = (
+                f' <span class="post-tag tag-{post["tag_key"]}">'
+                f'[{html_escape(post["tag_name"])}]</span>'
+            )
+        excerpt = html_escape((post["excerpt"] or "")[:100].rstrip() + "…") if post["excerpt"] else ""
+        cards.append(
+            f'                    <a class="related-post-card" href="{post["url"]}">\n'
+            f'                        <div class="related-post-title">{html_escape(post["title"])}</div>\n'
+            f'                        <div><span class="post-date">[{html_escape(post["date"])}]</span>{tag_html}</div>\n'
+            + (f'                        <div class="related-post-excerpt">{excerpt}</div>\n' if excerpt else "")
+            + '                    </a>'
+        )
+    return (
+        '\n            <section class="related-posts-section" aria-label="Related posts">\n'
+        '                <h2 class="related-posts-heading">Related Posts</h2>\n'
+        '                <div class="related-posts-grid">\n'
+        + "\n".join(cards)
+        + '\n                </div>\n'
+        '            </section>\n'
+    )
+
+
+def build_post_page(post, posts):
     """Render a fully static HTML page for a post (real <title>, OG tags,
-    canonical URL, baked-in prev/next navigation). Rail and footer come from
-    layout.js at view time, same as the hand-written pages."""
+    canonical URL, baked-in prev/next nav and related posts). Rail and footer
+    come from layout.js at view time, same as the hand-written pages."""
     title = html_escape(post["title"])
     description = html_escape((post["excerpt"] or "")[:200])
     absolute_url = f'{SITE_URL}{post["url"]}'
+
+    index = posts.index(post)
+    newer_post = posts[index - 1] if index > 0 else None
+    older_post = posts[index + 1] if index + 1 < len(posts) else None
 
     tag_html = ""
     if post["tag_name"] and post["tag_key"]:
@@ -175,6 +237,7 @@ def build_post_page(post, newer_post, older_post):
         older_link = "<span></span>"
 
     content_html = render_markdown(post["_body"])
+    related_html = build_related_html(find_related_posts(posts, post))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -217,7 +280,7 @@ def build_post_page(post, newer_post, older_post):
                 {newer_link}
                 {older_link}
             </div>
-
+{related_html}
             <footer class="site-footer" data-layout-footer></footer>
         </main>
     </div>
@@ -238,13 +301,11 @@ def build_post_pages(posts):
         if existing.endswith(".html"):
             os.remove(os.path.join(PAGES_DIR, existing))
 
-    for i, post in enumerate(posts):
-        newer_post = posts[i - 1] if i > 0 else None
-        older_post = posts[i + 1] if i + 1 < len(posts) else None
+    for post in posts:
         slug = os.path.basename(post["filename"])[:-3]
         page_path = os.path.join(PAGES_DIR, f"{slug}.html")
         with open(page_path, "w", encoding="utf-8") as f:
-            f.write(build_post_page(post, newer_post, older_post))
+            f.write(build_post_page(post, posts))
 
     return len(posts)
 
