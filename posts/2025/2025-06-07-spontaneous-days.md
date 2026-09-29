@@ -4,8 +4,6 @@ date: 2025-06-07
 tag: Reflection
 ---
 
-# Spontaneous Days
-
 June 6 (Friday) was a nice day!
 - New shoes by Comet w/ 10% off in-store.
 - Furniture store visits / black marble fronts.
