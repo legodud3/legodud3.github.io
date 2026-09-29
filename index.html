@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="lmFDY0l32f8kD6EDtlCfxcfhLTnHQ4LMBchWTosVYJs" />
     <title>Chinmay Deo</title>
-    <meta name="description" content="Personal blog of Chinmay Deo — short posts on learning, tech, and life.">
+    <meta name="description" content="Personal blog of Chinmay Deo â short posts on learning, tech, and life.">
     <meta property="og:title" content="Chinmay Deo">
-    <meta property="og:description" content="Personal blog of Chinmay Deo — short posts on learning, tech, and life.">
+    <meta property="og:description" content="Personal blog of Chinmay Deo â short posts on learning, tech, and life.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://legodud3.github.io/">
     <meta name="twitter:card" content="summary">
     <link rel="canonical" href="https://legodud3.github.io/">
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="legohat_logo.png">
-    <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="feed.xml">
+    <link rel="alternate" type="application/atom+xml" title="Chinmay Deo â Writing" href="feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -37,7 +38,7 @@
                 <div id="tagFilters" class="tag-filter-container">
                     <!-- Tag buttons will be injected here -->
                 </div>
-                <button id="surpriseBtn" class="surprise-btn">✨ Surprise me</button>
+                <button id="surpriseBtn" class="surprise-btn">â¨ Surprise me</button>
             </div>
 
             <ul id="postList" class="post-list">
@@ -45,9 +46,9 @@
             </ul>
 
             <div class="pagination">
-                <button id="prevBtn" class="nav-btn" disabled>← Newer</button>
+                <button id="prevBtn" class="nav-btn" disabled>â Newer</button>
                 <span id="pageInfo"></span>
-                <button id="nextBtn" class="nav-btn">Older →</button>
+                <button id="nextBtn" class="nav-btn">Older â</button>
             </div>
 
             <footer class="site-footer" data-layout-footer></footer>
@@ -244,7 +245,7 @@
                     if (post.excerpt) {
                         const excerptDiv = document.createElement('div');
                         excerptDiv.className = 'post-excerpt';
-                        excerptDiv.textContent = post.excerpt.substring(0, 160).trimEnd() + '…';
+                        excerptDiv.textContent = post.excerpt.substring(0, 160).trimEnd() + 'â¦';
                         li.appendChild(excerptDiv);
                     }
 
