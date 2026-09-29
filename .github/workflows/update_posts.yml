@@ -11,20 +11,26 @@ on:
 permissions:
   contents: write
 
+# Serialize runs: two quick publishes in a row must queue, not race
+# (the pull --rebase + push below would otherwise fail intermittently).
+concurrency:
+  group: posts-index
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate posts.json
+      - name: Generate posts.json and feed.xml
         run: python3 update_posts.py
 
-      - name: Commit posts.json
+      - name: Commit generated files
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add posts.json
-          git commit -m "Update posts index" || echo "No changes to commit"
+          git add posts.json feed.xml
+          git commit -m "Update posts index and feed" || echo "No changes to commit"
           git pull --rebase origin main
           git push

@@ -1,0 +1,6 @@
+# Agent/tooling working state
+.kilo/
+
+# Python
+__pycache__/
+*.pyc

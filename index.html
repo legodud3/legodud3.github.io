@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chinmay Deo</title>
+    <meta name="description" content="Personal blog of Chinmay Deo — short posts on learning, tech, and life.">
+    <meta property="og:title" content="Chinmay Deo">
+    <meta property="og:description" content="Personal blog of Chinmay Deo — short posts on learning, tech, and life.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://legodud3.github.io/">
+    <meta name="twitter:card" content="summary">
+    <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
+    <link rel="icon" type="image/png" href="legohat_logo.png">
+    <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,9 +26,9 @@
                 <span>Chinmay Deo</span>
             </a>
             <nav class="rail-nav" aria-label="Primary">
-                <a href="index.html" class="active">🏠 Home</a>
-                <a href="about.html">👤 About me</a>
-                <a href="side-projects.html">🚀 Side projects</a>
+                <a href="index.html" class="active"><span aria-hidden="true">🏠</span> Home</a>
+                <a href="about.html"><span aria-hidden="true">👤</span> About me</a>
+                <a href="side-projects.html"><span aria-hidden="true">🚀</span> Side projects</a>
             </nav>
             <section class="rail-widget">
                 <h2 class="rail-section-title">Writing Consistency</h2>
@@ -31,7 +43,8 @@
             </header>
 
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search posts...">
+                <label for="searchInput" class="sr-only">Search posts</label>
+                <input type="text" id="searchInput" placeholder="Search posts..." aria-label="Search posts">
             </div>
 
             <div class="tag-and-surprise-container">
@@ -73,16 +86,40 @@
         let activeTag = null;
         const POSTS_PER_PAGE = 10;
 
+        function restoreStateFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const q = params.get('q');
+            const tag = params.get('tag');
+            const page = parseInt(params.get('page'), 10);
+            if (q) document.getElementById('searchInput').value = q;
+            if (tag) activeTag = tag;
+            if (Number.isInteger(page) && page > 0) currentPage = page;
+        }
+
+        function syncStateToUrl() {
+            const params = new URLSearchParams();
+            const q = document.getElementById('searchInput').value.trim();
+            if (q) params.set('q', q);
+            if (activeTag) params.set('tag', activeTag);
+            if (currentPage > 1) params.set('page', currentPage);
+            const qs = params.toString();
+            history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+        }
+
         async function loadPosts() {
             try {
-                // Add timestamp to prevent caching of the posts list
-                const response = await fetch('posts.json?v=' + new Date().getTime());
-                allPosts = await response.json();
+                // Shared loader fetches posts.json once per page (also used by the heatmap)
+                allPosts = await window.PostsIndex.load();
+                restoreStateFromUrl();
                 renderTagFilters();
                 renderPosts();
             } catch (error) {
                 console.error('Error loading posts:', error);
-                document.getElementById('postList').innerHTML = '<li>Error loading posts. Please try again later.</li>';
+                const li = document.createElement('li');
+                li.textContent = 'Error loading posts. Please try again later.';
+                const listEl = document.getElementById('postList');
+                listEl.innerHTML = '';
+                listEl.appendChild(li);
             }
         }
 
@@ -198,27 +235,43 @@
             listEl.innerHTML = '';
 
             if (displayedPosts.length === 0) {
-                listEl.innerHTML = '<li>No posts found.</li>';
+                const li = document.createElement('li');
+                li.textContent = 'No posts found.';
+                listEl.appendChild(li);
             } else {
+                // Build DOM nodes with textContent rather than innerHTML so post
+                // metadata (titles, excerpts) can never inject markup into the page.
                 displayedPosts.forEach((post, index) => {
                     const li = document.createElement('li');
                     li.className = 'post-item';
 
-                    let tagHtml = '';
+                    const titleLink = document.createElement('a');
+                    titleLink.href = `view.html?post=${encodeURIComponent(post.filename)}`;
+                    titleLink.className = 'post-title-link';
+                    titleLink.textContent = post.title;
+                    li.appendChild(titleLink);
+
+                    const meta = document.createElement('div');
+                    meta.className = 'post-list-meta';
+                    const dateSpan = document.createElement('span');
+                    dateSpan.className = 'post-date';
+                    dateSpan.textContent = post.date;
+                    meta.appendChild(dateSpan);
                     if (post.tag_name && post.tag_key) {
-                        tagHtml = `<span class="post-tag tag-${post.tag_key}">[${post.tag_name}]</span>`;
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = `post-tag tag-${post.tag_key}`;
+                        tagSpan.textContent = `[${post.tag_name}]`;
+                        meta.appendChild(tagSpan);
+                    }
+                    li.appendChild(meta);
+
+                    if (post.excerpt) {
+                        const excerptDiv = document.createElement('div');
+                        excerptDiv.className = 'post-excerpt';
+                        excerptDiv.textContent = post.excerpt.substring(0, 160).trimEnd() + '…';
+                        li.appendChild(excerptDiv);
                     }
 
-                    const excerpt = post.excerpt ? post.excerpt.substring(0, 160).trimEnd() + '…' : '';
-
-                    li.innerHTML = `
-                        <a href="view.html?post=${encodeURIComponent(post.filename)}" class="post-title-link">${post.title}</a>
-                        <div class="post-list-meta">
-                            <span class="post-date">${post.date}</span>
-                            ${tagHtml}
-                        </div>
-                        ${excerpt ? `<div class="post-excerpt">${excerpt}</div>` : ''}
-                    `;
                     li.style.animationDelay = `${index * 0.04}s`;
                     listEl.appendChild(li);
                 });
@@ -228,6 +281,7 @@
             document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages || 1}`;
             document.getElementById('prevBtn').disabled = currentPage <= 1;
             document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+            syncStateToUrl();
         }
 
         // Event Listeners

@@ -20,9 +20,12 @@ This repository is a static GitHub Pages blog/site. Agents should keep changes s
 - `theme-toggle.js`, `monthly-heatmap.js`: Client-side behavior.
 - `posts/`: Blog post markdown content.
 - `posts.json`: Generated post metadata index.
+- `feed.xml`: Generated Atom feed (same script/workflow as `posts.json`).
 - `tags.json`: Tag definitions used by the indexer.
-- `update_posts.py`: Rebuilds `posts.json` from markdown + front matter.
-- `.github/workflows/update_posts.yml`: Auto-regenerates and commits `posts.json` on relevant pushes.
+- `update_posts.py`: Rebuilds `posts.json` + `feed.xml` from markdown + front matter; `--validate` checks metadata and exits non-zero on problems.
+- `.github/workflows/update_posts.yml`: Auto-regenerates and commits `posts.json` + `feed.xml` on relevant pushes (serialized via concurrency group).
+- `.github/workflows/validate_posts.yml`: PR check running `update_posts.py --validate`.
+- `robots.txt`, `404.html`, `.gitignore`: Standard static-site plumbing.
 
 ## Post Format Requirements
 

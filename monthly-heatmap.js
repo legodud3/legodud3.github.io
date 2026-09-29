@@ -1,3 +1,24 @@
+// Shared posts.json loader: fetches once per page and hands the same promise
+// to every consumer (post list, post navigation, heatmap), avoiding duplicate
+// requests. No cache-busting query string — GitHub Pages serves ETags, so
+// repeat visits get a cheap 304 instead of a full download every time.
+window.PostsIndex = window.PostsIndex || (function () {
+    let promise = null;
+    return {
+        load() {
+            if (!promise) {
+                promise = fetch('posts.json')
+                    .then((response) => {
+                        if (!response.ok) throw new Error('Failed to load posts.json');
+                        return response.json();
+                    })
+                    .then((posts) => (Array.isArray(posts) ? posts : []));
+            }
+            return promise;
+        }
+    };
+})();
+
 (function () {
     const MONTH_LABELS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
     const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -118,10 +139,8 @@
         root.innerHTML = '<p class="heatmap-empty">Loading writing heatmap...</p>';
 
         try {
-            const response = await fetch('posts.json?v=' + Date.now());
-            if (!response.ok) throw new Error('Failed to load posts.json');
-            const posts = await response.json();
-            renderHeatmap(root, Array.isArray(posts) ? posts : []);
+            const posts = await window.PostsIndex.load();
+            renderHeatmap(root, posts);
         } catch (error) {
             console.error('Heatmap error:', error);
             root.innerHTML = '<p class="heatmap-empty">Could not load writing heatmap.</p>';

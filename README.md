@@ -51,8 +51,13 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 
 ### Post Index (`update_posts.yml`)
 - **Trigger**: Push to `posts/**/*.md`, `tags.json`, or `update_posts.py`
-- **Action**: Runs `update_posts.py` to regenerate `posts.json`
-- **Output**: Auto-commits updated `posts.json`
+- **Action**: Runs `update_posts.py` to regenerate `posts.json` and `feed.xml` (Atom feed)
+- **Output**: Auto-commits updated `posts.json` + `feed.xml`
+- **Concurrency**: Serialized (`posts-index` group) so rapid publishes queue instead of racing
+
+### Post Validation (`validate_posts.yml`)
+- **Trigger**: Pull requests touching `posts/**/*.md` or `tags.json`
+- **Action**: Runs `update_posts.py --validate`, failing on missing titles, invalid dates, unknown tags, or misnamed files
 
 ## Getting Started
 
