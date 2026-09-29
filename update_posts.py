@@ -11,7 +11,10 @@ SITE_TITLE = "Chinmay Deo"
 SITE_DESCRIPTION = "Personal blog of Chinmay Deo — short posts on learning, tech, and life."
 FEED_FILE = "feed.xml"
 FEED_ENTRIES = 20
+SITEMAP_FILE = "sitemap.xml"
 PAGES_DIR = "p"
+# Hand-maintained pages that belong in the sitemap alongside the generated posts.
+STATIC_PAGES = ["", "about.html", "side-projects.html"]
 POST_PATH_RE = re.compile(r"^\d{4}/\d{4}-\d{2}-\d{2}-.+\.md$")
 # Filenames become public URLs (/p/<name>.html), so keep them slug-safe.
 SLUG_RE = re.compile(r"^\d{4}-\d{2}-\d{2}-[a-z0-9]+(-[a-z0-9]+)*\.md$")
@@ -142,6 +145,42 @@ def build_feed(posts):
         f'  <updated>{feed_updated}</updated>\n'
         + "\n".join(entries)
         + '\n</feed>\n'
+    )
+
+
+def build_sitemap(posts):
+    """Build a sitemap.xml listing every indexable page.
+
+    Covers the hand-maintained pages plus every post's static page, so crawlers
+    (and agents) get a machine-readable index of the whole site. Undated posts are
+    skipped, matching build_feed. Output is a pure function of the posts, so the
+    build stays reproducible: no build timestamp is embedded anywhere.
+    """
+    urls = []
+    for path in STATIC_PAGES:
+        # No <lastmod> for hand-maintained pages — we have no reliable edit date,
+        # and inventing one (e.g. the newest post date) would be misleading.
+        urls.append(f"  <url>\n    <loc>{xml_escape(SITE_URL + '/' + path)}</loc>\n  </url>")
+
+    for post in posts:
+        if parse_date(post["date"]) == datetime.min:
+            continue  # undated posts have no meaningful lastmod
+        loc = f'{SITE_URL}{post["url"]}'
+        # Date-only (W3C Datetime permits it). A post's front matter carries no
+        # time component, so emitting T00:00:00Z would invent precision we don't have.
+        lastmod = parse_date(post["date"]).strftime("%Y-%m-%d")
+        urls.append(
+            f"  <url>\n"
+            f"    <loc>{xml_escape(loc)}</loc>\n"
+            f"    <lastmod>{lastmod}</lastmod>\n"
+            f"  </url>"
+        )
+
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls)
+        + "\n</urlset>\n"
     )
 
 
@@ -395,9 +434,15 @@ def main(validate_only=False):
     with open(FEED_FILE, "w", encoding="utf-8", newline="\n") as f:
         f.write(build_feed(posts))
 
+    with open(SITEMAP_FILE, "w", encoding="utf-8", newline="\n") as f:
+        f.write(build_sitemap(posts))
+
     page_count = build_post_pages(posts)
 
-    print(f"Wrote {output_file} ({len(posts)} posts), {FEED_FILE}, and {page_count} static pages in {PAGES_DIR}/.")
+    print(
+        f"Wrote {output_file} ({len(posts)} posts), {FEED_FILE}, {SITEMAP_FILE}, "
+        f"and {page_count} static pages in {PAGES_DIR}/."
+    )
 
 
 if __name__ == "__main__":

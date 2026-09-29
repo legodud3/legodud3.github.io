@@ -52,11 +52,17 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 
 ### Post Index (`update_posts.yml`)
 - **Trigger**: Push to `posts/**/*.md`, `tags.json`, or `update_posts.py`
-- **Action**: Installs `markdown`, then runs `update_posts.py` to regenerate `posts.json`, `feed.xml` (Atom feed), and the static post pages in `p/`
-- **Output**: Auto-commits updated `posts.json` + `feed.xml` + `p/`
+- **Action**: Installs `markdown`, then runs `update_posts.py` to regenerate `posts.json`, `feed.xml` (Atom feed), `sitemap.xml`, and the static post pages in `p/`
+- **Output**: Auto-commits updated `posts.json` + `feed.xml` + `sitemap.xml` + `p/`
 - **Concurrency**: Serialized (`posts-index` group) so rapid publishes queue instead of racing
 - **Note**: `p/` is fully regenerated (and wiped) on each run, so deleted or renamed posts don't leave stale pages behind
 - **Note**: The Action only commits when the regenerated output actually differs. The build is byte-for-byte reproducible, so a correct checkout produces no commit at all.
+
+### Sitemap
+
+`sitemap.xml` is generated on every build, so a new post appears in it automatically — nothing to add by hand. It lists all 55 indexable URLs: the homepage, `about.html`, `side-projects.html`, and every post under `/p/`. Each post carries a `<lastmod>` taken from its own front matter `date`; the hand-maintained pages deliberately have none, since there's no reliable edit date to report.
+
+It's advertised to crawlers in `robots.txt` (`Sitemap: https://legodud3.github.io/sitemap.xml`) and is the file to submit in **Google Search Console**. Deliberately excluded: `write.html` (the token-gated editor), `view.html` (a redirect shim that would duplicate every post) and `404.html` — all three are `noindex`.
 
 ### Reproducible Builds
 
@@ -135,6 +141,6 @@ The reader path (`index.html` and every page under `p/`) loads **no third-party 
 
 ## Generated Files
 
-`posts.json`, `feed.xml`, and everything under `p/` are **generated — never hand-edit them.** Change the Markdown in `posts/YYYY/` (or `tags.json`) and re-run `update_posts.py`; the build wipes and regenerates `p/` from scratch. A post's public URL is derived from its filename (`posts/2026/2026-09-28-my-slug.md` → `/p/2026-09-28-my-slug.html`), so renaming a file changes its URL.
+`posts.json`, `feed.xml`, `sitemap.xml`, and everything under `p/` are **generated — never hand-edit them.** Change the Markdown in `posts/YYYY/` (or `tags.json`) and re-run `update_posts.py`; the build wipes and regenerates `p/` from scratch. A post's public URL is derived from its filename (`posts/2026/2026-09-28-my-slug.md` → `/p/2026-09-28-my-slug.html`), so renaming a file changes its URL.
 
 Post pages are pre-rendered, so `view.html` is only a small legacy redirect shim that forwards old `view.html?post=…` links to `/p/<slug>.html`.

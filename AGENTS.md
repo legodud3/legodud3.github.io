@@ -24,9 +24,10 @@ This repository is a static GitHub Pages blog/site. Agents should keep changes s
 - `posts/`: Blog post markdown content.
 - `posts.json`: Generated post metadata index (includes a `url` field pointing at each post's static page).
 - `feed.xml`: Generated Atom feed (same script/workflow as `posts.json`).
+- `sitemap.xml`: Generated sitemap listing every indexable URL (3 hand-maintained pages + each post) for crawlers and agents. Regenerated with the rest; see `build_sitemap` in `update_posts.py`. `robots.txt` advertises it via a `Sitemap:` line.
 - `tags.json`: Tag definitions used by the indexer.
-- `update_posts.py`: Rebuilds `posts.json`, `feed.xml`, and the `p/` static pages from markdown + front matter; `--validate` checks metadata and exits non-zero on problems.
-- `.github/workflows/update_posts.yml`: Regenerates and auto-commits `posts.json`, `feed.xml`, and `p/` on relevant pushes (serialized via concurrency group). Only commits when the output actually differs.
+- `update_posts.py`: Rebuilds `posts.json`, `feed.xml`, `sitemap.xml`, and the `p/` static pages from markdown + front matter; `--validate` checks metadata and exits non-zero on problems.
+- `.github/workflows/update_posts.yml`: Regenerates and auto-commits `posts.json`, `feed.xml`, `sitemap.xml`, and `p/` on relevant pushes (serialized via concurrency group). Only commits when the output actually differs.
 - `.github/workflows/validate_posts.yml`: PR check running `update_posts.py --validate`. Its path filter is `posts/**/*.md`, `tags.json`, **and `update_posts.py`** — the validation logic lives in that file, so keep it in the list if you extend the check.
 - `.gitignore`, `.gitattributes` (pins LF so line endings can't diverge), `.nojekyll`, `legohat_logo.png`: Standard static-site plumbing.
 
