@@ -2,12 +2,13 @@
 // to every consumer (post list, post navigation, heatmap), avoiding duplicate
 // requests. No cache-busting query string — GitHub Pages serves ETags, so
 // repeat visits get a cheap 304 instead of a full download every time.
+// Root-absolute path so it also works from generated pages under /p/.
 window.PostsIndex = window.PostsIndex || (function () {
     let promise = null;
     return {
         load() {
             if (!promise) {
-                promise = fetch('posts.json')
+                promise = fetch('/posts.json')
                     .then((response) => {
                         if (!response.ok) throw new Error('Failed to load posts.json');
                         return response.json();

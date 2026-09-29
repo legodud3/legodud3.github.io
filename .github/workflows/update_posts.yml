@@ -23,14 +23,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate posts.json and feed.xml
+      - name: Install Python dependencies
+        run: python3 -m pip install markdown
+
+      - name: Generate posts.json, feed.xml, and static post pages
         run: python3 update_posts.py
 
       - name: Commit generated files
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add posts.json feed.xml
-          git commit -m "Update posts index and feed" || echo "No changes to commit"
+          git add posts.json feed.xml p/
+          git commit -m "Update posts index, feed, and static pages" || echo "No changes to commit"
           git pull --rebase origin main
           git push

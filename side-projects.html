@@ -18,24 +18,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-page="projects">
     <div class="app-shell">
-        <aside class="left-rail">
-            <a href="index.html" class="rail-brand">
-                <img src="legohat_logo.png" alt="Logo" class="site-logo">
-                <span>Chinmay Deo</span>
-            </a>
-            <nav class="rail-nav" aria-label="Primary">
-                <a href="index.html"><span aria-hidden="true">🏠</span> Home</a>
-                <a href="about.html"><span aria-hidden="true">👤</span> About me</a>
-                <a href="side-projects.html" class="active"><span aria-hidden="true">🚀</span> Side projects</a>
-            </nav>
-            <section class="rail-widget">
-                <h2 class="rail-section-title">Writing Consistency</h2>
-                <div class="monthly-heatmap-root" aria-live="polite"></div>
-                <p class="rail-hat-tip">Hat tip to <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> for the original contribution graph inspiration.</p>
-            </section>
-        </aside>
+        <aside class="left-rail" data-layout-rail></aside>
 
         <main class="main-panel">
             <header class="page-header">
@@ -76,21 +61,11 @@
                 </div>
             </section>
 
-            <footer class="site-footer">
-                <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
-                <a class="writing-desk-link" href="write.html">Open the writing desk</a>
-                <div class="theme-toggle-container">
-                    <span class="theme-toggle-label">Dark</span>
-                    <label class="theme-toggle-switch">
-                        <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
-                        <span class="theme-toggle-slider"></span>
-                    </label>
-                    <span class="theme-toggle-label">Light</span>
-                </div>
-            </footer>
+            <footer class="site-footer" data-layout-footer></footer>
         </main>
     </div>
 
+    <script src="layout.js"></script>
     <script src="monthly-heatmap.js"></script>
     <script src="theme-toggle.js"></script>
 </body>

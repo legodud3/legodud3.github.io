@@ -12,17 +12,20 @@ This repository is a static GitHub Pages blog/site. Agents should keep changes s
 ## Repository Map
 
 - `index.html`: Homepage with post listing, search/filter UX.
-- `view.html`: Individual post reader page.
+- `view.html`: Legacy redirect shim — forwards old `view.html?post=YYYY/slug.md` links to `/p/<slug>.html`.
+- `p/`: **Generated** static per-post pages (one HTML file per post). Never hand-edit; regenerated and wiped by `update_posts.py`.
 - `write.html`: Browser-based publisher UI (commits posts via GitHub API).
 - `side-projects.html`: Side projects page.
 - `about.html`: About page.
+- `404.html`, `robots.txt`: Static-site plumbing.
 - `style.css`: Shared styles.
-- `theme-toggle.js`, `monthly-heatmap.js`: Client-side behavior.
+- `layout.js`: Shared layout module — builds the left rail (brand, nav, heatmap mount) and site footer from `[data-layout-rail]` / `[data-layout-footer]` mount points. Active nav comes from `<body data-page="...">`. Load it before `monthly-heatmap.js` and `theme-toggle.js`.
+- `theme-toggle.js`, `monthly-heatmap.js`: Client-side behavior (`monthly-heatmap.js` also defines the shared `window.PostsIndex` posts.json loader).
 - `posts/`: Blog post markdown content.
-- `posts.json`: Generated post metadata index.
+- `posts.json`: Generated post metadata index (includes a `url` field pointing at each post's static page).
 - `feed.xml`: Generated Atom feed (same script/workflow as `posts.json`).
 - `tags.json`: Tag definitions used by the indexer.
-- `update_posts.py`: Rebuilds `posts.json` + `feed.xml` from markdown + front matter; `--validate` checks metadata and exits non-zero on problems.
+- `update_posts.py`: Rebuilds `posts.json`, `feed.xml`, and the `p/` static pages from markdown + front matter; `--validate` checks metadata and exits non-zero on problems.
 - `.github/workflows/update_posts.yml`: Auto-regenerates and commits `posts.json` + `feed.xml` on relevant pushes (serialized via concurrency group).
 - `.github/workflows/validate_posts.yml`: PR check running `update_posts.py --validate`.
 - `robots.txt`, `404.html`, `.gitignore`: Standard static-site plumbing.
@@ -46,29 +49,41 @@ tag: Reflection
 
 Notes:
 - `tag` should match a `name` from `tags.json` (case-insensitive match is supported by the script).
-- Invalid/missing `date` values sort to the bottom (`datetime.min` fallback).
+- Invalid/missing `date` values sort to the bottom (`datetime.min` fallback); the `validate_posts.yml` PR check fails on these.
+- A post's public URL is derived from its filename: `posts/2026/2026-09-28-my-slug.md` → `/p/2026-09-28-my-slug.html`.
+- `title` may be quoted; the editor writes it quoted so titles containing `:` or `#` stay valid YAML.
 
 ## Local Commands
 
-- Regenerate index locally:
+- Install the build dependency (only needed to regenerate static pages):
+  - `python3 -m pip install markdown`
+- Regenerate index + feed + static pages locally:
   - `python3 update_posts.py`
+- Validate post metadata only (no dependencies needed):
+  - `python3 update_posts.py --validate`
 - Quick static preview:
   - `python3 -m http.server 8000`
   - Open `http://localhost:8000`
+
+Note: pages use root-absolute asset/link paths (`/style.css`, `/p/...`) so they work both on GitHub Pages and from a server started at the repo root.
 
 ## Change Rules For Agents
 
 - Keep pages static; do not introduce frameworks or build tooling unless explicitly requested.
 - Prefer minimal, targeted edits that match existing code style.
+- Never hand-edit generated artifacts (`posts.json`, `feed.xml`, `p/`) — edit the markdown/front matter and re-run `update_posts.py`.
 - If editing post metadata logic, verify `update_posts.py` still handles nested `posts/YYYY/` paths.
-- If adding/changing tags, update `tags.json` and regenerate `posts.json`.
+- If adding/changing tags, update `tags.json` and regenerate the index/feed/pages.
+- Post page templates live in `update_posts.py` (`build_post_page`); the rail/footer markup lives only in `layout.js`. Don't reintroduce that markup into individual pages.
+- Keep new pages' root-absolute links consistent (they must resolve from `/p/` too).
 - When modifying UI pages, verify desktop + mobile behavior and ensure links still resolve from site root.
 
 ## Verification Checklist
 
 After relevant edits:
 
-1. Run `python3 update_posts.py` if posts, tags, or indexer logic changed.
-2. Confirm `posts.json` is valid JSON and sorted newest-to-oldest by `date`.
-3. Open `index.html`, `view.html`, and any touched page in a local server.
-4. Ensure no absolute local paths or environment-specific values were introduced.
+1. Run `python3 update_posts.py` if posts, tags, or indexer logic changed (regenerates `posts.json`, `feed.xml`, and `p/`).
+2. Confirm `posts.json` is valid JSON, sorted newest-to-oldest by `date`, and each entry has a `url`.
+3. Confirm every post markdown file has a matching file in `p/` (and vice versa).
+4. Open `index.html`, a generated page in `p/`, and any touched page in a local server.
+5. Ensure no absolute local paths or environment-specific values were introduced.

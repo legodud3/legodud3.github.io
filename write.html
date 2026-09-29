@@ -502,19 +502,10 @@
         </div>
     </div>
 
-    <footer class="site-footer">
-        <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
-        <div class="theme-toggle-container">
-            <span class="theme-toggle-label">Dark</span>
-            <label class="theme-toggle-switch">
-                <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
-                <span class="theme-toggle-slider"></span>
-            </label>
-            <span class="theme-toggle-label">Light</span>
-        </div>
-    </footer>
+    <footer class="site-footer" data-layout-footer="minimal"></footer>
     </main>
 
+    <script src="layout.js"></script>
     <script src="theme-toggle.js"></script>
     <script>
         // Configuration
@@ -771,7 +762,7 @@
                 const editBanner = document.createElement('div');
                 editBanner.id = 'editPostBanner';
                 editBanner.className = 'edit-banner';
-                editBanner.innerHTML = `Editing: <strong>${escapeHtml(title)}</strong> <a href="view.html?post=${encodeURIComponent(editPostPath)}" style="margin-left:12px; font-size:0.9em">← View post</a>`;
+                editBanner.innerHTML = `Editing: <strong>${escapeHtml(title)}</strong> <a href="${staticPostUrl(editPostPath)}" style="margin-left:12px; font-size:0.9em">← View post</a>`;
                 document.getElementById('editorContainer').insertBefore(editBanner, document.getElementById('postForm'));
                 
                 // Update publish button text
@@ -862,6 +853,12 @@
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#39;');
+        }
+
+        // Static page URL for a post path: posts/2026/2026-09-28-slug.md -> /p/2026-09-28-slug.html
+        function staticPostUrl(postPath) {
+            const slug = postPath.split('/').pop().replace(/\.md$/, '');
+            return '/p/' + encodeURIComponent(slug) + '.html';
         }
 
         function generateSlug(title) {
@@ -980,7 +977,7 @@ async function publishPost() {
 
                     const updateData = await updateResponse.json();
                     showStatus(
-                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="window.location.href='view.html?post=${encodeURIComponent(path)}'" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">View Post</button>`,
+                        `✓ Post updated successfully! GitHub Actions will update the site shortly. <a href="${updateData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="window.location.href='${staticPostUrl(path)}'" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">View Post</button>`,
                         'success'
                     );
                 } else {

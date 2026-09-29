@@ -3,305 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post View</title>
-    <meta name="description" content="A post from the personal blog of Chinmay Deo.">
-    <meta property="og:title" content="Chinmay Deo — Writing">
-    <meta property="og:description" content="A post from the personal blog of Chinmay Deo.">
-    <meta property="og:type" content="article">
-    <meta name="twitter:card" content="summary">
+    <title>Opening post… - Chinmay Deo</title>
+    <meta name="robots" content="noindex">
     <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
     <link rel="icon" type="image/png" href="legohat_logo.png">
-    <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="feed.xml">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Pinned versions + SRI hashes: the page renders HTML, so an unpinned or
-         tampered CDN script here would be an XSS / breakage risk. -->
-    <script defer src="https://cdn.jsdelivr.net/npm/marked@18.0.14/lib/marked.umd.min.js"
-        integrity="sha384-1KNqLSVIIDocc7NKjWP/vfNnoRSAenAfiLA3OnW7YOebcl46U/07fZMCkfzuBa+a"
-        crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"
-        integrity="sha384-JEyTNhjM6R1ElGoJns4U2Ln4ofPcqzSsynQkmEc/KGy6336qAZl70tDLufbkla+3"
-        crossorigin="anonymous"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"
-        integrity="sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du"
-        crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="app-shell">
-        <aside class="left-rail">
-            <a href="index.html" class="rail-brand">
-                <img src="legohat_logo.png" alt="Logo" class="site-logo">
-                <span>Chinmay Deo</span>
-            </a>
-            <nav class="rail-nav" aria-label="Primary">
-                <a href="index.html"><span aria-hidden="true">🏠</span> Home</a>
-                <a href="about.html"><span aria-hidden="true">👤</span> About me</a>
-                <a href="side-projects.html"><span aria-hidden="true">🚀</span> Side projects</a>
-            </nav>
-            <section class="rail-widget">
-                <h2 class="rail-section-title">Writing Consistency</h2>
-                <div class="monthly-heatmap-root" aria-live="polite"></div>
-                <p class="rail-hat-tip">Hat tip to <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> for the original contribution graph inspiration.</p>
-            </section>
-        </aside>
-
-        <main class="main-panel">
-            <header class="page-header page-header-slim">
-                <a href="index.html" class="back-link" style="margin: 0;">← Back to Posts</a>
-            </header>
-
-            <div id="content" class="markdown-body">
-                Loading...
-            </div>
-
-            <div class="post-nav">
-                <a id="newerPost" href="#"></a>
-                <a id="olderPost" href="#"></a>
-            </div>
-
-            <section id="related-posts" class="related-posts-section" aria-label="Related posts" hidden>
-                <h2 class="related-posts-heading">Related Posts</h2>
-                <div id="related-posts-grid" class="related-posts-grid"></div>
-            </section>
-
-            <footer class="site-footer">
-                <p>All writing is personal. Views are my own and do not represent my employer, friends, or family.</p>
-                <a class="writing-desk-link" href="write.html">Open the writing desk</a>
-                <div class="theme-toggle-container">
-                    <span class="theme-toggle-label">Dark</span>
-                    <label class="theme-toggle-switch">
-                        <input type="checkbox" id="themeToggle" role="switch" aria-label="Toggle between dark and light theme">
-                        <span class="theme-toggle-slider"></span>
-                    </label>
-                    <span class="theme-toggle-label">Light</span>
-                </div>
-            </footer>
-        </main>
-    </div>
-
-    <script src="monthly-heatmap.js"></script>
-    <script src="theme-toggle.js"></script>
-
+    <main class="main-panel" style="max-width: 700px; margin: 60px auto;">
+        <p id="redirectMessage">Opening post…</p>
+        <p><a href="index.html">← Back to the homepage</a></p>
+    </main>
     <script>
-        function getRelatedPosts(posts, currentPost, count = 3) {
-            const significantWords = (text) => new Set(
-                text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 4)
-            );
-
-            const currentWords = currentPost.excerpt ? significantWords(currentPost.excerpt) : new Set();
-
-            const scored = posts
-                .filter(p => p.filename !== currentPost.filename)
-                .map(p => {
-                    let score = 0;
-                    if (p.tag_key && p.tag_key === currentPost.tag_key) score += 3;
-                    if (p.excerpt && currentWords.size > 0) {
-                        for (const word of significantWords(p.excerpt)) {
-                            if (currentWords.has(word)) score += 1;
-                        }
-                    }
-                    return { post: p, score };
-                })
-                .sort((a, b) => b.score - a.score);
-
-            if (scored.every(item => item.score === 0)) {
-                return posts.filter(p => p.filename !== currentPost.filename).slice(0, count);
-            }
-            return scored.slice(0, count).map(item => item.post);
-        }
-
-        function renderRelatedPosts(relatedPosts) {
-            const section = document.getElementById('related-posts');
-            const grid = document.getElementById('related-posts-grid');
-            if (!relatedPosts || relatedPosts.length === 0) return;
-
-            grid.innerHTML = '';
-            relatedPosts.forEach(post => {
-                // Build with textContent so post metadata can't inject markup.
-                const card = document.createElement('a');
-                card.className = 'related-post-card';
-                card.href = `view.html?post=${encodeURIComponent(post.filename)}`;
-
-                const titleDiv = document.createElement('div');
-                titleDiv.className = 'related-post-title';
-                titleDiv.textContent = post.title;
-                card.appendChild(titleDiv);
-
-                const metaDiv = document.createElement('div');
-                const dateSpan = document.createElement('span');
-                dateSpan.className = 'post-date';
-                dateSpan.textContent = `[${post.date}]`;
-                metaDiv.appendChild(dateSpan);
-                if (post.tag_name && post.tag_key) {
-                    metaDiv.appendChild(document.createTextNode(' '));
-                    const tagSpan = document.createElement('span');
-                    tagSpan.className = `post-tag tag-${post.tag_key}`;
-                    tagSpan.textContent = `[${post.tag_name}]`;
-                    metaDiv.appendChild(tagSpan);
-                }
-                card.appendChild(metaDiv);
-
-                if (post.excerpt) {
-                    const excerptDiv = document.createElement('div');
-                    excerptDiv.className = 'related-post-excerpt';
-                    excerptDiv.textContent = post.excerpt.substring(0, 100).trimEnd() + '…';
-                    card.appendChild(excerptDiv);
-                }
-
-                grid.appendChild(card);
-            });
-            section.hidden = false;
-        }
-
-        async function loadPost() {
+        // Legacy shim: posts are now served as pre-rendered static pages at
+        // /p/<slug>.html (real titles, OG tags, canonical URLs). Redirect old
+        // view.html?post=YYYY/slug.md links so bookmarks and shared URLs keep working.
+        (function () {
             const params = new URLSearchParams(window.location.search);
             const filename = params.get('post');
 
-            if (!filename) {
-                document.getElementById('content').textContent = 'Post not specified.';
+            // Allow list of path shapes we will redirect; anything else
+            // (traversal, absolute paths, wrong folders) is refused.
+            if (filename && /^\d{4}\/[A-Za-z0-9._\- ]+\.md$/.test(filename)) {
+                const slug = filename
+                    .replace(/^\d{4}\//, '')
+                    .replace(/\.md$/, '')
+                    .replace(/\s+/g, '-')     // legacy names that contain spaces
+                    .replace(/-copy$/, '');   // stray " copy" duplicate suffix
+                window.location.replace('/p/' + encodeURIComponent(slug) + '.html');
                 return;
             }
-            // Strict allowlist: only posts/YYYY/<slug>.md paths are fetchable.
-            if (!/^\d{4}\/[A-Za-z0-9._-]+\.md$/.test(filename)) {
-                document.getElementById('content').textContent = 'Invalid post path.';
-                return;
-            }
-
-            try {
-                // Fetch the raw markdown content
-                const response = await fetch(`posts/${filename}`);
-                if (!response.ok) throw new Error('Post not found');
-
-                const text = await response.text();
-
-                // Parse Frontmatter (simple render, stripping it out mostly for the display)
-                let markdownContent = text;
-                let postMeta = {};
-
-                // Simple frontmatter extractor
-                if (text.startsWith('---')) {
-                    const end = text.indexOf('---', 3);
-                    if (end !== -1) {
-                        const frontmatter = text.substring(0, end + 3);
-                        markdownContent = text.substring(end + 3).trim();
-
-                        // Parse title from YAML to set document title
-                        try {
-                            // Removing --- for yaml parser
-                            const yamlText = frontmatter.replace(/^---\n/, '').replace(/\n---$/, '');
-                            postMeta = jsyaml.load(yamlText) || {};
-                            if (postMeta.title) {
-                                document.title = postMeta.title;
-                            }
-                        } catch (e) {
-                            console.error('YAML parsing error', e);
-                        }
-                    }
-                }
-
-                // Render Markdown
-                const contentEl = document.getElementById('content');
-                const renderedHtml = marked.parse(markdownContent);
-                contentEl.innerHTML = DOMPurify.sanitize(renderedHtml);
-                if (postMeta.title) updateShareMeta(postMeta.title);
-
-                // Front matter titles are metadata, not part of the Markdown body.
-                // Render the title explicitly so every post has a clear heading.
-                if (postMeta.title) {
-                    const titleEl = contentEl.querySelector('h1') || document.createElement('h1');
-                    titleEl.className = 'post-reader-title';
-                    titleEl.textContent = postMeta.title;
-                    if (!titleEl.parentNode) contentEl.insertBefore(titleEl, contentEl.firstChild);
-                }
-
-                // Load Navigation and Meta (shared loader: fetched once per page)
-                try {
-                    const posts = await window.PostsIndex.load();
-                    const currentIndex = posts.findIndex(p => p.filename === filename);
-
-                    if (currentIndex !== -1) {
-                        const currentPost = posts[currentIndex];
-
-                        // Inject Meta (Tag + Date)
-                        if (currentPost) {
-                            const metaDiv = document.createElement('div');
-                            metaDiv.className = 'post-meta';
-
-                            if (currentPost.tag_name && currentPost.tag_key) {
-                                const tagSpan = document.createElement('span');
-                                tagSpan.className = `post-tag tag-${currentPost.tag_key}`;
-                                tagSpan.textContent = `[${currentPost.tag_name}]`;
-                                metaDiv.appendChild(tagSpan);
-                            }
-                            metaDiv.appendChild(document.createTextNode(`[${currentPost.date}]`));
-
-                            const h1 = contentEl.querySelector('h1');
-                            if (h1) {
-                                h1.parentNode.insertBefore(metaDiv, h1.nextSibling);
-                            } else {
-                                contentEl.insertBefore(metaDiv, contentEl.firstChild);
-                            }
-
-                        }
-
-                        const newerPost = posts[currentIndex - 1];
-                        const olderPost = posts[currentIndex + 1];
-
-                        if (newerPost) {
-                            const newerLink = document.getElementById('newerPost');
-                            newerLink.href = `view.html?post=${encodeURIComponent(newerPost.filename)}`;
-                            newerLink.textContent = `← ${newerPost.title}`;
-                            newerLink.classList.add('visible');
-                        }
-
-                        if (olderPost) {
-                            const olderLink = document.getElementById('olderPost');
-                            olderLink.href = `view.html?post=${encodeURIComponent(olderPost.filename)}`;
-                            olderLink.textContent = `${olderPost.title} →`;
-                            olderLink.classList.add('visible');
-                        }
-
-                        renderRelatedPosts(getRelatedPosts(posts, currentPost));
-                    }
-                } catch (e) {
-                    console.error('Error loading navigation', e);
-                }
-
-            } catch (error) {
-                const contentEl = document.getElementById('content');
-                contentEl.textContent = `Error loading post: ${error.message} `;
-                const detail = document.createElement('small');
-                detail.textContent = `Tried to load: posts/${filename}`;
-                contentEl.appendChild(document.createElement('br'));
-                contentEl.appendChild(detail);
-            }
-        }
-
-        // Point social/OG tags at the actual post once its content is rendered.
-        function updateShareMeta(title) {
-            const description = (document.getElementById('content').textContent || '')
-                .replace(/\s+/g, ' ')
-                .trim()
-                .substring(0, 200);
-            const setMeta = (selector, value) => {
-                const el = document.head.querySelector(selector);
-                if (el && value) el.setAttribute('content', value);
-            };
-            setMeta('meta[property="og:title"]', title);
-            setMeta('meta[name="description"]', description);
-            setMeta('meta[property="og:description"]', description);
-            setMeta('meta[property="og:url"]', window.location.href);
-        }
-
-        // CDN scripts load with `defer`, so wait for DOMContentLoaded before
-        // calling loadPost() to guarantee marked/DOMPurify/js-yaml are ready.
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadPost);
-        } else {
-            loadPost();
-        }
+            document.getElementById('redirectMessage').textContent = 'Post not specified or invalid link.';
+        })();
     </script>
 </body>
 </html>
