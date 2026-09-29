@@ -304,7 +304,10 @@ def build_post_pages(posts):
     for post in posts:
         slug = os.path.basename(post["filename"])[:-3]
         page_path = os.path.join(PAGES_DIR, f"{slug}.html")
-        with open(page_path, "w", encoding="utf-8") as f:
+        # newline="\n" keeps output byte-identical on Windows and Linux: without
+        # it Python's text mode translates \n to \r\n on Windows, so a local
+        # rebuild would rewrite every artifact with different bytes.
+        with open(page_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(build_post_page(post, posts))
 
     return len(posts)
@@ -386,10 +389,10 @@ def main(validate_only=False):
 
     # Internal keys (prefixed with _) never reach posts.json
     serializable = [{k: v for k, v in post.items() if not k.startswith("_")} for post in posts]
-    with open(output_file, "w", encoding="utf-8") as f:
+    with open(output_file, "w", encoding="utf-8", newline="\n") as f:
         json.dump(serializable, f, indent=2)
 
-    with open(FEED_FILE, "w", encoding="utf-8") as f:
+    with open(FEED_FILE, "w", encoding="utf-8", newline="\n") as f:
         f.write(build_feed(posts))
 
     page_count = build_post_pages(posts)

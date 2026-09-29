@@ -5,6 +5,9 @@ on:
     paths:
       - 'posts/**/*.md'
       - 'tags.json'
+      # The validation logic itself lives in update_posts.py, so edits to the
+      # validator or the indexer must be checked too.
+      - 'update_posts.py'
 
 permissions:
   contents: read
