@@ -26,7 +26,7 @@ jobs:
       - name: Install Python dependencies
         run: python3 -m pip install markdown
 
-      - name: Generate posts.json, feed.xml, and static post pages
+      - name: Generate posts.json, feed.xml, sitemap.xml, and static post pages
         run: python3 update_posts.py
 
       - name: Commit generated files
@@ -36,9 +36,10 @@ jobs:
           git config --global user.email 'action@github.com'
 
           # Stage generated artifacts that exist (an older checkout may not have
-          # p/ or feed.xml yet, and a missing pathspec would abort under -e).
+          # p/, feed.xml or sitemap.xml yet, and a missing pathspec would abort
+          # under -e).
           existing=""
-          for path in posts.json feed.xml p; do
+          for path in posts.json feed.xml sitemap.xml p; do
             if [ -e "$path" ]; then existing="$existing $path"; fi
           done
           if [ -z "$existing" ]; then
@@ -53,7 +54,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update posts index, feed, and static pages"
+          git commit -m "Update posts index, feed, sitemap, and static pages"
 
           # Rebase onto the branch being built (not a hardcoded 'main'): rebasing
           # a feature branch onto main rewrites its commits and turns the next
