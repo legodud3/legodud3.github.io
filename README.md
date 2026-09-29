@@ -17,7 +17,7 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 *   **Reading Experience**:
     *   **Side Projects Page**: A dedicated section to showcase ongoing and completed side projects with card-based layout.
     *   **Static post pages**: every post is served as a pre-rendered page at `/p/<slug>.html` — fast first paint, per-post SEO metadata, and no client-side Markdown parsing on the reader path.
-    *   Previous/Next post navigation in the footer.
+    *   Previous/Next post navigation and three related-post suggestions, both baked in at build time.
     *   Clean, distraction-free design with dark and light modes.
 *   **Shared Layout Module**: `layout.js` builds the left rail (brand, nav, writing heatmap) and footer from mount points, so no page duplicates that markup.
 
@@ -56,10 +56,27 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 - **Output**: Auto-commits updated `posts.json` + `feed.xml` + `p/`
 - **Concurrency**: Serialized (`posts-index` group) so rapid publishes queue instead of racing
 - **Note**: `p/` is fully regenerated (and wiped) on each run, so deleted or renamed posts don't leave stale pages behind
+- **Note**: The Action only commits when the regenerated output actually differs. The build is byte-for-byte reproducible, so a correct checkout produces no commit at all.
+
+### Reproducible Builds
+
+`update_posts.py` produces identical bytes on every machine, so a local rebuild and a CI rebuild never fight each other in git. Two things make that true — please keep them intact:
+
+- **Sorted traversal.** The post walk sorts directories and filenames, and posts are pre-sorted by filename before the date sort. `os.walk` otherwise yields *filesystem* order, which differs per machine, and the date sort is stable — so posts sharing a date could be emitted in either order and silently rewrite the index.
+- **LF line endings.** All generated files are written with `newline="\n"`. Without it Python's text mode writes `\r\n` on Windows, and `.gitattributes` would have to paper over the difference.
+
+To confirm nothing has drifted, run the build and check that git is clean:
+
+```bash
+python3 update_posts.py && git status --porcelain
+```
+
+No output means the committed artifacts match a fresh build exactly.
 
 ### Post Validation (`validate_posts.yml`)
-- **Trigger**: Pull requests touching `posts/**/*.md` or `tags.json`
+- **Trigger**: Pull requests touching `posts/**/*.md`, `tags.json`, or `update_posts.py`
 - **Action**: Runs `update_posts.py --validate`, failing on missing titles, invalid dates, unknown tags, or misnamed files
+- **Note**: `update_posts.py` is in the path filter because the validation logic lives inside it — a PR that changes the validator or the indexer must still be checked.
 
 ## Getting Started
 
@@ -77,7 +94,7 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
    - Click "Login & Continue"
 3. **Write your post**:
    - Enter a title, select date (defaults to today), and choose a tag
-   - Use the rich-text toolbar for headings, emphasis, lists, quotes, and links
+   - Write in plain Markdown in the text area — the formatting toolbar and `Ctrl`/`Cmd` + `B`/`I`/`K` shortcuts insert Markdown syntax rather than rich HTML, so what you paste in is exactly what gets committed
    - Click "Preview" to see how it will look
    - Click "Publish Post" to commit directly to GitHub
 4. GitHub Actions will automatically update the site index
@@ -108,10 +125,16 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
 - [markdown](https://pypi.org/project/Markdown/) — renders posts to HTML for the static pages (`pip install markdown`)
 
 **Runtime (CDN, only loaded by the browser-based editor `write.html` for its preview):**
-- [marked.js](https://marked.js.org/) — Markdown rendering (via CDN, version-pinned + SRI)
-- [DOMPurify](https://github.com/cure53/DOMPurify) — XSS sanitization (via CDN, version-pinned + SRI)
+- [marked.js](https://marked.js.org/) `18.0.14` — Markdown rendering (via CDN, version-pinned with an SRI `integrity` hash)
+- [DOMPurify](https://github.com/cure53/DOMPurify) `3.2.6` — XSS sanitization (via CDN, version-pinned with an SRI `integrity` hash)
+
+The reader path (`index.html` and every page under `p/`) loads **no third-party JavaScript at all** — posts are pre-rendered, so `marked`, `DOMPurify` and `js-yaml` are no longer needed there.
 
 **Fonts:**
 - [Google Fonts](https://fonts.google.com/) — Roboto (body, headings)
 
-Post pages are pre-rendered, so `view.html` is only a small legacy redirect shim that forwards old `view.html?post=…` links to `/p/<slug>.html`. `js-yaml` is no longer needed at runtime.
+## Generated Files
+
+`posts.json`, `feed.xml`, and everything under `p/` are **generated — never hand-edit them.** Change the Markdown in `posts/YYYY/` (or `tags.json`) and re-run `update_posts.py`; the build wipes and regenerates `p/` from scratch. A post's public URL is derived from its filename (`posts/2026/2026-09-28-my-slug.md` → `/p/2026-09-28-my-slug.html`), so renaming a file changes its URL.
+
+Post pages are pre-rendered, so `view.html` is only a small legacy redirect shim that forwards old `view.html?post=…` links to `/p/<slug>.html`.
