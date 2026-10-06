@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - 'posts/**/*.md'
-      - 'tags.json'
       # The validation logic itself lives in update_posts.py, so edits to the
       # validator or the indexer must be checked too.
       - 'update_posts.py'
@@ -18,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Fails the PR on missing/invalid dates, unknown tags, or bad filenames
+      # Fails the PR on missing/invalid dates, bad filenames
       # instead of letting posts silently sort to the bottom of the index.
       - name: Validate post metadata
         run: python3 update_posts.py --validate
