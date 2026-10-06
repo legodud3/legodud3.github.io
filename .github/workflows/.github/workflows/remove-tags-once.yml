@@ -1,0 +1,29 @@
+name: Remove blog tags once
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  remove-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Remove tag system and regenerate site
+        run: |
+          cat scripts/part1.b64 scripts/part2.b64 scripts/part3.b64 | base64 -d | gunzip > /tmp/remove_tags_once.py
+          python3 /tmp/remove_tags_once.py
+          python3 -m pip install markdown
+          python3 update_posts.py
+      - name: Commit cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A ':!.github/workflows/*' ':!scripts/remove_tags_once.py'
+          git commit -m 'Remove blog tag system'
+          git push origin HEAD:main
