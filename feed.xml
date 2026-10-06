@@ -5,7 +5,16 @@
   <link href="https://legodud3.github.io/" rel="alternate" />
   <link href="https://legodud3.github.io/feed.xml" rel="self" />
   <id>https://legodud3.github.io/</id>
-  <updated>2026-09-28T00:00:00Z</updated>
+  <updated>2026-10-06T00:00:00Z</updated>
+  <entry>
+    <title>In the future, Indians won't be able to afford to fall sick</title>
+    <link href="https://legodud3.github.io/p/2026-10-06-in-the-future-indians-won-t-be-able-to-afford-to-fall-sick.html" rel="alternate" />
+    <id>https://legodud3.github.io/p/2026-10-06-in-the-future-indians-won-t-be-able-to-afford-to-fall-sick.html</id>
+    <published>2026-10-06T00:00:00Z</published>
+    <updated>2026-10-06T00:00:00Z</updated>
+    <category term="Reflection" />
+    <summary>Sometimes when you are out of ideas on what to read, you just scroll through the years of gunk you have accumulated in your Kindle library, and find a gem. Such was my experience with finding the book "The Price We Pay" by Dr. Marty Makary. I am only a quarter of the way through it, so I expect to m</summary>
+  </entry>
   <entry>
     <title>Intelligence may not follow division of labour</title>
     <link href="https://legodud3.github.io/p/2026-09-28-intelligence-may-not-follow-division-of-labour.html" rel="alternate" />
@@ -176,14 +185,5 @@
     <updated>2026-03-12T00:00:00Z</updated>
     <category term="Reflection" />
     <summary>I was listening to a wonderful interview with Bret Taylor by John Collison. It got my brain gears spinning on this particular question: What does a software PDE org look like in the next 12–18 months? I think making predictions beyond this year is moot. Specifically in PDE because the rate of change</summary>
-  </entry>
-  <entry>
-    <title>Moats - stronger/weaker</title>
-    <link href="https://legodud3.github.io/p/2026-03-06-moats-stronger-weaker.html" rel="alternate" />
-    <id>https://legodud3.github.io/p/2026-03-06-moats-stronger-weaker.html</id>
-    <published>2026-03-06T00:00:00Z</published>
-    <updated>2026-03-06T00:00:00Z</updated>
-    <category term="Reflection" />
-    <summary>Now that everyone can vibe code (or "agentic code," if you want to be posh) a company of their choice.... Stronger or at least similar as pre-AI Network effects: Where users beget users, or where supply &lt;&gt; demand reinforce each other (e.g., social networks). Data: You can copy the app, algo, UI, mar</summary>
   </entry>
 </feed>
