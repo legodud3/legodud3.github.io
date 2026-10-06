@@ -23,6 +23,30 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Python dependencies
+
+on:
+  push:
+    paths:
+      - 'posts/**/*.md'
+      - '.github/workflows/update_posts.yml'
+      - 'update_posts.py'
+
+permissions:
+  contents: write
+
+# Serialize runs per branch: two quick publishes in a row must queue, not race
+# (the pull --rebase + push below would otherwise fail intermittently).
+concurrency:
+  group: posts-index-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Python dependencies
         run: python3 -m pip install markdown
 
       - name: Generate posts.json, feed.xml, sitemap.xml, and static post pages
