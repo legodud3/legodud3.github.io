@@ -1,7 +1,7 @@
 ---
 title: First trip with Samay!
 date: 2026-03-17
-tag: Reflection
+
 ---
 
 We are currently in the middle of our first trip with Samay, visiting Bombay and Delhi for a few days each. In addition to meeting family and friends, this trip is a great "dry run" for future, longer trips with a newborn.

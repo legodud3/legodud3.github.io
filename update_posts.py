@@ -95,7 +95,7 @@ def iso_date(date_str):
     return parse_date(date_str).replace(tzinfo=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def validate_post(rel_path, meta, tag_name):
+def validate_post(rel_path, meta):
     """Return a list of metadata problems for a post (empty list = valid)."""
     problems = []
     if not POST_PATH_RE.match(rel_path):
@@ -109,8 +109,6 @@ def validate_post(rel_path, meta, tag_name):
         problems.append(f"{rel_path}: missing or invalid date (expected YYYY-MM-DD)")
     if not meta.get("title"):
         problems.append(f"{rel_path}: missing title")
-    if meta.get("tag") and not tag_name:
-        problems.append(f"{rel_path}: unknown tag '{meta['tag']}' (not in tags.json)")
     return problems
 
 
@@ -121,7 +119,6 @@ def build_feed(posts):
         if parse_date(post["date"]) == datetime.min:
             continue  # undated posts can't be ordered in a feed
         link = f'{SITE_URL}{post["url"]}'
-        category = f'    <category term="{xml_escape(post["tag_name"])}" />\n' if post["tag_name"] else ""
         entries.append(
             f'  <entry>\n'
             f'    <title>{xml_escape(post["title"])}</title>\n'
@@ -129,7 +126,6 @@ def build_feed(posts):
             f'    <id>{xml_escape(link)}</id>\n'
             f'    <published>{iso_date(post["date"])}</published>\n'
             f'    <updated>{iso_date(post["date"])}</updated>\n'
-            f'{category}'
             f'    <summary>{xml_escape(post["excerpt"])}</summary>\n'
             f'  </entry>'
         )
@@ -203,16 +199,13 @@ def significant_words(text):
 
 
 def find_related_posts(posts, current, count=3):
-    """Related posts: same tag first, then excerpt keyword overlap.
-    Mirrors the heuristic the old client-side reader used."""
+    """Related posts by excerpt keyword overlap."""
     current_words = significant_words(current.get("excerpt"))
     scored = []
     for post in posts:
         if post["filename"] == current["filename"]:
             continue
         score = 0
-        if post.get("tag_key") and post["tag_key"] == current.get("tag_key"):
-            score += 3
         if current_words:
             score += len(current_words & significant_words(post.get("excerpt")))
         scored.append((score, post))
@@ -231,17 +224,11 @@ def build_related_html(related):
         return ""
     cards = []
     for post in related:
-        tag_html = ""
-        if post["tag_name"] and post["tag_key"]:
-            tag_html = (
-                f' <span class="post-tag tag-{post["tag_key"]}">'
-                f'[{html_escape(post["tag_name"])}]</span>'
-            )
         excerpt = html_escape((post["excerpt"] or "")[:100].rstrip() + "…") if post["excerpt"] else ""
         cards.append(
             f'                    <a class="related-post-card" href="{post["url"]}">\n'
             f'                        <div class="related-post-title">{html_escape(post["title"])}</div>\n'
-            f'                        <div><span class="post-date">[{html_escape(post["date"])}]</span>{tag_html}</div>\n'
+            f'                        <div><span class="post-date">[{html_escape(post["date"])}]</span></div>\n'
             + (f'                        <div class="related-post-excerpt">{excerpt}</div>\n' if excerpt else "")
             + '                    </a>'
         )
@@ -315,10 +302,6 @@ def build_post_page(post, posts):
     newer_post = posts[index - 1] if index > 0 else None
     older_post = posts[index + 1] if index + 1 < len(posts) else None
 
-    tag_html = ""
-    if post["tag_name"] and post["tag_key"]:
-        tag_html = f'<span class="post-tag tag-{post["tag_key"]}">[{html_escape(post["tag_name"])}]</span>\n                '
-
     if newer_post:
         newer_link = f'<a class="visible" href="{newer_post["url"]}">← {html_escape(newer_post["title"])}</a>'
     else:
@@ -372,7 +355,7 @@ def build_post_page(post, posts):
 
             <article class="markdown-body">
                 <h1 class="post-reader-title">{title}</h1>
-                <div class="post-meta">{tag_html}[{html_escape(post["date"])}]</div>
+                <div class="post-meta">[{html_escape(post["date"])}]</div>
 {content_html}
             </article>
 
@@ -427,13 +410,6 @@ def main(validate_only=False):
     posts = []
     problems = []
 
-    # Load tags from tags.json to avoid duplication
-    TAG_RULES = {}
-    with open("tags.json", "r", encoding="utf-8") as f:
-        tags_data = json.load(f)
-        for key, data in tags_data.items():
-            TAG_RULES[data["name"]] = {"color": data["color"], "key": key}
-
     # Loop through files in posts/ directory recursively.
     # os.walk yields entries in filesystem order, which varies between machines,
     # so sort dirs/files to keep the build byte-for-byte reproducible.
@@ -448,33 +424,17 @@ def main(validate_only=False):
                 meta = parse_front_matter(content)
                 title = meta.get("title", filename)
                 date = meta.get("date", "Unknown")
-                manual_tag = meta.get("tag")
                 excerpt = extract_excerpt(content)
-
-                tag_name = None
-                tag_key = None
-                tag_color = None
-
-                if manual_tag:
-                    for tag, info in TAG_RULES.items():
-                        if tag.lower() == manual_tag.lower():
-                            tag_name = tag
-                            tag_key = info["key"]
-                            tag_color = info["color"]
-                            break
 
                 # Get relative path for JSON (handles subfolders)
                 rel_path = os.path.relpath(filepath, posts_dir).replace("\\", "/")
-                problems.extend(validate_post(rel_path, meta, tag_name))
+                problems.extend(validate_post(rel_path, meta))
 
                 posts.append({
                     "title": title,
                     "date": date,
                     "filename": rel_path,
                     "url": post_url(rel_path),
-                    "tag_name": tag_name,
-                    "tag_key": tag_key,
-                    "tag_color": tag_color,
                     "excerpt": excerpt,
                     "_body": strip_front_matter(content)  # internal: used for static pages, stripped from posts.json
                 })

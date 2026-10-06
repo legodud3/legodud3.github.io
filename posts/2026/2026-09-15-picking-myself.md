@@ -1,7 +1,7 @@
 ---
 title: Picking myself
 date: 2026-09-15
-tag: Reflection
+
 ---
 
 I have spent the last few weeks trying to capture my state of mind in this blog post. Until today, the next 'thing to do' has always been assigned to me. While I rejected the obviously bad things to do, my approach was to default try stuff out and reject. I rarely questioned if the next 'thing to do' was optimal, only if it was good enough. Now that I have to pick for myself, I can see that it is hard and I am scared.

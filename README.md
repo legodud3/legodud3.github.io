@@ -10,8 +10,7 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
     *   Posts are written in **Markdown** and stored in the `posts/` directory (organized by year).
     *   A **GitHub Action** triggers on every push, running a Python script that regenerates the `posts.json` index, the `feed.xml` Atom feed, and **pre-rendered static HTML pages** for every post under `p/` (real titles, descriptions, canonical URLs, and baked-in prev/next navigation).
 *   **Smart Organization**:
-    *   **Tagging System**: Supports multiple tags — Reflection, Tech, Life, Learning — each with a distinct color.
-    *   **Search & Filtering**: The homepage features real-time search and tag filtering.
+    *   **Search**: The homepage features real-time post search.
     *   **Pagination**: Automatically handles large archives of posts.
     *   **Surprise Me**: A button to jump to a random post for serendipitous discovery.
 *   **Reading Experience**:
@@ -35,14 +34,6 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 | `--accent-color` | `#FFD700` (gold) | `#DAA520` | Brand, buttons, highlights |
 | `--border-color` | `#333` | `#e0e0e0` | Borders & dividers |
 
-### Tag Colors
-| Tag | Color |
-|---|---|
-| Reflection | `#27ae60` (green) |
-| Tech | `#e67e22` (orange) |
-| Life | `#2980b9` (blue) |
-| Learning | `#8e44ad` (purple) |
-
 ### Key Components
 - **Writing Consistency Heatmap**: GitHub-style contribution graph for posts
 - **Project Cards**: Card grid with colored accent borders
@@ -51,7 +42,7 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 ## CI/CD Workflows
 
 ### Post Index (`update_posts.yml`)
-- **Trigger**: Push to `posts/**/*.md`, `tags.json`, or `update_posts.py`
+- **Trigger**: Push to `posts/**/*.md` or `update_posts.py`
 - **Action**: Installs `markdown`, then runs `update_posts.py` to regenerate `posts.json`, `feed.xml` (Atom feed), `sitemap.xml`, and the static post pages in `p/`
 - **Output**: Auto-commits updated `posts.json` + `feed.xml` + `sitemap.xml` + `p/`
 - **Concurrency**: Serialized (`posts-index` group) so rapid publishes queue instead of racing
@@ -80,8 +71,8 @@ python3 update_posts.py && git status --porcelain
 No output means the committed artifacts match a fresh build exactly.
 
 ### Post Validation (`validate_posts.yml`)
-- **Trigger**: Pull requests touching `posts/**/*.md`, `tags.json`, or `update_posts.py`
-- **Action**: Runs `update_posts.py --validate`, failing on missing titles, invalid dates, unknown tags, or misnamed files
+- **Trigger**: Pull requests touching `posts/**/*.md` or `update_posts.py`
+- **Action**: Runs `update_posts.py --validate`, failing on missing titles, invalid dates, misnamed files
 - **Note**: `update_posts.py` is in the path filter because the validation logic lives inside it — a PR that changes the validator or the indexer must still be checked.
 
 ## Getting Started
@@ -99,7 +90,7 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
    - Enter the token; the owner and repository are fixed by the editor.
    - Click "Login & Continue"
 3. **Write your post**:
-   - Enter a title, select date (defaults to today), and choose a tag
+   - Enter a title and select a date (defaults to today)
    - Write in plain Markdown in the text area — the formatting toolbar and `Ctrl`/`Cmd` + `B`/`I`/`K` shortcuts insert Markdown syntax rather than rich HTML, so what you paste in is exactly what gets committed
    - Click "Preview" to see how it will look
    - Click "Publish Post" to commit directly to GitHub
@@ -119,7 +110,6 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
    ---
    title: Your Post Title
    date: YYYY-MM-DD
-   tag: Reflection
    ---
    ```
 4. Write your content in Markdown below the front matter
@@ -141,6 +131,6 @@ The reader path (`index.html` and every page under `p/`) loads **no third-party 
 
 ## Generated Files
 
-`posts.json`, `feed.xml`, `sitemap.xml`, and everything under `p/` are **generated — never hand-edit them.** Change the Markdown in `posts/YYYY/` (or `tags.json`) and re-run `update_posts.py`; the build wipes and regenerates `p/` from scratch. A post's public URL is derived from its filename (`posts/2026/2026-09-28-my-slug.md` → `/p/2026-09-28-my-slug.html`), so renaming a file changes its URL.
+`posts.json`, `feed.xml`, `sitemap.xml`, and everything under `p/` are **generated — never hand-edit them.** Change the Markdown in `posts/YYYY/` and re-run `update_posts.py`; the build wipes and regenerates `p/` from scratch. A post's public URL is derived from its filename (`posts/2026/2026-09-28-my-slug.md` → `/p/2026-09-28-my-slug.html`), so renaming a file changes its URL.
 
 Post pages are pre-rendered, so `view.html` is only a small legacy redirect shim that forwards old `view.html?post=…` links to `/p/<slug>.html`.

@@ -1,7 +1,7 @@
 ---
 title: Start viewing "agentic" as equivalent to people management
 date: 2026-02-27
-tag: Reflection
+
 ---
 
 ## Intro

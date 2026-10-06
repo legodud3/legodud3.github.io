@@ -1,7 +1,7 @@
 ---
 title: Habit Retention
 date: 2025-11-28
-tag: Reflection
+
 ---
 
 Writing after approximately three months. I forgot about writing for many days and never actually did it. It's a brutal reminder that habits have terrible retention curves unless there is an external stimulus or incentive, even when you are fully convinced and tell yourself that there are benefits to the activity.

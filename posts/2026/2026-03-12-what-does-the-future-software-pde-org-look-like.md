@@ -1,7 +1,7 @@
 ---
 title: What does the future software PDE org look like?
 date: 2026-03-12
-tag: Reflection
+
 ---
 
 I was listening to a wonderful [interview with Bret Taylor](https://www.youtube.com/watch?v=n4E4xNYCkYM) by John Collison. It got my brain gears spinning on this particular question:

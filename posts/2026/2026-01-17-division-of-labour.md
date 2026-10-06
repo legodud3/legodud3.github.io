@@ -1,7 +1,7 @@
 ---
 title: Division of labour
 date: 2026-01-17
-tag: Reflection
+
 ---
 
 I recently began reading Adam Smith's *The Wealth of Nations*. His writing style is incompatible with the 2020s world we live in, so you need to pause and process each long sentence he composes. Once you get over that hurdle, you realize that the man did codify some wonderful ideas. One of the first concepts he introduces is that of division of labour. Specifically, Adam Smith argues the following.

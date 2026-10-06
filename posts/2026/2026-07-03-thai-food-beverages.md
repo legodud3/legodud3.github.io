@@ -1,7 +1,7 @@
 ---
 title: Thai food & beverages
 date: 2026-07-03
-tag: Reflection
+
 ---
 
 First, an admission: I have not written a lot over the last 1 month. I can't make many excuses, but for what it's worth, we took Samay on his first international trip to Thailand in mid-June (excellent!). I have had an aversion to Thai food because I had never had Thai food in Thailand. Also, I am allergic to shellfish, so that rules out approximately 3/4 of their food (fish and oyster sauce are like salt—they're in everything).

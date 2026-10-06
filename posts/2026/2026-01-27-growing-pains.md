@@ -1,7 +1,7 @@
 ---
 title: Growing pains
 date: 2026-01-27
-tag: Reflection
+
 ---
 
 Our son will cross the six-week mark this week. He has stopped fitting into his "old" clothes. About half of them were purchased by us; the other half were hand-me-downs. So we got out the new batch of bigger clothes. Some fit him well; he is swimming in others.

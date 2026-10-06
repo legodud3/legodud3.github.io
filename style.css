@@ -428,47 +428,12 @@ a:hover {
     color: var(--accent-color);
 }
 
-/* Tags & Filters */
-.tag-and-surprise-container {
+/* Surprise button */
+.surprise-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    gap: 15px;
     margin-bottom: 14px;
-}
-
-.tag-filter-container {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    flex: 1;
-}
-
-.tag-filter-btn {
-    padding: 5px 10px;
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    cursor: pointer;
-    border-radius: 15px;
-    font-size: 0.9em;
-    transition: all 0.2s ease;
-}
-
-.tag-filter-btn:hover {
-    background-color: var(--hover-bg);
-    filter: brightness(1.2);
-}
-
-.tag-filter-btn.tag-reflection {
-    color: #27ae60;
-    border-color: #27ae60;
-}
-
-.tag-filter-btn.tag-reflection.active {
-    background-color: #27ae60;
-    color: #fff;
-    border: 1px solid #27ae60;
 }
 
 .surprise-btn {
@@ -490,12 +455,6 @@ a:hover {
     transform: scale(1.05);
 }
 
-.post-tag {
-    font-size: 0.8rem;
-    margin-left: 0;
-    font-weight: 500;
-}
-
 .post-meta {
     margin-top: -15px;
     margin-bottom: 30px;
@@ -503,61 +462,6 @@ a:hover {
     font-size: 0.9em;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-}
-
-.post-meta .post-tag {
-    margin-left: 0;
-    margin-right: 10px;
-}
-
-/* Tag color styles */
-.post-tag.tag-reflection {
-    color: #27ae60;
-}
-
-.post-tag.tag-tech {
-    color: #e67e22;
-}
-
-.post-tag.tag-life {
-    color: #2980b9;
-}
-
-.post-tag.tag-learning {
-    color: #8e44ad;
-}
-
-.tag-filter-btn.tag-tech {
-    color: #e67e22;
-    border-color: #e67e22;
-}
-
-.tag-filter-btn.tag-tech.active {
-    background-color: #e67e22;
-    color: #fff;
-    border-color: #e67e22;
-}
-
-.tag-filter-btn.tag-life {
-    color: #2980b9;
-    border-color: #2980b9;
-}
-
-.tag-filter-btn.tag-life.active {
-    background-color: #2980b9;
-    color: #fff;
-    border-color: #2980b9;
-}
-
-.tag-filter-btn.tag-learning {
-    color: #8e44ad;
-    border-color: #8e44ad;
-}
-
-.tag-filter-btn.tag-learning.active {
-    background-color: #8e44ad;
-    color: #fff;
-    border-color: #8e44ad;
 }
 
 /* Navigation link styles */
@@ -767,11 +671,6 @@ a:hover {
 
     .main-panel {
         width: 100%;
-    }
-
-    .tag-and-surprise-container {
-        align-items: flex-start;
-        flex-direction: column;
     }
 
     .project-cards-grid {

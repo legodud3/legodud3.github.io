@@ -1,7 +1,7 @@
 ---
 title: Providing Justification
 date: 2025-07-02
-tag: Reflection
+
 ---
 
 I have begun internalizing that I don't need to give a reason for my thoughts or actions if I don't want to, and I don't owe anyone an explanation. 

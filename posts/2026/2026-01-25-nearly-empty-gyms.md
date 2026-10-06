@@ -1,7 +1,7 @@
 ---
 title: Nearly empty gyms
 date: 2026-01-25
-tag: Reflection
+
 ---
 
 I love working out in nearly empty gyms, which I define as gyms that are operating at <20% but >0% capacity. I find I can lift heavier weights and finish quicker. I'm sure both of these are physically possible even if the gym is at 60% capacity. But I like it when I see a nearly empty gym.

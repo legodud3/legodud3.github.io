@@ -1,7 +1,7 @@
 ---
 title: Just look at the data
 date: 2026-02-12
-tag: Reflection
+
 ---
 
 "Just look at the data" is one of those lessons that is timeless, revealing, and unbiased. I recently did a quick budgeting exercise to get a better handle on my expenses. Mentally, I had a number in my head of what I "thought" I spent in a month. The real number was 30% higher. Reactions included:

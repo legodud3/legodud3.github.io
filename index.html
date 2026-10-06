@@ -40,10 +40,7 @@
                 <input type="text" id="searchInput" placeholder="Search posts..." aria-label="Search posts">
             </div>
 
-            <div class="tag-and-surprise-container">
-                <div id="tagFilters" class="tag-filter-container">
-                    <!-- Tag buttons will be injected here -->
-                </div>
+            <div class="surprise-container">
                 <button id="surpriseBtn" class="surprise-btn">✨ Surprise me</button>
             </div>
 
@@ -66,16 +63,13 @@
     <script>
         let allPosts = [];
         let currentPage = 1;
-        let activeTag = null;
         const POSTS_PER_PAGE = 10;
 
         function restoreStateFromUrl() {
             const params = new URLSearchParams(window.location.search);
             const q = params.get('q');
-            const tag = params.get('tag');
             const page = parseInt(params.get('page'), 10);
             if (q) document.getElementById('searchInput').value = q;
-            if (tag) activeTag = tag;
             if (Number.isInteger(page) && page > 0) currentPage = page;
         }
 
@@ -83,7 +77,6 @@
             const params = new URLSearchParams();
             const q = document.getElementById('searchInput').value.trim();
             if (q) params.set('q', q);
-            if (activeTag) params.set('tag', activeTag);
             if (currentPage > 1) params.set('page', currentPage);
             const qs = params.toString();
             history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
@@ -94,7 +87,6 @@
                 // Shared loader fetches posts.json once per page (also used by the heatmap)
                 allPosts = await window.PostsIndex.load();
                 restoreStateFromUrl();
-                renderTagFilters();
                 renderPosts();
             } catch (error) {
                 console.error('Error loading posts:', error);
@@ -106,104 +98,12 @@
             }
         }
 
-        function renderTagFilters() {
-            const tagCounts = {};
-            allPosts.forEach(post => {
-                if (post.tag_key) {
-                    if (!tagCounts[post.tag_key]) {
-                        tagCounts[post.tag_key] = {
-                            count: 0,
-                            name: post.tag_name,
-                            color: post.tag_color
-                        };
-                    }
-                    tagCounts[post.tag_key].count++;
-                }
-            });
-
-            // Convert to array and sort by count desc
-            const sortedTags = Object.entries(tagCounts)
-                .sort((a, b) => b[1].count - a[1].count)
-                .slice(0, 3); // Top 3
-
-            const filterContainer = document.getElementById('tagFilters');
-            filterContainer.innerHTML = '';
-
-            if (sortedTags.length > 0) {
-                 const allBtn = document.createElement('button');
-                 allBtn.className = 'tag-filter-btn';
-                 allBtn.dataset.tagKey = 'all';
-                 if (!activeTag) allBtn.classList.add('active');
-                 allBtn.textContent = 'All';
-                 allBtn.onclick = () => {
-                     activeTag = null;
-                     currentPage = 1;
-                     updateTagFilterActiveState();
-                     renderPosts();
-                 };
-                 filterContainer.appendChild(allBtn);
-
-                 sortedTags.forEach(([key, info]) => {
-                     const btn = document.createElement('button');
-                     btn.className = 'tag-filter-btn';
-                     btn.dataset.tagKey = key;
-                     btn.dataset.tagColor = info.color;
-                     btn.className = `tag-filter-btn tag-${key}`;
-                     if (activeTag === key) {
-                         btn.classList.add('active');
-                     }
-
-                     btn.textContent = `${info.name} (${info.count})`;
-
-                     btn.onclick = () => {
-                         activeTag = (activeTag === key) ? null : key;
-                         currentPage = 1;
-                         updateTagFilterActiveState();
-                         renderPosts();
-                     };
-                     filterContainer.appendChild(btn);
-                 });
-            }
-            updateTagFilterActiveState();
-        }
-
-        function updateTagFilterActiveState() {
-            const filterButtons = document.querySelectorAll('.tag-filter-btn');
-            filterButtons.forEach(btn => {
-                const tagKey = btn.dataset.tagKey;
-
-                if (tagKey === 'all') {
-                    // Handle "All" button
-                    if (!activeTag) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                } else {
-                    // Handle tag-specific buttons
-                    const tagColor = btn.dataset.tagColor;
-                    if (activeTag === tagKey) {
-                        btn.classList.add('active');
-                        btn.style.backgroundColor = tagColor;
-                        btn.style.color = '#fff';
-                        btn.style.border = '1px solid ' + tagColor;
-                    } else {
-                        btn.classList.remove('active');
-                        btn.style.backgroundColor = '';
-                        btn.style.color = tagColor;
-                        btn.style.borderColor = tagColor;
-                    }
-                }
-            });
-        }
-
         function renderPosts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const filteredPosts = allPosts.filter(post => {
                 const matchesSearch = post.title.toLowerCase().includes(searchTerm)
                     || (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm));
-                const matchesTag = activeTag ? post.tag_key === activeTag : true;
-                return matchesSearch && matchesTag;
+                return matchesSearch;
             });
 
             // Pagination
@@ -240,12 +140,6 @@
                     dateSpan.className = 'post-date';
                     dateSpan.textContent = post.date;
                     meta.appendChild(dateSpan);
-                    if (post.tag_name && post.tag_key) {
-                        const tagSpan = document.createElement('span');
-                        tagSpan.className = `post-tag tag-${post.tag_key}`;
-                        tagSpan.textContent = `[${post.tag_name}]`;
-                        meta.appendChild(tagSpan);
-                    }
                     li.appendChild(meta);
 
                     if (post.excerpt) {
@@ -285,8 +179,7 @@
              const filtered = allPosts.filter(post => {
                 const matchesSearch = post.title.toLowerCase().includes(searchTerm)
                     || (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm));
-                const matchesTag = activeTag ? post.tag_key === activeTag : true;
-                return matchesSearch && matchesTag;
+                return matchesSearch;
             });
              if (currentPage < Math.ceil(filtered.length / POSTS_PER_PAGE)) {
                  currentPage++;

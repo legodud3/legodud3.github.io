@@ -1,7 +1,7 @@
 ---
 title: Selling the dream is the most significant driver of market cap
 date: 2026-04-10
-tag: Reflection
+
 ---
 
 We live in a capitalist world. Consumers, corporations, and the state (i.e., government via laws and regulation) are the most important groups in this world. Consumers have value because they generate demand for various goods and services. Corporations have value because they fulfill these demands. The state has value because it (tries to) keep things fair between these two groups and acts as a neutral judge and redressal mechanism when there are disputes. Because this is a capitalist world, it's all about value creation. Money is the points tally of the value created. We measure the value of consumers by a metric such as consumer spending. We measure the value of corporations by their profits or market capitalization. Market capitalization is a distillation of what the future of that corporation looks like—an expected value of what could happen to that company under various scenarios. We see that distillation as a stock price, and we may agree or disagree with it, based on which we make buy and sell decisions.

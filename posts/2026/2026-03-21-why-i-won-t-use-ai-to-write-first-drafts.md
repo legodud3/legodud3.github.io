@@ -1,7 +1,7 @@
 ---
 title: Why I won't use AI to write first drafts
 date: 2026-03-21
-tag: Reflection
+
 ---
 
 Unless you have been living under a rock, you know that AI can write better than you (the average person). AI can express ideas in a simpler, clearer, and more compelling fashion...or any fashion you want, really. The question is: Should you let it?

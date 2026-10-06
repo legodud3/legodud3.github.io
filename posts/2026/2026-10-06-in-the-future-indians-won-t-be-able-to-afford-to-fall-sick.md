@@ -1,7 +1,7 @@
 ---
 title: "In the future, Indians won't be able to afford to fall sick"
 date: 2026-10-06
-tag: Reflection
+
 ---
 
 Sometimes when you are out of ideas on what to read, you just scroll through the years of gunk you have accumulated in your Kindle library, and find a gem. Such was my experience with finding the book "The Price We Pay" by Dr. Marty Makary. I am only a quarter of the way through it, so I expect to make 1-2 more posts about it. It tries to unpack why healthcare in the US is so expensive and broken. Unknown to me, Dr. Marty was in the news a few months ago, because he resigned (read: was 'nudged out') as the US Food & Drug Administration head...over his refusal to allow the sale of flavored vapes. 

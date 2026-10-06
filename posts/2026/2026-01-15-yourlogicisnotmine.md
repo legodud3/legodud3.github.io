@@ -1,7 +1,7 @@
 ---
 title: Your logic is not my logic
 date: 2026-01-15
-tag: Reflection
+
 ---
 
 Today marks 4 weeks since our son was born. The past 4 weeks have felt long, incredible, different from pre-newborn life, and tiring. We have had to make many shifts in our schedule and activities. More things need to be planned vs. being spontaneous earlier (I don't like this part). But these are all doable shifts and ones we were aware would happen, though we were not prepared for them.

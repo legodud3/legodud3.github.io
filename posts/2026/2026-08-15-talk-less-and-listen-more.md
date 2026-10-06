@@ -1,7 +1,7 @@
 ---
 title: Talk less and listen more
 date: 2026-08-15
-tag: Reflection
+
 ---
 
 Trying to apply "The Mom Test" in every conversation I have. Realizing that it is hard, so hard. What is so hard? 

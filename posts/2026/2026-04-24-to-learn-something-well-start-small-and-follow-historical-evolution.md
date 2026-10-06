@@ -1,7 +1,7 @@
 ---
 title: To learn something well, start small and follow historical evolution
 date: 2026-04-24
-tag: Reflection
+
 ---
 
 I have been heads-down for the past ~3 weeks understanding agents. I played around with them, listened to podcasts, and explored GitHub repos.

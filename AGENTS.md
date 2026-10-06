@@ -25,10 +25,9 @@ This repository is a static GitHub Pages blog/site. Agents should keep changes s
 - `posts.json`: Generated post metadata index (includes a `url` field pointing at each post's static page).
 - `feed.xml`: Generated Atom feed (same script/workflow as `posts.json`).
 - `sitemap.xml`: Generated sitemap listing every indexable URL (3 hand-maintained pages + each post) for crawlers and agents. Regenerated with the rest; see `build_sitemap` in `update_posts.py`. `robots.txt` advertises it via a `Sitemap:` line.
-- `tags.json`: Tag definitions used by the indexer.
 - `update_posts.py`: Rebuilds `posts.json`, `feed.xml`, `sitemap.xml`, and the `p/` static pages from markdown + front matter; `--validate` checks metadata and exits non-zero on problems.
 - `.github/workflows/update_posts.yml`: Regenerates and auto-commits `posts.json`, `feed.xml`, `sitemap.xml`, and `p/` on relevant pushes (serialized via concurrency group). Only commits when the output actually differs.
-- `.github/workflows/validate_posts.yml`: PR check running `update_posts.py --validate`. Its path filter is `posts/**/*.md`, `tags.json`, **and `update_posts.py`** — the validation logic lives in that file, so keep it in the list if you extend the check.
+- `.github/workflows/validate_posts.yml`: PR check running `update_posts.py --validate`. Its path filter is `posts/**/*.md` and **`update_posts.py`** — the validation logic lives in that file, so keep it in the list if you extend the check.
 - `.gitignore`, `.gitattributes` (pins LF so line endings can't diverge), `.nojekyll`, `legohat_logo.png`: Standard static-site plumbing.
 
 ## Post Format Requirements
@@ -42,14 +41,12 @@ New markdown posts should use:
 ---
 title: Your Post Title
 date: YYYY-MM-DD
-tag: Reflection
 ---
 ```
 
 3. Body content in Markdown below front matter.
 
 Notes:
-- `tag` should match a `name` from `tags.json` (case-insensitive match is supported by the script).
 - Invalid/missing `date` values sort to the bottom (`datetime.min` fallback); the `validate_posts.yml` PR check fails on these.
 - A post's public URL is derived from its filename: `posts/2026/2026-09-28-my-slug.md` → `/p/2026-09-28-my-slug.html`.
 - **The filename is the URL**, so `--validate` requires slug-safe names (lowercase, hyphen-separated, no spaces). A stray ` copy` suffix once shipped a post at a URL containing a space; rename the file instead of working around it.
@@ -75,7 +72,6 @@ Note: pages use root-absolute asset/link paths (`/style.css`, `/p/...`) so they 
 - Prefer minimal, targeted edits that match existing code style.
 - Never hand-edit generated artifacts (`posts.json`, `feed.xml`, `p/`) — edit the markdown/front matter and re-run `update_posts.py`.
 - If editing post metadata logic, verify `update_posts.py` still handles nested `posts/YYYY/` paths.
-- If adding/changing tags, update `tags.json` and regenerate the index/feed/pages.
 - Post page templates live in `update_posts.py` (`build_post_page`); the rail/footer markup lives only in `layout.js`. Don't reintroduce that markup into individual pages.
 - Keep new pages' root-absolute links consistent (they must resolve from `/p/` too).
 - When modifying UI pages, verify desktop + mobile behavior and ensure links still resolve from site root.
@@ -93,7 +89,7 @@ The build must emit identical bytes on every machine, otherwise the GitHub Actio
 
 After relevant edits:
 
-1. Run `python3 update_posts.py` if posts, tags, or indexer logic changed (regenerates `posts.json`, `feed.xml`, and `p/`).
+1. Run `python3 update_posts.py` if posts or indexer logic changed (regenerates `posts.json`, `feed.xml`, and `p/`).
 2. Confirm `posts.json` is valid JSON, sorted newest-to-oldest by `date`, and each entry has a `url`.
 3. Confirm every post markdown file has a matching file in `p/` (and vice versa).
 4. **Confirm the rebuild is a no-op:** run `python3 update_posts.py` a second time and check `git status --porcelain` shows only the files you intended to change. A surprise diff means you broke a determinism invariant.

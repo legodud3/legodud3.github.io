@@ -1,7 +1,7 @@
 ---
 title: AI for building software (3)
 date: 2026-01-23
-tag: Reflection
+
 ---
 
 P.S. I am sharing a rearticulation of point 6 from my first [AI for building software post](https://legodud3.github.io/view.html?post=2026%2F2026-01-22-ai-for-building-distribution.md). As I reread it, I realized I was not clear.

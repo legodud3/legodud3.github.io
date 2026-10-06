@@ -1,7 +1,7 @@
 ---
 title: Baby monitors
 date: 2026-01-13
-tag: Reflection
+
 ---
 
 Most purchase decisions follow a pattern: they're driven by how well a product matches stated needs, its price, and how easy it is to get. But this framework breaks down fast. 

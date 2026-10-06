@@ -1,7 +1,7 @@
 ---
 title: Spontaneous Days
 date: 2025-06-07
-tag: Reflection
+
 ---
 
 June 6 (Friday) was a nice day!

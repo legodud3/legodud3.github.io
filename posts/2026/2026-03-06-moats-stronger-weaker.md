@@ -1,7 +1,7 @@
 ---
 title: Moats - stronger/weaker
 date: 2026-03-06
-tag: Reflection
+
 ---
 
 Now that everyone can vibe code (or "agentic code," if you want to be posh) a company of their choice....

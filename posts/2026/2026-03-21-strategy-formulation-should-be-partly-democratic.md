@@ -1,7 +1,7 @@
 ---
 title: Strategy formulation should be partly democratic
 date: 2026-03-21
-tag: Reflection
+
 ---
 
 I recently interacted with a few senior folks (think top 10% of the org). Our company had announced a transformative decision—one that will change the trajectory of the company—a couple of months ago. (Execution will tell whether the trajectory change is minimal or meaningful.) What struck me was:

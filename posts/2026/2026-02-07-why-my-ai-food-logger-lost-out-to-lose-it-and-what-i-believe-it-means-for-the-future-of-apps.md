@@ -1,7 +1,7 @@
 ---
 title: Why My AI food logger lost out to Lose It!, and what I believe it means for the future of apps
 date: 2026-02-07
-tag: Reflection
+
 ---
 
 ### Food logging experiment

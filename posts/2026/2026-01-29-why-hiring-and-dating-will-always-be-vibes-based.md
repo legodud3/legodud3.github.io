@@ -1,7 +1,7 @@
 ---
 title: Why hiring and dating will always be vibes based
 date: 2026-01-29
-tag: Reflection
+
 ---
 
 Hiring and dating are always frustrating but necessary matching processes we have to participate in. Cursory googling shows that 'matching' problems are a whole field of computer science theory (which I have not studied).

@@ -1,7 +1,7 @@
 ---
 title: Happy birthday to me!
 date: 2026-03-27
-tag: Reflection
+
 ---
 
 Today is my 36th birthday. Happy birthday to me!

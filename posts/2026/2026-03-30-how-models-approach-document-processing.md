@@ -1,7 +1,7 @@
 ---
 title: How models approach document processing
 date: 2026-03-30
-tag: Reflection
+
 ---
 
 I decided last week to shift from (using AI to build vanilla software) --> (using AI to build software with AI features). This is a not-so-subtle shift in my view because I believe that unless a product has real AI-enabled features, (a) it is liable to be subsumed by general-purpose consumer applications, and (b) it cannot improve as the underlying models improve.

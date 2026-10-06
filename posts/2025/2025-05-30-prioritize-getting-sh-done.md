@@ -1,7 +1,7 @@
 ---
 title: Prioritize Getting Sh*t Done
 date: 2025-05-30
-tag: Reflection
+
 ---
 
 I finally started putting my daily writing online. It's been approximately two months of daily practice. I feel better knowing that I created something for the day. However, before the first word is put down, it mostly feels bad. So now the goal is a simple three-step process:

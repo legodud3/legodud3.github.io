@@ -1,7 +1,7 @@
 ---
 title: Thoughts on the book "Project Hail Mary"
 date: 2026-05-29
-tag: Reflection
+
 ---
 
 ***Book spoilers ahead***

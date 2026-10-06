@@ -1,7 +1,7 @@
 ---
 title: Don't consume your day with current events
 date: 2026-05-27
-tag: Reflection
+
 ---
 
 Let's take an event: "THE LATEST CRISIS." You read, watch, or listen to the take, the counter-take, the social media take, the influencer take, the Reddit community take, your friends' take, and your parents' take. Before you know it, without your knowledge, recognition, or considered consent, you have decided to spend time on THE LATEST CRISIS. With that decision, you have actually embarked on a journey of up to five independent assumptions:

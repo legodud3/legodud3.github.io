@@ -1,7 +1,7 @@
 ---
 title: The World Progresses Because...
 date: 2025-05-24
-tag: Reflection
+
 ---
 
 The world progresses because humans want more. We are evolutionarily wired to never be content with what we have. My guess is that this is because the human brain is always:

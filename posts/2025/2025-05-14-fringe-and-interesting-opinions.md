@@ -1,7 +1,7 @@
 ---
 title: Fringe and Interesting Opinions
 date: 2025-05-14
-tag: Reflection
+
 ---
 
 I am fed up with the algorithm showing me the same predictable content across all popular media—especially digital. I am on the hunt for opinionated pieces and the opinionated people who write them.

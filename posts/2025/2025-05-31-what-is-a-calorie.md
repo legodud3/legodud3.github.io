@@ -1,7 +1,7 @@
 ---
 title: What is a Calorie?
 date: 2025-05-31
-tag: Reflection
+
 ---
 
 We have become much more conscious of food labels and read the back of the pack, focusing especially on one number: calories per serving. The calorie is actually a unit of energy. The energy in food is measured and reported in kilocalories (what we mistakenly call "calories"). The average male requires 2,000–2,500 kcal per day. But what does this number even mean?

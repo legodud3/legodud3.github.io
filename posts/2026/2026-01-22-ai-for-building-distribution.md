@@ -1,7 +1,7 @@
 ---
 title: AI for building software
 date: 2026-01-22
-tag: Reflection
+
 ---
 
 I have spent the past 4 weeks exploring AI for building software. It has been fun and enlightening. The output is this blog. I will be the first to admit that while I know more than I did 4 weeks ago, mine is still only a surface-level understanding. However, I am now in 100% agreement with the broad strokes of where software development is headed, given that agents and tooling have matured to a usable point and will only improve from here.

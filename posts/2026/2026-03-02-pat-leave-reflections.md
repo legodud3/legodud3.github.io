@@ -1,7 +1,7 @@
 ---
 title: Pat leave reflections
 date: 2026-03-02
-tag: Reflection
+
 ---
 
 I had the unique privilege of getting paid to spend a couple of months with my family after my son arrived. I am glad I got it. Here are some thoughts about it on my first day back at work.

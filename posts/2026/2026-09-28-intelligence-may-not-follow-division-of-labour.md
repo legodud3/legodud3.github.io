@@ -1,7 +1,7 @@
 ---
 title: Intelligence may not follow division of labour
 date: 2026-09-28
-tag: Reflection
+
 ---
 
 I spent 90 minutes skimming through the deepseek-coder [paper](https://arxiv.org/abs/2401.14196). It was released in early 2024. Deepseek (& others) had started giving signals that coding is a great "agentic" use case of foundation models. It's a fascinating paper, even for a non-technical person like me, because of how intuitive, simple, and effective some of their techniques are. I was particularly impressed with them training a coding generation model in two ways - namely next-token generation (good for new code generation) and fill-in-the-middle (good for edits, debugging errors in an existing code). The technique had been applied before, but Deepseek went on to produce the kill shot of testing the right mix between these two techniques for optimal performance.
