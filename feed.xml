@@ -5,7 +5,15 @@
   <link href="https://legodud3.github.io/" rel="alternate" />
   <link href="https://legodud3.github.io/feed.xml" rel="self" />
   <id>https://legodud3.github.io/</id>
-  <updated>2026-10-06T00:00:00Z</updated>
+  <updated>2026-10-07T00:00:00Z</updated>
+  <entry>
+    <title>Russian drones, iPhone thinking</title>
+    <link href="https://legodud3.github.io/p/2026-10-07-russian-drones-iphone-thinking.html" rel="alternate" />
+    <id>https://legodud3.github.io/p/2026-10-07-russian-drones-iphone-thinking.html</id>
+    <published>2026-10-07T00:00:00Z</published>
+    <updated>2026-10-07T00:00:00Z</updated>
+    <summary>Last week, the magic that is the YouTube recommendation algorithm served up this video to me. The video is about the evolution of Russian drones in the Russia-Ukraine war. Having no shortage of time on my hands, I saw the whole thing and then some. Best innovation example: The Russians stuck modems</summary>
+  </entry>
   <entry>
     <title>In the future, Indians won't be able to afford to fall sick</title>
     <link href="https://legodud3.github.io/p/2026-10-06-in-the-future-indians-won-t-be-able-to-afford-to-fall-sick.html" rel="alternate" />
@@ -157,13 +165,5 @@
     <published>2026-03-17T00:00:00Z</published>
     <updated>2026-03-17T00:00:00Z</updated>
     <summary>We are currently in the middle of our first trip with Samay, visiting Bombay and Delhi for a few days each. In addition to meeting family and friends, this trip is a great "dry run" for future, longer trips with a newborn. Our parents love spending time with all three of us. Yes, they have expressed</summary>
-  </entry>
-  <entry>
-    <title>What does the future software PDE org look like?</title>
-    <link href="https://legodud3.github.io/p/2026-03-12-what-does-the-future-software-pde-org-look-like.html" rel="alternate" />
-    <id>https://legodud3.github.io/p/2026-03-12-what-does-the-future-software-pde-org-look-like.html</id>
-    <published>2026-03-12T00:00:00Z</published>
-    <updated>2026-03-12T00:00:00Z</updated>
-    <summary>I was listening to a wonderful interview with Bret Taylor by John Collison. It got my brain gears spinning on this particular question: What does a software PDE org look like in the next 12–18 months? I think making predictions beyond this year is moot. Specifically in PDE because the rate of change</summary>
   </entry>
 </feed>
