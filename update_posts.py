@@ -115,12 +115,15 @@ def display_date(date_str):
 WORDS_PER_MINUTE = 200
 
 
-def reading_time(text):
-    """Reading time estimated from the Markdown source. Integer arithmetic
+def reading_time_minutes(text):
+    """Whole minutes to read `text` at WORDS_PER_MINUTE. Integer arithmetic
     rather than round() keeps the result identical on every platform."""
     words = len(text.split())
-    minutes = max(1, (words + WORDS_PER_MINUTE // 2) // WORDS_PER_MINUTE)
-    return f"{minutes} min read"
+    return max(1, (words + WORDS_PER_MINUTE // 2) // WORDS_PER_MINUTE)
+
+
+def reading_time(text):
+    return f"{reading_time_minutes(text)} min read"
 
 
 def validate_post(rel_path, meta):
@@ -498,13 +501,15 @@ def main(validate_only=False):
                 rel_path = os.path.relpath(filepath, posts_dir).replace("\\", "/")
                 problems.extend(validate_post(rel_path, meta))
 
+                body = strip_front_matter(content)
                 posts.append({
                     "title": title,
                     "date": date,
                     "filename": rel_path,
                     "url": post_url(rel_path),
                     "excerpt": excerpt,
-                    "_body": strip_front_matter(content)  # internal: used for static pages, stripped from posts.json
+                    "minutes": reading_time_minutes(body),
+                    "_body": body  # internal: used for static pages, stripped from posts.json
                 })
 
     # Sort by date descending. Sort by filename first so posts sharing a date keep a

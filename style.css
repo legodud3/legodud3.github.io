@@ -222,6 +222,9 @@ body {
 }
 
 .heatmap-cell {
+    /* Months with posts are rendered as <a>, which is inline by default and
+       would ignore width/height — block keeps the grid cells square. */
+    display: block;
     width: 13px;
     height: 13px;
     border-radius: 3px;
@@ -239,6 +242,18 @@ body {
 :root.light-mode .heatmap-level-2 { background-color: #40c463; }
 :root.light-mode .heatmap-level-3 { background-color: #30a14e; }
 :root.light-mode .heatmap-level-4 { background-color: #216e39; }
+
+/* Months that have posts link through to the filtered homepage list; empty
+   months stay inert so the grid isn't a wall of dead links. */
+a.heatmap-cell {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a.heatmap-cell:hover {
+    border-color: var(--accent-color);
+    transform: scale(1.2);
+}
 
 .heatmap-empty {
     margin: 0;
@@ -315,7 +330,8 @@ a:hover {
 
 #searchInput {
     width: 100%;
-    padding: 12px 14px 12px 40px;
+    /* 40px left clears the magnifier icon; 40px right clears the clear button. */
+    padding: 12px 40px 12px 40px;
     background-color: var(--bg-color);
     border: 1px solid var(--border-color);
     color: var(--text-color);
@@ -330,6 +346,79 @@ a:hover {
 #searchInput:focus {
     border-color: var(--accent-color);
     box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18);
+}
+
+/* Clear-search button, shown only while the field has text. */
+.clear-search {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: var(--radius-pill);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.clear-search:hover {
+    background-color: var(--hover-bg);
+    color: var(--text-color);
+}
+
+/* Result count plus the active month filter, between search and the list. */
+.list-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    min-height: 24px;
+}
+
+.result-count {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.month-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 6px 3px 10px;
+    border: 1px solid var(--accent-color);
+    border-radius: var(--radius-pill);
+    background-color: rgba(var(--accent-rgb), 0.12);
+    font-size: 0.8rem;
+    color: var(--accent-color);
+}
+
+.month-filter-clear {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: var(--radius-pill);
+    color: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.month-filter-clear:hover {
+    background-color: rgba(var(--accent-rgb), 0.25);
 }
 
 .post-list {
@@ -382,10 +471,60 @@ a:hover {
     margin-top: 3px;
 }
 
+.post-read-time {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* Skeleton placeholders shown while posts.json is in flight, so the list area
+   doesn't collapse to nothing on a cold load. */
+.post-item-skeleton {
+    pointer-events: none;
+}
+
+.post-item-skeleton:hover {
+    background: none;
+}
+
+.skeleton-bar {
+    display: block;
+    height: 10px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(90deg,
+        var(--hover-bg) 0%,
+        var(--border-color) 50%,
+        var(--hover-bg) 100%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.2s ease-in-out infinite;
+}
+
+.skeleton-title {
+    width: 45%;
+    height: 14px;
+}
+
+.skeleton-meta {
+    width: 22%;
+    margin-top: 8px;
+}
+
+.skeleton-text {
+    width: 88%;
+    margin-top: 10px;
+}
+
+@keyframes skeletonShimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+}
+
 .pagination {
     margin-top: 30px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .nav-btn {
@@ -863,8 +1002,11 @@ a:hover {
         margin-bottom: 0;
     }
 
+    /* The heatmap grid is only ~240px wide, so it fits even a 320px viewport.
+       This used to be display:none, which dropped the site's signature feature
+       for phone readers. */
     .rail-widget {
-        display: none;
+        margin-top: 12px;
     }
 
     .main-panel {

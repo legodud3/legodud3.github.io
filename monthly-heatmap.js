@@ -4,8 +4,37 @@
 // repeat visits get a cheap 304 instead of a full download every time.
 // Root-absolute path so it also works from generated pages under /p/.
 window.PostsIndex = window.PostsIndex || (function () {
+    const CACHE_KEY = 'postsIndex.v1';
     let promise = null;
+
+    // Session cache: lets a page paint its list immediately from the last known
+    // index while the network request (usually a 304) is still in flight.
+    function readCache() {
+        try {
+            const raw = sessionStorage.getItem(CACHE_KEY);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) && parsed.length ? parsed : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function writeCache(posts) {
+        try {
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify(posts));
+        } catch (e) {
+            // Quota exceeded or storage blocked — caching is best-effort only.
+        }
+    }
+
     return {
+        // Synchronous copy from the session cache, or null. Callers use it for
+        // an instant first paint and still await load() for the fresh index.
+        cached() {
+            return readCache();
+        },
+
         load() {
             if (!promise) {
                 promise = fetch('/posts.json')
@@ -13,7 +42,18 @@ window.PostsIndex = window.PostsIndex || (function () {
                         if (!response.ok) throw new Error('Failed to load posts.json');
                         return response.json();
                     })
-                    .then((posts) => (Array.isArray(posts) ? posts : []));
+                    .then((posts) => {
+                        const list = Array.isArray(posts) ? posts : [];
+                        writeCache(list);
+                        return list;
+                    })
+                    .catch((error) => {
+                        // Offline or failed request: fall back to the cached
+                        // copy instead of rendering an empty page.
+                        const cached = readCache();
+                        if (cached) return cached;
+                        throw error;
+                    });
             }
             return promise;
         }
@@ -45,14 +85,26 @@ window.PostsIndex = window.PostsIndex || (function () {
 
     let cellIndex = 0;
     function createCell(year, monthIndex, count, level) {
-        const cell = document.createElement('div');
+        const monthKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+        const label = `${monthKey} (${MONTH_NAMES[monthIndex]} ${year}): ${count} post${count === 1 ? '' : 's'}`;
+
+        // Months with posts link to the homepage filtered to that month. Empty
+        // months stay inert <div>s so the grid isn't a wall of dead links.
+        let cell;
+        if (count > 0) {
+            cell = document.createElement('a');
+            cell.href = `/index.html?month=${monthKey}`;
+            cell.setAttribute('aria-label', `${label} — view posts`);
+        } else {
+            cell = document.createElement('div');
+            cell.setAttribute('role', 'img');
+            cell.setAttribute('aria-label', label);
+        }
+
         cell.className = `heatmap-cell heatmap-level-${level}`;
         cell.style.animationDelay = `${cellIndex * 0.03}s`;
         cellIndex++;
-        const label = `${year}-${String(monthIndex + 1).padStart(2, '0')} (${MONTH_NAMES[monthIndex]} ${year}): ${count} post${count === 1 ? '' : 's'}`;
         cell.title = label;
-        cell.setAttribute('role', 'img');
-        cell.setAttribute('aria-label', label);
         return cell;
     }
 
