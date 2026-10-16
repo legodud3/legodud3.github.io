@@ -1,28 +1,75 @@
-/* Google Fonts (Roboto) are loaded via <link> tags in each page's <head> —
-   faster and non-render-blocking compared to a CSS @import. */
+/* Google Fonts (Fraunces for display type, Roboto for body) are loaded via
+   <link> tags in each page's <head> — faster and non-render-blocking compared
+   to a CSS @import. Both families come from a single combined request. */
 
+/* Design tokens. Dark is the default; .light-mode overrides. The head snippet
+   always adds exactly one of .light-mode / .dark-mode, so the light palette
+   only has to be declared once here. */
 :root {
+    color-scheme: dark;
+
+    /* Surfaces + text */
     --bg-color: #1a1a1a;
+    --bg-elevated: #202020;
     --text-color: #e0e0e0;
+    --text-muted: #9aa3ad;
     --link-color: #4da6ff;
-    --accent-color: #FFD700;
-    --accent-color-dark: #D4A000;
     --border-color: #333;
+    --border-color-strong: #454545;
     --hover-bg: #2a2a2a;
     --code-bg: #111;
-    --font-handwriting: 'Roboto', sans-serif;
+    --focus-ring: #4da6ff;
+
+    /* Accent. --accent-rgb lets one token drive every alpha wash, so the
+       gold tints follow the theme instead of staying hardcoded. */
+    --accent-color: #FFD700;
+    --accent-color-dark: #D4A000;
+    --accent-rgb: 255, 215, 0;
+    --on-accent: #1a1a1a;
+
+    /* Type */
+    --font-handwriting: 'Fraunces', 'Roboto', Georgia, serif;
     --font-body: 'Roboto', sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+        'Liberation Mono', monospace;
+
+    /* Measure: a ~68ch cap keeps prose readable; --page-width stays the outer
+       shell limit for list/grid layouts. */
+    --content-width: 68ch;
+    --page-width: 1240px;
+
+    /* Rhythm + shape */
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 20px;
+    --space-5: 32px;
+    --space-6: 48px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-pill: 999px;
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.25s ease;
 }
 
 :root.light-mode {
+    color-scheme: light;
+
     --bg-color: #ffffff;
+    --bg-elevated: #fafafa;
     --text-color: #1a1a1a;
+    --text-muted: #5f6672;
     --link-color: #0066cc;
-    --accent-color: #DAA520;
-    --accent-color-dark: #B8860B;
     --border-color: #e0e0e0;
+    --border-color-strong: #cfcfcf;
     --hover-bg: #f5f5f5;
     --code-bg: #f5f5f5;
+    --focus-ring: #0066cc;
+
+    /* Darkened from #DAA520 so accent text clears 4.5:1 on white. */
+    --accent-color: #B8860B;
+    --accent-color-dark: #8a6508;
+    --accent-rgb: 184, 134, 11;
 }
 
 *,
@@ -49,7 +96,7 @@ body {
     color: var(--text-color);
     font-family: var(--font-body);
     line-height: 1.75;
-    max-width: 1240px;
+    max-width: var(--page-width);
     margin: 0 auto;
     padding: 20px;
 }
@@ -69,7 +116,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 16px;
-    background: linear-gradient(180deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 215, 0, 0.01) 100%);
+    background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.05) 0%, rgba(var(--accent-rgb), 0.01) 100%);
 }
 
 .main-panel {
@@ -126,7 +173,7 @@ body {
 
 .rail-nav a.active {
     border-color: var(--accent-color);
-    background-color: rgba(255, 215, 0, 0.15);
+    background-color: rgba(var(--accent-rgb), 0.15);
     color: var(--accent-color);
 }
 
@@ -142,7 +189,7 @@ body {
 
 .rail-hat-tip {
     font-size: 0.82rem;
-    color: #999;
+    color: var(--text-muted);
     margin: 12px 0 0;
 }
 
@@ -165,13 +212,13 @@ body {
 
 .heatmap-month-label {
     font-size: 0.65rem;
-    color: #9aa3ad;
+    color: var(--text-muted);
     text-align: center;
 }
 
 .heatmap-year-label {
     font-size: 0.7rem;
-    color: #9aa3ad;
+    color: var(--text-muted);
 }
 
 .heatmap-cell {
@@ -195,7 +242,7 @@ body {
 
 .heatmap-empty {
     margin: 0;
-    color: #9aa3ad;
+    color: var(--text-muted);
     font-size: 0.82rem;
 }
 
@@ -206,7 +253,7 @@ body {
     justify-content: flex-end;
     gap: 5px;
     font-size: 0.72rem;
-    color: #9aa3ad;
+    color: var(--text-muted);
 }
 
 header {
@@ -278,10 +325,11 @@ a:hover {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* No `outline: none` here — the global :focus-visible ring below must stay
+   available to keyboard users; the border + wash handle pointer focus. */
 #searchInput:focus {
-    outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18);
 }
 
 .post-list {
@@ -306,7 +354,7 @@ a:hover {
 .post-item .post-excerpt {
     display: -webkit-box;
     font-size: 0.85rem;
-    color: #888;
+    color: var(--text-muted);
     line-height: 1.5;
     margin-top: 7px;
     -webkit-line-clamp: 2;
@@ -322,7 +370,7 @@ a:hover {
 }
 
 .post-date {
-    color: #888;
+    color: var(--text-muted);
     font-size: 0.8rem;
 }
 
@@ -377,7 +425,7 @@ a:hover {
     border-left: 4px solid var(--border-color);
     margin: 0;
     padding-left: 15px;
-    color: #aaa;
+    color: var(--text-muted);
 }
 
 .back-link {
@@ -405,7 +453,7 @@ a:hover {
 
 .share-label {
     font-size: 0.85em;
-    color: #aaa;
+    color: var(--text-muted);
 }
 
 .share-link {
@@ -451,14 +499,14 @@ a:hover {
 
 .surprise-btn:hover {
     background-color: var(--accent-color);
-    color: #1a1a1a;
+    color: var(--on-accent);
     transform: scale(1.05);
 }
 
 .post-meta {
     margin-top: -15px;
     margin-bottom: 30px;
-    color: #888;
+    color: var(--text-muted);
     font-size: 0.9em;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
@@ -479,14 +527,14 @@ a:hover {
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
     text-align: center;
-    color: #888;
+    color: var(--text-muted);
     font-size: 0.8rem;
 }
 
 .writing-desk-link {
     display: inline-block;
     margin-top: 4px;
-    color: #888;
+    color: var(--text-muted);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
@@ -609,13 +657,9 @@ a:hover {
 
 .project-card-desc {
     font-size: 0.9rem;
-    color: #aaa;
+    color: var(--text-muted);
     line-height: 1.5;
     margin: 0 0 12px 0;
-}
-
-:root.light-mode .project-card-desc {
-    color: #666;
 }
 
 .project-card-links {
@@ -626,7 +670,7 @@ a:hover {
 }
 
 .project-card-sep {
-    color: #555;
+    color: var(--text-muted);
 }
 
 @media (max-width: 940px) {
@@ -688,7 +732,7 @@ a:hover {
 .related-posts-heading {
     font-size: 1rem;
     font-weight: 600;
-    color: #888;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 16px;
@@ -724,21 +768,27 @@ a:hover {
 .related-post-excerpt {
     margin-top: 8px;
     font-size: 0.82rem;
-    color: #888;
+    color: var(--text-muted);
     line-height: 1.5;
 }
 
-/* Roboto font — applied via --font-handwriting variable */
+/* Display face (Fraunces) — brand, headings, and post titles only; body copy
+   stays Roboto. `--font-handwriting` is the historical name for this slot and
+   is kept so the existing rules keep resolving. */
 .rail-brand span,
-.rail-nav a,
-.back-link,
 .markdown-body h1,
 .markdown-body h2,
 .markdown-body h3,
 .post-title,
+.post-reader-title,
 .related-post-title,
 .page-header h1 {
     font-family: var(--font-handwriting);
+    font-optical-sizing: auto;
+}
+
+.post-reader-title {
+    letter-spacing: -0.015em;
 }
 
 ol li::marker {
@@ -782,4 +832,41 @@ ol li::marker {
 
 .markdown-body {
     animation: fadeIn 0.2s ease forwards;
+}
+
+/* Code gets an explicit mono stack instead of whatever the browser defaults to. */
+.markdown-body pre,
+.markdown-body code {
+    font-family: var(--font-mono);
+}
+
+.markdown-body code {
+    font-size: 0.92em;
+}
+
+/* Keyboard focus: one visible ring everywhere. There was previously no global
+   focus style, so tabbing through the rail and post list was invisible. */
+:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+}
+
+/* Reduced motion. The explicit opacity resets matter: .post-item and
+   .heatmap-cell start at opacity: 0 and depend on their animation to become
+   visible, so suppressing animations alone would leave the page blank. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .post-item,
+    .heatmap-cell,
+    .markdown-body {
+        opacity: 1;
+    }
 }

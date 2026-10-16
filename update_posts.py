@@ -272,6 +272,20 @@ SHARE_ROW_SCRIPT = """
 """
 
 
+# Theme bootstrap, inlined in <head> so it runs before first paint (no flash of
+# the wrong theme). Always leaves exactly one of .light-mode / .dark-mode on
+# <html>; the OS preference is consulted only when there is no stored choice.
+# Kept as a constant so the page template stays a plain f-string without
+# doubled braces.
+THEME_INIT_SCRIPT = (
+    "    <script>(function(){var t=null;try{t=localStorage.getItem('theme')}"
+    "catch(e){}var l=t==='light'||(!t&&window.matchMedia&&"
+    "window.matchMedia('(prefers-color-scheme: light)').matches);"
+    "document.documentElement.classList.add(l?'light-mode':'dark-mode')})();"
+    "</script>"
+)
+
+
 def build_post_page(post, posts):
     """Render a fully static HTML page for a post (real <title>, OG tags,
     canonical URL, JSON-LD, baked-in prev/next nav and related posts). Rail and
@@ -336,12 +350,12 @@ def build_post_page(post, posts):
     <meta name="twitter:image" content="{OG_IMAGE_URL}">
     <link rel="canonical" href="{absolute_url}">
     <script type="application/ld+json">{json_ld}</script>
-    <script>if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light-mode');</script>
+{THEME_INIT_SCRIPT}
     <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body data-page="post">
