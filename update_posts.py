@@ -95,6 +95,34 @@ def iso_date(date_str):
     return parse_date(date_str).replace(tzinfo=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+MONTH_NAMES = (
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+)
+
+
+def display_date(date_str):
+    """Human-readable date for the post header. Month names are looked up
+    explicitly instead of via strftime("%B"), which is locale-dependent and
+    would make generated pages differ between machines."""
+    parsed = parse_date(date_str)
+    if parsed == datetime.min:
+        return html_escape(str(date_str))
+    return f"{MONTH_NAMES[parsed.month - 1]} {parsed.day}, {parsed.year}"
+
+
+# Rough prose reading speed, used for the "N min read" label in the post meta.
+WORDS_PER_MINUTE = 200
+
+
+def reading_time(text):
+    """Reading time estimated from the Markdown source. Integer arithmetic
+    rather than round() keeps the result identical on every platform."""
+    words = len(text.split())
+    minutes = max(1, (words + WORDS_PER_MINUTE // 2) // WORDS_PER_MINUTE)
+    return f"{minutes} min read"
+
+
 def validate_post(rel_path, meta):
     """Return a list of metadata problems for a post (empty list = valid)."""
     problems = []
@@ -228,7 +256,7 @@ def build_related_html(related):
         cards.append(
             f'                    <a class="related-post-card" href="{post["url"]}">\n'
             f'                        <div class="related-post-title">{html_escape(post["title"])}</div>\n'
-            f'                        <div><span class="post-date">[{html_escape(post["date"])}]</span></div>\n'
+            f'                        <div><span class="post-date">{display_date(post["date"])}</span></div>\n'
             + (f'                        <div class="related-post-excerpt">{excerpt}</div>\n' if excerpt else "")
             + '                    </a>'
         )
@@ -317,16 +345,42 @@ def build_post_page(post, posts):
     older_post = posts[index + 1] if index + 1 < len(posts) else None
 
     if newer_post:
-        newer_link = f'<a class="visible" href="{newer_post["url"]}">← {html_escape(newer_post["title"])}</a>'
+        newer_link = (
+            f'<a class="visible post-nav-item-newer" href="{newer_post["url"]}">'
+            f'<span class="post-nav-dir">← Newer</span>'
+            f'<span class="post-nav-title">{html_escape(newer_post["title"])}</span>'
+            f'</a>'
+        )
     else:
         newer_link = "<span></span>"
     if older_post:
-        older_link = f'<a class="visible" href="{older_post["url"]}">{html_escape(older_post["title"])} →</a>'
+        older_link = (
+            f'<a class="visible post-nav-item-older" href="{older_post["url"]}">'
+            f'<span class="post-nav-dir">Older →</span>'
+            f'<span class="post-nav-title">{html_escape(older_post["title"])}</span>'
+            f'</a>'
+        )
     else:
         older_link = "<span></span>"
 
     content_html = render_markdown(post["_body"])
     related_html = build_related_html(find_related_posts(posts, post))
+
+    # Meta row: a real <time> element plus reading time. Plain concatenation
+    # keeps the quoting simple inside the f-string template below.
+    parsed_date = parse_date(post["date"])
+    if parsed_date == datetime.min:
+        date_html = "<span>" + html_escape(str(post["date"])) + "</span>"
+    else:
+        date_html = (
+            '<time datetime="' + parsed_date.strftime("%Y-%m-%d") + '">'
+            + display_date(post["date"]) + "</time>"
+        )
+    meta_html = (
+        date_html
+        + '<span class="post-meta-sep" aria-hidden="true">&middot;</span>'
+        + "<span>" + reading_time(post["_body"]) + "</span>"
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -369,7 +423,7 @@ def build_post_page(post, posts):
 
             <article class="markdown-body">
                 <h1 class="post-reader-title">{title}</h1>
-                <div class="post-meta">[{html_escape(post["date"])}]</div>
+                <div class="post-meta">{meta_html}</div>
 {content_html}
             </article>
 
@@ -381,10 +435,10 @@ def build_post_page(post, posts):
                 <button type="button" class="share-link share-copy" data-copy-url="{absolute_url}">Copy link</button>
             </div>
 
-            <div class="post-nav">
+            <nav class="post-nav" aria-label="Post navigation">
                 {newer_link}
                 {older_link}
-            </div>
+            </nav>
 {related_html}
             <footer class="site-footer" data-layout-footer></footer>
         </main>
