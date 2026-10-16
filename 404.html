@@ -6,22 +6,33 @@
     <title>Page Not Found - Chinmay Deo</title>
     <meta name="robots" content="noindex">
     <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}var l=t==='light'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches);document.documentElement.classList.add(l?'light-mode':'dark-mode')})();</script>
-    <link rel="icon" type="image/png" href="legohat_logo.png">
+    <link rel="icon" type="image/png" href="/legohat_logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <!-- Root-absolute on purpose: GitHub Pages serves this file for any missing
+         path, so a relative href would resolve against the *requested* URL
+         (e.g. /p/style.css for /p/typo.html) and the page would render bare. -->
+    <link rel="stylesheet" href="/style.css">
 </head>
-<body>
-    <main class="main-panel" style="max-width: 700px; margin: 60px auto;">
+<body data-page="404">
+    <main class="main-panel notfound-panel">
         <header class="page-header">
             <h1>404 — Page not found</h1>
         </header>
-        <p>The page you're looking for doesn't exist (or may have moved).</p>
-        <p><a href="index.html">← Back to the homepage</a></p>
+        <p>The page you're looking for doesn't exist, or it may have moved.</p>
+        <p class="notfound-hint">
+            Posts live at <code>/p/&lt;post-slug&gt;.html</code>. Older
+            <code>view.html?post=…</code> links redirect there automatically.
+        </p>
+        <nav class="notfound-links" aria-label="Where to go next">
+            <a href="/index.html">🏠 All posts</a>
+            <a href="/about.html">👤 About me</a>
+            <a href="/side-projects.html">🚀 Side projects</a>
+        </nav>
         <footer class="site-footer" data-layout-footer></footer>
     </main>
-    <script src="layout.js"></script>
-    <script src="theme-toggle.js"></script>
+    <script src="/layout.js"></script>
+    <script src="/theme-toggle.js"></script>
 </body>
 </html>

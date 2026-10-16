@@ -10,7 +10,6 @@
 
     /* Surfaces + text */
     --bg-color: #1a1a1a;
-    --bg-elevated: #202020;
     --text-color: #e0e0e0;
     --text-muted: #9aa3ad;
     --link-color: #4da6ff;
@@ -46,7 +45,7 @@
     --space-6: 48px;
     --radius-sm: 6px;
     --radius-md: 10px;
-    --radius-lg: 14px;
+    --radius-lg: 12px;
     --radius-pill: 999px;
     --transition-fast: 0.15s ease;
     --transition-base: 0.25s ease;
@@ -56,7 +55,6 @@
     color-scheme: light;
 
     --bg-color: #ffffff;
-    --bg-elevated: #fafafa;
     --text-color: #1a1a1a;
     --text-muted: #5f6672;
     --link-color: #0066cc;
@@ -114,7 +112,7 @@ body {
     position: sticky;
     top: 20px;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     padding: 16px;
     background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.05) 0%, rgba(var(--accent-rgb), 0.01) 100%);
 }
@@ -816,8 +814,8 @@ a:hover {
 
 /* Footer styles */
 .site-footer {
-    margin-top: 40px;
-    padding-top: 20px;
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
     border-top: 1px solid var(--border-color);
     text-align: center;
     color: var(--text-muted);
@@ -826,10 +824,11 @@ a:hover {
 
 .writing-desk-link {
     display: inline-block;
-    margin-top: 4px;
+    margin-top: var(--space-2);
     color: var(--text-muted);
     text-decoration: underline;
     text-underline-offset: 3px;
+    transition: color var(--transition-fast);
 }
 
 .writing-desk-link:hover,
@@ -842,9 +841,9 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-    padding: 15px 0;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    padding: var(--space-4) 0;
 }
 
 .theme-toggle-label {
@@ -1030,8 +1029,8 @@ a:hover {
 
 /* Related Posts Panel */
 .related-posts-section {
-    margin-top: 40px;
-    padding-top: 20px;
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
     border-top: 1px solid var(--border-color);
 }
 
@@ -1052,16 +1051,17 @@ a:hover {
 
 .related-post-card {
     display: block;
-    padding: 12px;
+    padding: var(--space-3);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     color: var(--text-color);
     text-decoration: none;
-    transition: background-color 0.15s ease;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .related-post-card:hover {
     background-color: var(--hover-bg);
+    border-color: var(--border-color-strong);
     text-decoration: none;
 }
 
@@ -1172,4 +1172,39 @@ ol li::marker {
     .markdown-body {
         opacity: 1;
     }
+}
+
+/* 404 page. Replaces the previous inline max-width/margin style attribute so
+   the page inherits tokens like everything else. */
+.notfound-panel {
+    max-width: 700px;
+    margin: var(--space-6) auto;
+}
+
+.notfound-hint {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.notfound-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-4) 0;
+}
+
+.notfound-links a {
+    display: inline-block;
+    padding: 8px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    transition: background-color var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.notfound-links a:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--border-color-strong);
+    text-decoration: none;
 }

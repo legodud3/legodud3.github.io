@@ -344,7 +344,7 @@
             border-left: 4px solid var(--border-color);
             margin: 1em 0;
             padding-left: 15px;
-            color: #aaa;
+            color: var(--text-muted);
         }
 
         .markdown-preview code {
@@ -360,9 +360,26 @@
 
         .char-count {
             font-size: 0.85em;
-            color: #888;
+            color: var(--text-muted);
             text-align: right;
             margin-top: 5px;
+        }
+
+        .draft-saved-note {
+            margin-left: 10px;
+        }
+
+        .draft-banner {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 16px;
+            background-color: rgba(var(--accent-rgb), 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
         }
 
         .edit-banner {
@@ -476,6 +493,7 @@
                         aria-label="Post content (Markdown)"></textarea>
                     <div class="char-count">
                         <span id="charCount">0</span> characters
+                        <span id="draftSavedNote" class="draft-saved-note" role="status"></span>
                     </div>
                 </div>
             </div>
@@ -528,6 +546,9 @@
             // Character counter + Markdown keyboard shortcuts
             const editor = document.getElementById('postBodyEditor');
             editor.addEventListener('input', updateCharCount);
+            editor.addEventListener('input', scheduleSaveDraft);
+            document.getElementById('postTitle').addEventListener('input', scheduleSaveDraft);
+            document.getElementById('postDate').addEventListener('change', scheduleSaveDraft);
             editor.addEventListener('keydown', (event) => {
                 if (!(event.ctrlKey || event.metaKey)) return;
                 const key = event.key.toLowerCase();
@@ -541,6 +562,8 @@
             const editParam = params.get('edit');
             if (editParam) {
                 await loadPostForEdit(editParam);
+            } else {
+                offerDraft();
             }
         });
 
@@ -550,6 +573,119 @@
 
         function updateCharCount() {
             document.getElementById('charCount').textContent = getEditor().value.length;
+        }
+
+        // --- Draft autosave ---
+        // New-post mode only. In edit mode the canonical source is the file in
+        // the repo, so a stale local draft could silently diverge from it.
+        const DRAFT_KEY = 'writeDraft.v1';
+        let draftTimer = null;
+
+        function draftEligible() {
+            return !editPostMode;
+        }
+
+        function readDraft() {
+            try {
+                const raw = localStorage.getItem(DRAFT_KEY);
+                if (!raw) return null;
+                const draft = JSON.parse(raw);
+                if (!draft || typeof draft !== 'object') return null;
+                if (!String(draft.title || '').trim() && !String(draft.body || '').trim()) return null;
+                return draft;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function showDraftSaved() {
+            const note = document.getElementById('draftSavedNote');
+            if (note) note.textContent = `Draft saved ${new Date().toLocaleTimeString()}`;
+        }
+
+        function saveDraft() {
+            if (!draftEligible()) return;
+            const title = document.getElementById('postTitle').value;
+            const date = document.getElementById('postDate').value;
+            const body = getEditor().value;
+            try {
+                if (!title.trim() && !body.trim()) {
+                    localStorage.removeItem(DRAFT_KEY);
+                    const note = document.getElementById('draftSavedNote');
+                    if (note) note.textContent = '';
+                    return;
+                }
+                localStorage.setItem(DRAFT_KEY, JSON.stringify({
+                    title: title,
+                    date: date,
+                    body: body,
+                    savedAt: new Date().toISOString(),
+                }));
+                showDraftSaved();
+            } catch (e) {
+                // Storage full or blocked — autosave is best-effort only.
+            }
+        }
+
+        function scheduleSaveDraft() {
+            if (!draftEligible()) return;
+            clearTimeout(draftTimer);
+            draftTimer = setTimeout(saveDraft, 800);
+        }
+
+        function clearDraft() {
+            clearTimeout(draftTimer);
+            try {
+                localStorage.removeItem(DRAFT_KEY);
+            } catch (e) {
+                // Ignore: nothing to clear if storage is unavailable.
+            }
+            const banner = document.getElementById('draftBanner');
+            if (banner) banner.remove();
+            const note = document.getElementById('draftSavedNote');
+            if (note) note.textContent = '';
+        }
+
+        // Offers the draft instead of applying it silently: publishing writes a
+        // commit, so the writer should choose which content goes in.
+        function offerDraft() {
+            if (!draftEligible()) return;
+            const draft = readDraft();
+            if (!draft) return;
+
+            const banner = document.createElement('div');
+            banner.id = 'draftBanner';
+            banner.className = 'draft-banner';
+
+            const text = document.createElement('span');
+            const savedAt = draft.savedAt ? new Date(draft.savedAt) : null;
+            text.textContent = 'Unsaved draft found'
+                + (savedAt && !isNaN(savedAt.getTime()) ? ` (saved ${savedAt.toLocaleString()})` : '')
+                + '.';
+            banner.appendChild(text);
+
+            const restore = document.createElement('button');
+            restore.type = 'button';
+            restore.className = 'btn btn-secondary';
+            restore.textContent = 'Restore draft';
+            restore.addEventListener('click', () => {
+                document.getElementById('postTitle').value = draft.title || '';
+                if (draft.date) document.getElementById('postDate').value = draft.date;
+                getEditor().value = draft.body || '';
+                updateCharCount();
+                banner.remove();
+                showDraftSaved();
+            });
+            banner.appendChild(restore);
+
+            const discard = document.createElement('button');
+            discard.type = 'button';
+            discard.className = 'btn btn-secondary';
+            discard.textContent = 'Discard';
+            discard.addEventListener('click', clearDraft);
+            banner.appendChild(discard);
+
+            document.getElementById('editorContainer').insertBefore(banner, document.getElementById('postForm'));
         }
 
         // --- Markdown toolbar helpers ---
@@ -968,6 +1104,8 @@ async function publishPost() {
                         `✓ Post published successfully! GitHub Actions will update the site shortly. <a href="${createData.content?.html_url || '#'}" target="_blank" style="color: inherit; text-decoration: underline;">View on GitHub</a> <button onclick="clearForm()" class="btn btn-secondary" style="margin-left:8px;padding:4px 12px;font-size:0.85rem">Write another post</button>`,
                         'success'
                     );
+                    // The commit landed, so the local draft is now redundant.
+                    clearDraft();
                 }
 
             } catch (error) {
@@ -1038,6 +1176,7 @@ date: ${safeDate}
             document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('postBodyEditor').value = '';
             document.getElementById('charCount').textContent = '0';
+            clearDraft();
             document.getElementById('previewContainer').style.display = 'none';
             document.getElementById('statusMessage').className = 'status-message';
         }
