@@ -39,5 +39,9 @@ if (themeToggle) {
             // Storage blocked (private mode / strict settings) — the theme still
             // applies for this page view, it just won't persist.
         }
+        // GA4 comes from layout.js; guard so pages without it stay safe.
+        if (typeof window.gtag === 'function') {
+            window.gtag('event', 'theme_change', { theme: theme });
+        }
     });
 }

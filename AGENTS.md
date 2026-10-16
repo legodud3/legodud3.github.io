@@ -11,18 +11,19 @@ This repository is a static GitHub Pages blog/site. Agents should keep changes s
 
 ## Repository Map
 
-- `index.html`: Homepage with post listing, search/filter UX.
+- `index.html`: Homepage with post listing, search, month filtering and pagination. State lives in the URL as `q` (search), `page` and `month=YYYY-MM`. Keep the `q` name stable — older shared links depend on it.
 - `view.html`: Legacy redirect shim — forwards old `view.html?post=YYYY/slug.md` links to `/p/<slug>.html`.
 - `p/`: **Generated** static per-post pages (one HTML file per post). Never hand-edit; regenerated and wiped by `update_posts.py`.
-- `write.html`: Browser-based publisher UI (commits posts via GitHub API). `noindex, nofollow`; a plain Markdown `<textarea>` editor — the toolbar and `Ctrl`/`Cmd` shortcuts splice Markdown syntax, they do not apply rich HTML.
+- `write.html`: Browser-based publisher UI (commits posts via GitHub API). `noindex, nofollow`; a plain Markdown `<textarea>` editor — the toolbar and `Ctrl`/`Cmd` shortcuts splice Markdown syntax, they do not apply rich HTML. Autosaves an unpublished draft to `localStorage` (`writeDraft.v1`) in **new-post mode only** and offers Restore/Discard on load; the draft is cleared on publish. Edit mode (`?edit=`) deliberately skips autosave because the repo file is the source of truth there.
 - `side-projects.html`: Side projects page.
 - `about.html`: About page.
-- `404.html`, `robots.txt`: Static-site plumbing.
-- `style.css`: Shared styles.
+- `404.html`: Not-found page. **Must use root-absolute asset paths.** GitHub Pages serves it for any missing URL, so a relative `style.css` resolves against the *requested* path (e.g. `/p/style.css` for `/p/typo.html`) and the page renders unstyled.
+- `robots.txt`: Static-site plumbing.
+- `style.css`: Shared styles plus the design-token layer. Tokens are declared in `:root` (dark, the default) and overridden **once** in `:root.light-mode`; that is the only light palette, so don't add a second copy inside a media query. Muted text goes through `--text-muted` and gold washes through `rgba(var(--accent-rgb), a)` so both follow the theme — don't reintroduce raw `#888`/`#999`/`#aaa`/`#555` or `rgba(255, 215, 0, …)`. Prose is capped at `--content-width` (~68ch); `--page-width` is the outer shell limit for list/grid layouts.
 - `layout.js`: Shared layout module — builds the left rail (brand, nav, heatmap mount) and site footer from `[data-layout-rail]` / `[data-layout-footer]` mount points. Active nav comes from `<body data-page="...">`. Load it before `monthly-heatmap.js` and `theme-toggle.js`.
-- `theme-toggle.js`, `monthly-heatmap.js`: Client-side behavior (`monthly-heatmap.js` also defines the shared `window.PostsIndex` posts.json loader).
+- `theme-toggle.js`, `monthly-heatmap.js`: Client-side behavior (`monthly-heatmap.js` also defines the shared `window.PostsIndex` posts.json loader, which caches to `sessionStorage` and exposes a synchronous `cached()` so pages can paint instantly before the network result lands). Heatmap cells for months that have posts are links to `/index.html?month=YYYY-MM`; empty months stay inert `<div>`s so the grid isn't a wall of dead links.
 - `posts/`: Blog post markdown content.
-- `posts.json`: Generated post metadata index (includes a `url` field pointing at each post's static page).
+- `posts.json`: Generated post metadata index. Each entry carries `title`, `date`, `filename`, `url` (the post's static page), `excerpt` and `minutes` (reading time). Internal keys prefixed with `_` are stripped before serialization.
 - `feed.xml`: Generated Atom feed (same script/workflow as `posts.json`).
 - `sitemap.xml`: Generated sitemap listing every indexable URL (3 hand-maintained pages + each post) for crawlers and agents. Regenerated with the rest; see `build_sitemap` in `update_posts.py`. `robots.txt` advertises it via a `Sitemap:` line.
 - `update_posts.py`: Rebuilds `posts.json`, `feed.xml`, `sitemap.xml`, and the `p/` static pages from markdown + front matter; `--validate` checks metadata and exits non-zero on problems.
@@ -66,6 +67,8 @@ Notes:
 
 Note: pages use root-absolute asset/link paths (`/style.css`, `/p/...`) so they work both on GitHub Pages and from a server started at the repo root.
 
+Note: the commands above are written as `python3`. On Windows there is usually no `python3` alias — use `python` instead.
+
 ## Change Rules For Agents
 
 - Keep pages static; do not introduce frameworks or build tooling unless explicitly requested.
@@ -74,6 +77,8 @@ Note: pages use root-absolute asset/link paths (`/style.css`, `/p/...`) so they 
 - If editing post metadata logic, verify `update_posts.py` still handles nested `posts/YYYY/` paths.
 - Post page templates live in `update_posts.py` (`build_post_page`); the rail/footer markup lives only in `layout.js`. Don't reintroduce that markup into individual pages.
 - Keep new pages' root-absolute links consistent (they must resolve from `/p/` too).
+- The head theme snippet and `theme-toggle.js` must each leave **exactly one** of `.light-mode` / `.dark-mode` on `<html>`. That invariant is what lets the light palette be declared exactly once in CSS. Seven sites carry it — `index`, `about`, `side-projects`, `write`, `404`, `view`, plus `THEME_INIT_SCRIPT` in `update_posts.py`. Change all seven together.
+- Display type is Fraunces and body copy is Roboto, both from **one** combined Google Fonts request. Fraunces is scoped to brand/headings/titles through `--font-handwriting` (a historical name for the display slot) — don't point it at nav pills or body copy.
 - When modifying UI pages, verify desktop + mobile behavior and ensure links still resolve from site root.
 
 ## Determinism Invariants
@@ -83,6 +88,7 @@ The build must emit identical bytes on every machine, otherwise the GitHub Actio
 - **Sort the traversal.** The `os.walk` loop sorts `dirs` and `files` in place, and posts are pre-sorted by filename before the date sort. `os.walk` yields *filesystem* order, which differs between a Windows dev machine and the Linux runner; combined with a stable date sort, posts sharing a date would come out in either order.
 - **Write LF everywhere.** All three write sites pass `newline="\n"`. Plain `open(..., "w")` emits `\r\n` on Windows, which `.gitattributes` would have to hide.
 - **No timestamps, versions, or host paths** in generated output.
+- **No locale- or float-dependent formatting.** Display dates use an explicit `MONTH_NAMES` tuple rather than `strftime("%B")` (locale-dependent), and reading time uses integer arithmetic rather than `round()` (banker's rounding). Either would silently differ between a Windows workstation and the Linux runner.
 - **Render post text as text.** Never interpolate post titles/excerpts into HTML with `innerHTML` or f-strings into markup without escaping — post content is untrusted input.
 
 ## Verification Checklist
@@ -96,4 +102,5 @@ After relevant edits:
 5. Confirm every root-absolute `href`/`src` in the pages you touched resolves to a real file — this is easy to break from `/p/`, where a relative path resolves differently.
 6. If you changed a CDN `<script>`, update the SRI hash and confirm the pinned URL still resolves; an unpinned or stale URL silently breaks the page.
 7. Open `index.html`, a generated page in `p/`, and any touched page in a local server.
-8. Ensure no absolute local paths or environment-specific values were introduced.
+8. If you touched JavaScript, syntax-check it (`node --check layout.js monthly-heatmap.js theme-toggle.js`) and check every inline `<script>` in the pages you edited. `index.html`'s list logic can be exercised headlessly by running it in a `vm` context against a stubbed DOM.
+9. Ensure no absolute local paths or environment-specific values were introduced.

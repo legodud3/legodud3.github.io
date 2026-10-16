@@ -100,6 +100,14 @@
             return `${MONTH_NAMES[Number(match[2]) - 1]} ${match[1]}`;
         }
 
+        // GA4 is loaded by layout.js. Guarded so this stays safe on any page
+        // that doesn't pull in the shared loader.
+        function track(eventName, params) {
+            if (typeof window.gtag === 'function') window.gtag('event', eventName, params || {});
+        }
+
+        let searchTrackTimer = null;
+
         // Posts matching the current search term and month filter. Shared by the
         // renderer, the pager and "Surprise me" so they cannot disagree.
         function matchingPosts() {
@@ -167,6 +175,9 @@
         async function loadPosts() {
             renderSkeleton(POSTS_PER_PAGE);
             restoreStateFromUrl();
+            // Tracked here rather than in restoreStateFromUrl, which runs a
+            // second time when fresh data replaces the cache.
+            if (activeMonth) track('month_filter', { month: activeMonth });
 
             // Paint immediately from the session cache when one exists, then
             // replace it with the network result. The re-render is skipped when
@@ -295,6 +306,13 @@
             currentPage = 1; // Reset to first page on search
             updateClearButton();
             renderPosts();
+
+            // Debounced so a typed query reports once, not once per keystroke.
+            clearTimeout(searchTrackTimer);
+            const term = searchInput.value.trim();
+            searchTrackTimer = setTimeout(() => {
+                if (term) track('search', { search_term: term });
+            }, 600);
         });
 
         function resetSearch() {
@@ -313,6 +331,7 @@
             activeMonth = null;
             currentPage = 1;
             renderPosts();
+            track('month_filter_clear');
         });
 
         // "/" focuses search and Escape clears it. Ignored while typing in a
@@ -354,6 +373,7 @@
             const pool = matches.length ? matches : allPosts;
             if (pool.length > 0) {
                 const randomPost = pool[Math.floor(Math.random() * pool.length)];
+                track('surprise_me', { post: randomPost.filename });
                 window.location.href = randomPost.url || `view.html?post=${encodeURIComponent(randomPost.filename)}`;
             }
         });

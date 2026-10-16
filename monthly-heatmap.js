@@ -95,6 +95,11 @@ window.PostsIndex = window.PostsIndex || (function () {
             cell = document.createElement('a');
             cell.href = `/index.html?month=${monthKey}`;
             cell.setAttribute('aria-label', `${label} — view posts`);
+            cell.addEventListener('click', () => {
+                if (typeof window.gtag === 'function') {
+                    window.gtag('event', 'heatmap_month_click', { month: monthKey, posts: count });
+                }
+            });
         } else {
             cell = document.createElement('div');
             cell.setAttribute('role', 'img');
