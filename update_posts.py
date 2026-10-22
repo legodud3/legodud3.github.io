@@ -305,13 +305,12 @@ SHARE_ROW_SCRIPT = """
 
 # Theme bootstrap, inlined in <head> so it runs before first paint (no flash of
 # the wrong theme). Always leaves exactly one of .light-mode / .dark-mode on
-# <html>; the OS preference is consulted only when there is no stored choice.
+# <html>; light is the default unless the visitor stored a dark choice.
 # Kept as a constant so the page template stays a plain f-string without
 # doubled braces.
 THEME_INIT_SCRIPT = (
     "    <script>(function(){var t=null;try{t=localStorage.getItem('theme')}"
-    "catch(e){}var l=t==='light'||(!t&&window.matchMedia&&"
-    "window.matchMedia('(prefers-color-scheme: light)').matches);"
+    "catch(e){}var l=t!=='dark';"
     "document.documentElement.classList.add(l?'light-mode':'dark-mode')})();"
     "</script>"
 )
