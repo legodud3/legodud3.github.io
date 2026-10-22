@@ -40,6 +40,7 @@ html.dark-mode nav,html.dark-mode .section-head{border-color:#b4b9ad}html.dark-m
 .section-head .search-container{margin:0;width:165px}.search-container:before{display:none}#searchInput.search{font-size:12px;border:0;border-radius:0;padding:4px 26px 4px 0;width:100%;box-shadow:none;background:transparent;color:inherit}#searchInput.search:focus-visible{outline:2px solid var(--link-color);outline-offset:3px}.clear-search{right:0;width:22px;height:22px}.list-toolbar{margin:12px 0 0;min-height:0}.result-count{font-size:10px}.list-toolbar:not(.filtered) .result-count{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.month-filter{font-size:11px}.surprise-btn{background:transparent;color:var(--link-color);border:0;font-size:11px;border-radius:0;padding:0}.surprise-btn:hover{background:transparent;color:var(--link-color);transform:none;text-decoration:underline}.section-actions{display:flex;align-items:center;gap:22px}.pagination{font-size:11px;margin:25px 0 0}.nav-btn{background:transparent;color:var(--link-color);font-size:11px;padding:8px 0}.archive-extra{margin-top:35px;padding-top:22px;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;gap:35px}.archive-extra h2{font-size:11px;letter-spacing:1px;text-transform:uppercase;margin:0 0 15px}.rail-hat-tip{max-width:300px;font-size:10px}.site-footer{border:0;text-align:left;margin:30px 0 0;padding:15px 0 28px;font-size:10px}.site-footer p{margin:0}.theme-toggle-container{justify-content:flex-start;margin:10px 0 0;padding:8px 0}.theme-toggle-label{font-size:10px}.writing-desk-link{font-size:11px}.empty-state{padding:30px 0;color:var(--text-muted)}.heatmap-month-label,.heatmap-year-label{color:var(--text-muted)}
 @media(max-width:700px){.editorial-page{padding:0 23px}.section-head{gap:10px;align-items:flex-start}.section-actions{gap:13px;flex-wrap:wrap;justify-content:flex-end}.section-head .search-container{width:105px}.search-container #searchInput.search{font-size:11px}.section-head h2{white-space:nowrap;padding-top:5px}.stories{grid-template-columns:1fr;gap:0}.story .post-title-link{font-size:31px}.story .post-title-link:after{top:62px}.archive-extra{flex-direction:column}.hero{padding-top:37px}.feature h2{max-width:245px}.feature-top{font-size:9px}}
 
+    .hero-heatmap{margin-top:8px}.hero-heatmap h2{font-size:11px;letter-spacing:1px;text-transform:uppercase;margin:0 0 12px}.hero-heatmap .rail-hat-tip{margin-top:10px}
     </style>
     <!-- crossorigin is required for an as="fetch" preload to be matched even for
          same-origin requests; without it Chrome ignores the preload and fetches
@@ -50,7 +51,7 @@ html.dark-mode nav,html.dark-mode .section-head{border-color:#b4b9ad}html.dark-m
     <div class="editorial-page">
       <nav aria-label="Primary"><a class="brand" href="/index.html">Chinmay Deo<span style="color:var(--link-color)">.</span></a><div class="navlinks"><a aria-current="page" href="/index.html">Writing</a><a href="/about.html">About</a><a href="/side-projects.html">Projects ↗</a></div></nav>
       <main>
-        <section class="hero"><div><h1>Hi, I'm<br>Chinmay.</h1></div>
+        <section class="hero"><div><h1>Hi, I'm<br>Chinmay.</h1><section class="hero-heatmap" aria-label="Writing activity"><h2>Writing Consistency</h2><div id="monthly-heatmap-root" class="monthly-heatmap-root" aria-live="polite"></div><p class="rail-hat-tip">Hat tip to <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> for the original contribution graph inspiration.</p></section></div>
           <a class="feature" id="latestPost" hidden><div class="feature-top"><span>The latest note</span><span id="latestCount"></span></div><div class="sun" aria-hidden="true"></div><h2 id="latestTitle"></h2><ol class="dreams" id="latestExcerpt"></ol><div class="feature-bottom"><span id="latestMeta"></span><span class="circle-arrow" aria-hidden="true">↗</span></div></a>
         </section>
         <div class="section-head"><h2 id="archiveHeading">More from the notebook</h2><div class="section-actions">            <div class="search-container">
@@ -72,7 +73,6 @@ html.dark-mode nav,html.dark-mode .section-head{border-color:#b4b9ad}html.dark-m
                 <span id="pageInfo"></span>
                 <button id="nextBtn" class="nav-btn">Older →</button>
             </div>
-        <section class="archive-extra" aria-label="Writing activity"><div><h2>Writing Consistency</h2><div id="monthly-heatmap-root" class="monthly-heatmap-root" aria-live="polite"></div><p class="rail-hat-tip">Hat tip to <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> for the original contribution graph inspiration.</p></div></section>
       </main>
       <footer class="site-footer" data-layout-footer></footer>
     </div>
