@@ -25,7 +25,7 @@ function applyTheme(theme) {
 
 if (themeToggle) {
     const saved = storedTheme();
-    const isLight = saved === 'light' || (!saved && prefersLight());
+    const isLight = saved !== 'dark';
 
     applyTheme(isLight ? 'light' : 'dark');
     themeToggle.checked = isLight;
