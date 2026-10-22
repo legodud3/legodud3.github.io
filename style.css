@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
 /* Google Fonts (Fraunces for display type, Roboto for body) are loaded via
    <link> tags in each page's <head> — faster and non-render-blocking compared
    to a CSS @import. Both families come from a single combined request. */
@@ -5,30 +7,31 @@
 /* Design tokens. Dark is the default; .light-mode overrides. The head snippet
    always adds exactly one of .light-mode / .dark-mode, so the light palette
    only has to be declared once here. */
-:root {
-    color-scheme: dark;
+:root,
+:root.light-mode {
+    color-scheme: light;
 
     /* Surfaces + text */
-    --bg-color: #1a1a1a;
-    --text-color: #e0e0e0;
-    --text-muted: #9aa3ad;
-    --link-color: #4da6ff;
-    --border-color: #333;
-    --border-color-strong: #454545;
-    --hover-bg: #2a2a2a;
-    --code-bg: #111;
-    --focus-ring: #4da6ff;
+    --bg-color: #f2f0e9;
+    --text-color: #20231f;
+    --text-muted: #62685f;
+    --link-color: #2448f2;
+    --border-color: #c9cbc2;
+    --border-color-strong: #8a8e82;
+    --hover-bg: #e8e6de;
+    --code-bg: #e8e6de;
+    --focus-ring: #2448f2;
 
     /* Accent. --accent-rgb lets one token drive every alpha wash, so the
        gold tints follow the theme instead of staying hardcoded. */
-    --accent-color: #FFD700;
-    --accent-color-dark: #D4A000;
-    --accent-rgb: 255, 215, 0;
-    --on-accent: #1a1a1a;
+    --accent-color: #2448f2;
+    --accent-color-dark: #1a35c4;
+    --accent-rgb: 36, 72, 242;
+    --on-accent: #ffffff;
 
     /* Type */
-    --font-handwriting: 'Fraunces', 'Roboto', Georgia, serif;
-    --font-body: 'Roboto', sans-serif;
+    --font-handwriting: 'Instrument Serif', 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', 'Roboto', sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
         'Liberation Mono', monospace;
 
@@ -51,23 +54,22 @@
     --transition-base: 0.25s ease;
 }
 
-:root.light-mode {
-    color-scheme: light;
+:root.dark-mode {
+    color-scheme: dark;
 
-    --bg-color: #ffffff;
-    --text-color: #1a1a1a;
-    --text-muted: #5f6672;
-    --link-color: #0066cc;
-    --border-color: #e0e0e0;
-    --border-color-strong: #cfcfcf;
-    --hover-bg: #f5f5f5;
-    --code-bg: #f5f5f5;
-    --focus-ring: #0066cc;
-
-    /* Darkened from #DAA520 so accent text clears 4.5:1 on white. */
-    --accent-color: #B8860B;
-    --accent-color-dark: #8a6508;
-    --accent-rgb: 184, 134, 11;
+    --bg-color: #1c211f;
+    --text-color: #f2f0e9;
+    --text-muted: #b4b9ad;
+    --link-color: #9facff;
+    --border-color: #50564e;
+    --border-color-strong: #b4b9ad;
+    --hover-bg: #30362e;
+    --code-bg: #141815;
+    --focus-ring: #9facff;
+    --accent-color: #9facff;
+    --accent-color-dark: #7d8cf0;
+    --accent-rgb: 159, 172, 255;
+    --on-accent: #1c211f;
 }
 
 *,
@@ -1207,4 +1209,283 @@ ol li::marker {
     background-color: var(--hover-bg);
     border-color: var(--border-color-strong);
     text-decoration: none;
+}
+
+
+/* ==========================================================================
+   Editorial theme (warm off-white, blue accent, serif display type).
+   Matches the homepage; applies to post pages, About, Side projects,
+   the writing desk and the 404 page. The homepage carries its own layout.
+   ========================================================================== */
+
+body:not([data-page=home]) {
+    max-width: 1180px;
+    padding: 0 48px 24px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+body:not([data-page=home]) h1,
+body:not([data-page=home]) h2,
+body:not([data-page=home]) h3 {
+    font-family: var(--font-handwriting);
+    font-weight: 400;
+}
+
+body:not([data-page=home]) a {
+    text-decoration: none;
+}
+
+/* Left rail becomes a top bar: brand left, nav right, heatmap at the bottom. */
+body:not([data-page=home]) .app-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 0;
+    align-items: center;
+}
+
+body:not([data-page=home]) .left-rail,
+body:not([data-page=home]) .main-panel {
+    display: contents;
+}
+
+body:not([data-page=home]) .app-shell > * {
+    order: 1;
+}
+
+body:not([data-page=home]) .app-shell {
+    align-items: stretch;
+}
+
+body:not([data-page=home]) .app-shell .rail-brand,
+body:not([data-page=home]) .app-shell .rail-nav {
+    align-items: center;
+}
+
+body:not([data-page=home]) .app-shell .rail-brand {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--text-color);
+}
+
+body:not([data-page=home]) .writing-topbar .rail-brand {
+    border-bottom: 0;
+    padding: 0;
+}
+
+body:not([data-page=home]) button {
+    font-family: inherit;
+}
+
+body:not([data-page=home]) .rail-brand span {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.04em;
+    color: var(--text-color);
+}
+
+body:not([data-page=home]) .site-logo,
+body:not([data-page=home]) .rail-nav a > span[aria-hidden] {
+    display: none;
+}
+
+body:not([data-page=home]) .rail-nav {
+    padding-left: 24px;
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    padding: 28px 0 28px 24px;
+    border-bottom: 1px solid var(--text-color);
+    gap: 28px;
+    flex-wrap: nowrap;
+}
+
+body:not([data-page=home]) .rail-nav a {
+    border: 0;
+    border-radius: 0;
+    padding: 0 0 3px;
+    background: transparent;
+    font-size: 0.8rem;
+    color: var(--text-color);
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+}
+
+body:not([data-page=home]) .rail-nav a:hover,
+body:not([data-page=home]) .rail-nav a:focus-visible {
+    background: transparent;
+    border-bottom-color: var(--border-color-strong);
+}
+
+body:not([data-page=home]) .rail-nav a.active {
+    background: transparent;
+    color: var(--text-color);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Page content takes the full row under the bar. */
+body:not([data-page=home]) .main-panel > *,
+body:not([data-page=home]) .left-rail > .rail-widget {
+    grid-column: 1 / -1;
+}
+
+body:not([data-page=home]) .left-rail > .rail-widget {
+    order: 8;
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-color);
+}
+
+body:not([data-page=home]) .site-footer {
+    order: 9;
+}
+
+body:not([data-page=home]) .rail-section-title {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+body:not([data-page=home]) .page-header {
+    border-bottom: 0;
+    margin: 56px 0 24px;
+    padding: 0;
+}
+
+body:not([data-page=home]) .page-header-slim {
+    margin: 36px 0 0;
+}
+
+body:not([data-page=home]) .page-header h1 {
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+body:not([data-page=home]) .back-link {
+    font-size: 0.8rem;
+    color: var(--link-color);
+    margin: 0;
+}
+
+body:not([data-page=home]) .markdown-body {
+    max-width: var(--content-width);
+    padding-top: 28px;
+    font-size: 1.05rem;
+}
+
+body:not([data-page=home]) .post-reader-title {
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+}
+
+body:not([data-page=home]) .post-meta {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+body:not([data-page=home]) .markdown-body h2 {
+    font-size: 2rem;
+}
+
+body:not([data-page=home]) .markdown-body h3 {
+    font-size: 1.5rem;
+}
+
+body:not([data-page=home]) .markdown-body a {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+body:not([data-page=home]) .markdown-body blockquote {
+    border-left-color: #e7a570;
+}
+
+body:not([data-page=home]) .markdown-body pre,
+body:not([data-page=home]) .markdown-body code {
+    border-radius: 2px;
+}
+
+body:not([data-page=home]) .share-link,
+body:not([data-page=home]) .share-copy {
+    border-radius: 0;
+}
+
+body:not([data-page=home]) .post-nav a.visible,
+body:not([data-page=home]) .related-post-card,
+body:not([data-page=home]) .project-card {
+    border-radius: 2px;
+}
+
+body:not([data-page=home]) .post-nav-title,
+body:not([data-page=home]) .related-post-title,
+body:not([data-page=home]) .project-card-title {
+    font-family: var(--font-handwriting);
+    font-weight: 400;
+    font-size: 1.3rem;
+}
+
+body:not([data-page=home]) .post-nav-title {
+    font-size: 1.15rem;
+}
+
+body:not([data-page=home]) .project-card {
+    border-left-width: 1px;
+    border-top: 4px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.35);
+}
+
+body:not([data-page=home]) .project-card-accent-1 { border-top-color: #e7a570; border-left-color: var(--border-color); }
+body:not([data-page=home]) .project-card-accent-2 { border-top-color: #2448f2; border-left-color: var(--border-color); }
+body:not([data-page=home]) .project-card-accent-3 { border-top-color: #20231f; border-left-color: var(--border-color); }
+
+:root.dark-mode body:not([data-page=home]) .project-card {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+body:not([data-page=home]) .site-footer {
+    margin-top: 48px;
+    text-align: left;
+    font-size: 0.7rem;
+}
+
+@media (max-width: 700px) {
+    body:not([data-page=home]) {
+        padding: 0 23px 20px;
+    }
+
+    body:not([data-page=home]) .rail-brand,
+    body:not([data-page=home]) .rail-nav {
+        padding: 22px 0;
+    }
+
+    body:not([data-page=home]) .rail-brand span {
+        font-size: 1.1rem;
+    }
+
+    body:not([data-page=home]) .rail-nav {
+        gap: 14px;
+    }
+
+    body:not([data-page=home]) .rail-nav a {
+        font-size: 0.7rem;
+    }
+
+    body:not([data-page=home]) .page-header {
+        margin-top: 36px;
+    }
+
+    body:not([data-page=home]) .markdown-body {
+        font-size: 1rem;
+    }
 }
