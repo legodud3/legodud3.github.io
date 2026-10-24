@@ -1,5 +1,13 @@
 [
   {
+    "title": "Introducing charts to the blog",
+    "date": "2026-10-15",
+    "filename": "2026/2026-10-15-introducing-charts.md",
+    "url": "/p/2026-10-15-introducing-charts.html",
+    "excerpt": "You can now embed nice-looking charts directly in posts using a fenced code block: Bar charts work too: And a simple pie chart: To add one to your own post, use the \ud83d\udcca Insert chart button in the writing desk, or write a fenced block with language containing a JSON Chart.js config: markdown The build",
+    "minutes": 2
+  },
+  {
     "title": "Samay's dreams",
     "date": "2026-10-14",
     "filename": "2026/2026-10-14-samays-dreams.md",
