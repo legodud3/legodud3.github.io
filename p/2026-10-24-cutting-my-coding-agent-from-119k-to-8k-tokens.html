@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cutting my coding agent from 119k to 8k tokens - Chinmay Deo</title>
+    <meta name="description" content="A straightforward multi-file data query (orders.csv + models.json) was burning through a surprising amount of context on my setup, so I ran the same task five times, changing the setup between runs, a">
+    <meta property="og:title" content="Cutting my coding agent from 119k to 8k tokens">
+    <meta property="og:description" content="A straightforward multi-file data query (orders.csv + models.json) was burning through a surprising amount of context on my setup, so I ran the same task five times, changing the setup between runs, a">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://legodud3.github.io/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html">
+    <meta property="article:published_time" content="2026-10-24T00:00:00Z">
+    <meta property="og:image" content="https://legodud3.github.io/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Chinmay Deo — personal blog">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cutting my coding agent from 119k to 8k tokens">
+    <meta name="twitter:description" content="A straightforward multi-file data query (orders.csv + models.json) was burning through a surprising amount of context on my setup, so I ran the same task five times, changing the setup between runs, a">
+    <meta name="twitter:image" content="https://legodud3.github.io/og-image.png">
+    <link rel="canonical" href="https://legodud3.github.io/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Cutting my coding agent from 119k to 8k tokens","datePublished":"2026-10-24T00:00:00Z","url":"https://legodud3.github.io/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html","mainEntityOfPage":"https://legodud3.github.io/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html","image":"https://legodud3.github.io/og-image.png","author":{"@type":"Person","name":"Chinmay Deo","url":"https://legodud3.github.io/about.html"},"publisher":{"@type":"Person","name":"Chinmay Deo"}}</script>
+    <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}var l=t!=='dark';document.documentElement.classList.add(l?'light-mode':'dark-mode')})();</script>
+    <link rel="icon" type="image/png" href="/legohat_logo.png">
+    <link rel="alternate" type="application/atom+xml" title="Chinmay Deo — Writing" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body data-page="post">
+    <div class="app-shell">
+        <aside class="left-rail" data-layout-rail></aside>
+
+        <main class="main-panel">
+            <header class="page-header page-header-slim">
+                <a href="/index.html" class="back-link" style="margin: 0;">← Back to Posts</a>
+            </header>
+
+            <article class="markdown-body">
+                <h1 class="post-reader-title">Cutting my coding agent from 119k to 8k tokens</h1>
+                <div class="post-meta"><time datetime="2026-10-24">October 24, 2026</time><span class="post-meta-sep" aria-hidden="true">&middot;</span><span>4 min read</span></div>
+<p>A straightforward multi-file data query (orders.csv + models.json) was burning through a surprising amount of context on my setup, so I ran the same task five times, changing the setup between runs, and tracked the cumulative tokens sent to the API on each run. The numbers swung wildly: 119k → 56k → 80k → 50k → 8k.</p>
+<p>This is one task on one machine, not a benchmark. But watching the counter on each run taught me more about where tokens actually go than any amount of prompt folklore.</p>
+<div class="chart-wrapper"><canvas data-chart="{&quot;type&quot;: &quot;bar&quot;, &quot;data&quot;: {&quot;labels&quot;: [&quot;A: verbose rules&quot;, &quot;B: no rules&quot;, &quot;C: custom rules&quot;, &quot;D: env facts only&quot;, &quot;E: Pi runtime&quot;], &quot;datasets&quot;: [{&quot;label&quot;: &quot;Cumulative tokens sent to the API (thousands)&quot;, &quot;data&quot;: [119, 56, 80, 50, 8]}]}, &quot;options&quot;: {&quot;responsive&quot;: true, &quot;maintainAspectRatio&quot;: false, &quot;plugins&quot;: {&quot;title&quot;: {&quot;display&quot;: true, &quot;text&quot;: &quot;Same task, five runs&quot;}, &quot;legend&quot;: {&quot;display&quot;: false}}, &quot;scales&quot;: {&quot;y&quot;: {&quot;beginAtZero&quot;: true, &quot;title&quot;: {&quot;display&quot;: true, &quot;text&quot;: &quot;Cumulative tokens (thousands)&quot;}}}}}"></canvas></div>
+<h2>Run A: 119k tokens, the verbose rule trap</h2>
+<p>My starting point: a long, highly detailed global rules file on top of Cline's default IDE extension harness. The agent burned 5 turns. It swallowed huge chunks of raw CSV and JSON via read_file on turn 1, hit CRLF line-ending errors with awk, then got stuck in "second-opinion" loops re-verifying its own math. Meanwhile, Cline's base system prompt (~12.5k tokens on my setup, full of browser tools and MCP schemas) was re-injected on every turn. Cumulative context: 119k.</p>
+<h2>Run B: 56k, no rules at all</h2>
+<p>I wiped the global rules completely for a clean baseline. Usage dropped by more than half to 56k over 3 turns. Without instructions micromanaging every step, the model moved faster and skipped the redundant verification passes. First clue: my elaborate rules were making the agent <em>less</em> efficient, not more.</p>
+<h2>Run C: 80k, custom rules round one</h2>
+<p>I wrote new structured global instructions (cli-tools.md) telling the agent to inspect schemas first and avoid bad commands. Usage bounced back up to 80k over 5 turns, and the agent again ran the same failing verification passes on \r\n line endings - the exact behavior the new rules were written to prevent. Whatever the mechanism, the rules didn't produce the behavior I asked for.</p>
+<h2>Run D: 50k, environment facts only</h2>
+<p>I stripped all workflow micromanagement and cut the rules down to pure environment facts: which Homebrew binaries are installed (duckdb, jq, ast-grep), which interactive CLIs hang (bat, fzf), plus some safety protections. Usage settled at 50k over 4 turns. This looked like the ceiling of the Cline/VS Code harness: ~12.5k tokens of built-in tool schemas and IDE overhead rode along on every turn no matter how clean my prompt was.</p>
+<h2>Run E: 8k, switching runtime to Pi</h2>
+<p>I moved from Cline to Pi, a lean terminal-first agent, moved my rules from AGENTS.md into Pi's APPEND_SYSTEM.md (which appends them to the system prompt), and let Pi read files surgically with line ranges (:1-50) instead of whole files. The task finished in 2 clean, Python-driven turns. Pi's UI showed ~2k completion tokens, but the true apples-to-apples cumulative context sent to the API was ~8k: an 84% drop from Run D and 93% below where I started.</p>
+<h2>What I learned</h2>
+<ul>
+<li><strong>My longest rules were my most expensive ones.</strong> The rules that actually helped were short environment facts about what tools exist, not instructions on how to code.</li>
+<li><strong>Negative constraints didn't earn their tokens.</strong> In Run C I banned the bad commands by name, and the agent still took the wrong path. I'm not claiming I know why; only that those rules cost tokens without changing the outcome.</li>
+<li><strong>Harness overhead was the biggest line item.</strong> On my setup, ~12.5k tokens of system prompt and tool schemas went out on every turn before the model saw a single line of my task. My leanest Cline run still carried that overhead; the big drop came when the harness changed.</li>
+<li><strong>The biggest drop came with the runtime switch.</strong> Run E changed several things at once - the harness, where my rules live, and how the agent reads files - so I can't pin the whole 50k to 8k on the harness alone. But that combined change is where the math moved.</li>
+</ul>
+<h2>What I gave up</h2>
+<p>The 8k setup isn't free. I lost the GUI diff previews before file writes. And a terminal agent runs shell commands immediately, so I wrote a small TypeScript extension (safety.ts, ~25 lines) that intercepts .env reads and asks before destructive commands like rm -rf. A reasonable trade for my usage, but it is a trade.</p>
+<p>My biggest takeaway: the model didn't need more rules, it needed fewer obstacles. Matching my instructions to my actual stack and moving to a lightweight terminal runtime cut token consumption by over 80% on this task without losing capability. Your mileage will vary, but measure it. The counter doesn't lie.</p>
+            </article>
+
+            <div class="share-row" aria-label="Share this post">
+                <span class="share-label">Share</span>
+                <a class="share-link" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html&amp;t=Cutting%20my%20coding%20agent%20from%20119k%20to%208k%20tokens" target="_blank" rel="noopener noreferrer">Hacker News</a>
+                <a class="share-link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html&amp;text=Cutting%20my%20coding%20agent%20from%20119k%20to%208k%20tokens" target="_blank" rel="noopener noreferrer">X</a>
+                <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Flegodud3.github.io%2Fp%2F2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <button type="button" class="share-link share-copy" data-copy-url="https://legodud3.github.io/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html">Copy link</button>
+            </div>
+
+            <nav class="post-nav" aria-label="Post navigation">
+                <span></span>
+                <a class="visible post-nav-item-older" href="/p/2026-10-15-introducing-charts.html"><span class="post-nav-dir">Older →</span><span class="post-nav-title">Introducing charts to the blog</span></a>
+            </nav>
+
+            <section class="related-posts-section" aria-label="Related posts">
+                <h2 class="related-posts-heading">Related Posts</h2>
+                <div class="related-posts-grid">
+                    <a class="related-post-card" href="/p/2026-09-28-intelligence-may-not-follow-division-of-labour.html">
+                        <div class="related-post-title">Intelligence may not follow division of labour</div>
+                        <div><span class="post-date">September 28, 2026</span></div>
+                        <div class="related-post-excerpt">I spent 90 minutes skimming through the deepseek-coder paper. It was released in early 2024. Deepsee…</div>
+                    </a>
+                    <a class="related-post-card" href="/p/2026-10-06-in-the-future-indians-won-t-be-able-to-afford-to-fall-sick.html">
+                        <div class="related-post-title">In the future, Indians won&#x27;t be able to afford to fall sick</div>
+                        <div><span class="post-date">October 6, 2026</span></div>
+                        <div class="related-post-excerpt">Sometimes when you are out of ideas on what to read, you just scroll through the years of gunk you h…</div>
+                    </a>
+                    <a class="related-post-card" href="/p/2026-08-15-talk-less-and-listen-more.html">
+                        <div class="related-post-title">Talk less and listen more</div>
+                        <div><span class="post-date">August 15, 2026</span></div>
+                        <div class="related-post-excerpt">Trying to apply &quot;The Mom Test&quot; in every conversation I have. Realizing that it is hard, so hard. Wha…</div>
+                    </a>
+                </div>
+            </section>
+
+            <footer class="site-footer" data-layout-footer></footer>
+        </main>
+    </div>
+
+    <script src="/layout.js"></script>
+    <script src="/monthly-heatmap.js"></script>
+    <script src="/theme-toggle.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
+    <script defer src="/charts.js"></script>
+    <script>
+    (function () {
+        var btn = document.querySelector('.share-copy');
+        if (!btn) { return; }
+        btn.addEventListener('click', function () {
+            var url = btn.getAttribute('data-copy-url');
+            function done() {
+                btn.textContent = 'Copied!';
+                setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done, done);
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = url;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+        });
+    })();
+    </script>
+
+</body>
+</html>

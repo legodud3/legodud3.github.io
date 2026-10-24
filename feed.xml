@@ -5,7 +5,15 @@
   <link href="https://legodud3.github.io/" rel="alternate" />
   <link href="https://legodud3.github.io/feed.xml" rel="self" />
   <id>https://legodud3.github.io/</id>
-  <updated>2026-10-15T00:00:00Z</updated>
+  <updated>2026-10-24T00:00:00Z</updated>
+  <entry>
+    <title>Cutting my coding agent from 119k to 8k tokens</title>
+    <link href="https://legodud3.github.io/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html" rel="alternate" />
+    <id>https://legodud3.github.io/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html</id>
+    <published>2026-10-24T00:00:00Z</published>
+    <updated>2026-10-24T00:00:00Z</updated>
+    <summary>A straightforward multi-file data query (orders.csv + models.json) was burning through a surprising amount of context on my setup, so I ran the same task five times, changing the setup between runs, and tracked the cumulative tokens sent to the API on each run. The numbers swung wildly: 119k → 56k →</summary>
+  </entry>
   <entry>
     <title>Introducing charts to the blog</title>
     <link href="https://legodud3.github.io/p/2026-10-15-introducing-charts.html" rel="alternate" />
@@ -157,13 +165,5 @@
     <published>2026-03-27T00:00:00Z</published>
     <updated>2026-03-27T00:00:00Z</updated>
     <summary>Today is my 36th birthday. Happy birthday to me! Physically, I am (near) the best shape of my life, though there is a long way to go. Mentally, I feel like I have just turned 30, so a long way to go there too. Samay is here too, to celebrate, which I love. Every morning he wakes up and gives me a wi</summary>
-  </entry>
-  <entry>
-    <title>Strategy formulation should be partly democratic</title>
-    <link href="https://legodud3.github.io/p/2026-03-21-strategy-formulation-should-be-partly-democratic.html" rel="alternate" />
-    <id>https://legodud3.github.io/p/2026-03-21-strategy-formulation-should-be-partly-democratic.html</id>
-    <published>2026-03-21T00:00:00Z</published>
-    <updated>2026-03-21T00:00:00Z</updated>
-    <summary>I recently interacted with a few senior folks (think top 10% of the org). Our company had announced a transformative decision—one that will change the trajectory of the company—a couple of months ago. (Execution will tell whether the trajectory change is minimal or meaningful.) What struck me was: H</summary>
   </entry>
 </feed>

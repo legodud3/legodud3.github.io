@@ -1,5 +1,13 @@
 [
   {
+    "title": "Cutting my coding agent from 119k to 8k tokens",
+    "date": "2026-10-24",
+    "filename": "2026/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.md",
+    "url": "/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html",
+    "excerpt": "A straightforward multi-file data query (orders.csv + models.json) was burning through a surprising amount of context on my setup, so I ran the same task five times, changing the setup between runs, and tracked the cumulative tokens sent to the API on each run. The numbers swung wildly: 119k \u2192 56k \u2192",
+    "minutes": 4
+  },
+  {
     "title": "Introducing charts to the blog",
     "date": "2026-10-15",
     "filename": "2026/2026-10-15-introducing-charts.md",
