@@ -113,6 +113,11 @@
             <section class="related-posts-section" aria-label="Related posts">
                 <h2 class="related-posts-heading">Related Posts</h2>
                 <div class="related-posts-grid">
+                    <a class="related-post-card" href="/p/2026-10-15-introducing-charts.html">
+                        <div class="related-post-title">Introducing charts to the blog</div>
+                        <div><span class="post-date">October 15, 2026</span></div>
+                        <div class="related-post-excerpt">You can now embed nice-looking charts directly in posts using a fenced code block: Bar charts work t…</div>
+                    </a>
                     <a class="related-post-card" href="/p/2026-03-12-what-does-the-future-software-pde-org-look-like.html">
                         <div class="related-post-title">What does the future software PDE org look like?</div>
                         <div><span class="post-date">March 12, 2026</span></div>
@@ -122,11 +127,6 @@
                         <div class="related-post-title">Why My AI food logger lost out to Lose It!, and what I believe it means for the future of apps</div>
                         <div><span class="post-date">February 7, 2026</span></div>
                         <div class="related-post-excerpt">Food logging experiment I got Gemini CLI to help me build a custom food-tracking system that works t…</div>
-                    </a>
-                    <a class="related-post-card" href="/p/2026-09-28-intelligence-may-not-follow-division-of-labour.html">
-                        <div class="related-post-title">Intelligence may not follow division of labour</div>
-                        <div><span class="post-date">September 28, 2026</span></div>
-                        <div class="related-post-excerpt">I spent 90 minutes skimming through the deepseek-coder paper. It was released in early 2024. Deepsee…</div>
                     </a>
                 </div>
             </section>
@@ -138,6 +138,8 @@
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script defer src="/charts.js"></script>
     <script>
     (function () {
         var btn = document.querySelector('.share-copy');

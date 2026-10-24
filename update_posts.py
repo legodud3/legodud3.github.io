@@ -224,6 +224,42 @@ def render_markdown(text):
     return markdown.markdown(text, extensions=["fenced_code", "tables"])
 
 
+def convert_chart_blocks(html):
+    """Convert fenced chart code blocks into <canvas> elements for Chart.js.
+
+    A post author writes:
+
+        ```chart
+        {
+          "type": "line",
+          "data": { ... },
+          "options": { ... }
+        }
+        ```
+
+    The markdown renderer turns this into
+    <pre><code class="language-chart">...</code></pre>; we swap it for
+    <div class="chart-wrapper"><canvas data-chart="{json}"></canvas></div>
+    which charts.js initializes at page load.
+    """
+    import re
+
+    pattern = r'<pre><code class="language-chart">(.*?)</code></pre>'
+
+    def _repl(match):
+        config_json = match.group(1).strip()
+        escaped = (
+            config_json
+            .replace('&', '&amp;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;')
+            .replace('"', '&quot;')
+        )
+        return f'<div class="chart-wrapper"><canvas data-chart="{escaped}"></canvas></div>'
+
+    return re.sub(pattern, _repl, html, flags=re.DOTALL)
+
+
 def significant_words(text):
     """Words longer than 4 chars, used for excerpt-overlap scoring."""
     return {word for word in re.sub(r"[^a-z0-9\s]", " ", (text or "").lower()).split() if len(word) > 4}
@@ -366,6 +402,7 @@ def build_post_page(post, posts):
         older_link = "<span></span>"
 
     content_html = render_markdown(post["_body"])
+    content_html = convert_chart_blocks(content_html)
     related_html = build_related_html(find_related_posts(posts, post))
 
     # Meta row: a real <time> element plus reading time. Plain concatenation
@@ -448,7 +485,9 @@ def build_post_page(post, posts):
 
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
-    <script src="/theme-toggle.js"></script>{SHARE_ROW_SCRIPT}
+    <script src="/theme-toggle.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script defer src="/charts.js"></script>{SHARE_ROW_SCRIPT}
 </body>
 </html>
 """

@@ -63,6 +63,11 @@
             <section class="related-posts-section" aria-label="Related posts">
                 <h2 class="related-posts-heading">Related Posts</h2>
                 <div class="related-posts-grid">
+                    <a class="related-post-card" href="/p/2026-10-15-introducing-charts.html">
+                        <div class="related-post-title">Introducing charts to the blog</div>
+                        <div><span class="post-date">October 15, 2026</span></div>
+                        <div class="related-post-excerpt">You can now embed nice-looking charts directly in posts using a fenced code block: Bar charts work t…</div>
+                    </a>
                     <a class="related-post-card" href="/p/2026-10-07-russian-drones-iphone-thinking.html">
                         <div class="related-post-title">Russian drones, iPhone thinking</div>
                         <div><span class="post-date">October 7, 2026</span></div>
@@ -72,11 +77,6 @@
                         <div class="related-post-title">Kindle</div>
                         <div><span class="post-date">July 10, 2026</span></div>
                         <div class="related-post-excerpt">I enjoy reading on the Kindle. It&#x27;s a great experience because it does only one thing and nothing el…</div>
-                    </a>
-                    <a class="related-post-card" href="/p/2026-05-27-don-t-consume-your-day-with-current-events.html">
-                        <div class="related-post-title">Don&#x27;t consume your day with current events</div>
-                        <div><span class="post-date">May 27, 2026</span></div>
-                        <div class="related-post-excerpt">Let&#x27;s take an event: &quot;THE LATEST CRISIS.&quot; You read, watch, or listen to the take, the counter-take,…</div>
                     </a>
                 </div>
             </section>
@@ -88,6 +88,8 @@
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script defer src="/charts.js"></script>
     <script>
     (function () {
         var btn = document.querySelector('.share-copy');
