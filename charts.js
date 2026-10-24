@@ -17,6 +17,11 @@
 //
 // update_posts.py converts those into <div class="chart-wrapper"><canvas data-chart="{json}"></canvas></div>
 // and this script initializes them.
+//
+// Theme handling: explicit author-specified colours are preserved. Theme-aware
+// defaults (axis text, grid, legend labels) are applied only when the author
+// has not already set them. Each chart is initialized in its own error handler
+// so one broken config never prevents sibling charts from rendering.
 window.Charts = (function () {
     var instances = [];
 
@@ -24,32 +29,64 @@ window.Charts = (function () {
         return document.documentElement.classList.contains('dark-mode');
     }
 
+    function prefersReducedMotion() {
+        return (
+            window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        );
+    }
+
     function themePalette(dark) {
-        // Chart.js defaults are colourblind-safe and work in both themes.
-        // Return overrides if we ever want theme-specific tweaks.
         return {
             text: dark ? '#e8e6de' : '#1a1a1a',
             border: dark ? '#3a3a3a' : '#e0e0e0',
         };
     }
 
+    // Set a value only if the author has not already provided one.
+    function setIfAbsent(target, key, value) {
+        if (target[key] === undefined) {
+            target[key] = value;
+        }
+    }
+
     function applyThemeOverrides(config, dark) {
         var pal = themePalette(dark);
         var opts = config.options || (config.options = {});
         var plugins = opts.plugins || (opts.plugins = {});
+        var legendVal = plugins.legend;
+        var legendIsObject = legendVal && typeof legendVal === 'object';
+        // Preserve explicit legend: false; otherwise ensure an object we can
+        // safely add theme defaults to.
+        var legend = legendIsObject ? legendVal : (legendVal !== false ? (plugins.legend = {}) : false);
+        var title = plugins.title || (plugins.title = {});
 
-        // Ensure legend / axis labels pick up theme-appropriate colours.
+        // Animation: honour prefers-reduced-motion at the Chart.js level so
+        // JS-drawn animation stops, not just CSS opacity.
+        if (prefersReducedMotion()) {
+            opts.animation = false;
+        }
+
+        // Scales: apply theme colours only where the author hasn't set them.
         if (opts.scales) {
             Object.keys(opts.scales).forEach(function (key) {
                 var scale = opts.scales[key];
-                if (scale.ticks) scale.ticks.color = pal.text;
-                if (scale.title) scale.title.color = pal.text;
-                if (scale.grid) scale.grid.color = pal.border;
+                if (!scale) return;
+                if (scale.ticks) setIfAbsent(scale.ticks, 'color', pal.text);
+                if (scale.title) setIfAbsent(scale.title, 'color', pal.text);
+                if (scale.grid) setIfAbsent(scale.grid, 'color', pal.border);
             });
         }
-        if (plugins.legend) plugins.legend.labels = plugins.legend.labels || {};
-        plugins.legend.labels.color = pal.text;
-        if (plugins.title) plugins.title.color = pal.text;
+
+        // Legend: preserve explicit legend: false and explicit colours.
+        if (legend && typeof legend === 'object' && legend.display !== false) {
+            setIfAbsent(legend, 'labels', {});
+            setIfAbsent(legend.labels, 'color', pal.text);
+        }
+        // Title: preserve explicit colours.
+        if (title.display !== false) {
+            setIfAbsent(title, 'color', pal.text);
+        }
     }
 
     function create(canvas) {
@@ -72,7 +109,14 @@ window.Charts = (function () {
         applyThemeOverrides(config, isDark());
 
         var ctx = canvas.getContext('2d');
-        var instance = new Chart(ctx, config);
+        var instance;
+        try {
+            instance = new Chart(ctx, config);
+        } catch (e) {
+            console.error('Charts: failed to render chart:', e);
+            return null;
+        }
+
         instances.push({ canvas: canvas, instance: instance, config: config });
         return instance;
     }

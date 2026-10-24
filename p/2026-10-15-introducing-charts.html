@@ -41,120 +41,11 @@
                 <h1 class="post-reader-title">Introducing charts to the blog</h1>
                 <div class="post-meta"><time datetime="2026-10-15">October 15, 2026</time><span class="post-meta-sep" aria-hidden="true">&middot;</span><span>2 min read</span></div>
 <p>You can now embed nice-looking charts directly in posts using a fenced code block:</p>
-<div class="chart-wrapper"><canvas data-chart="{
-  &amp;quot;type&amp;quot;: &amp;quot;line&amp;quot;,
-  &amp;quot;data&amp;quot;: {
-    &amp;quot;labels&amp;quot;: [&amp;quot;Jan&amp;quot;, &amp;quot;Feb&amp;quot;, &amp;quot;Mar&amp;quot;, &amp;quot;Apr&amp;quot;, &amp;quot;May&amp;quot;, &amp;quot;Jun&amp;quot;, &amp;quot;Jul&amp;quot;, &amp;quot;Aug&amp;quot;],
-    &amp;quot;datasets&amp;quot;: [
-      {
-        &amp;quot;label&amp;quot;: &amp;quot;Posts published&amp;quot;,
-        &amp;quot;data&amp;quot;: [3, 5, 2, 7, 4, 6, 8, 5],
-        &amp;quot;borderColor&amp;quot;: &amp;quot;rgb(75, 192, 192)&amp;quot;,
-        &amp;quot;tension&amp;quot;: 0.3
-      },
-      {
-        &amp;quot;label&amp;quot;: &amp;quot;Drafts started&amp;quot;,
-        &amp;quot;data&amp;quot;: [6, 4, 8, 5, 7, 3, 4, 9],
-        &amp;quot;borderColor&amp;quot;: &amp;quot;rgb(255, 159, 64)&amp;quot;,
-        &amp;quot;tension&amp;quot;: 0.3
-      }
-    ]
-  },
-  &amp;quot;options&amp;quot;: {
-    &amp;quot;responsive&amp;quot;: true,
-    &amp;quot;maintainAspectRatio&amp;quot;: false,
-    &amp;quot;plugins&amp;quot;: {
-      &amp;quot;title&amp;quot;: {
-        &amp;quot;display&amp;quot;: true,
-        &amp;quot;text&amp;quot;: &amp;quot;Writing activity over time&amp;quot;
-      },
-      &amp;quot;legend&amp;quot;: {
-        &amp;quot;position&amp;quot;: &amp;quot;bottom&amp;quot;
-      }
-    },
-    &amp;quot;scales&amp;quot;: {
-      &amp;quot;y&amp;quot;: {
-        &amp;quot;beginAtZero&amp;quot;: true,
-        &amp;quot;title&amp;quot;: {
-          &amp;quot;display&amp;quot;: true,
-          &amp;quot;text&amp;quot;: &amp;quot;Count&amp;quot;
-        }
-      }
-    }
-  }
-}"></canvas></div>
+<div class="chart-wrapper"><canvas data-chart="{&quot;type&quot;: &quot;line&quot;, &quot;data&quot;: {&quot;labels&quot;: [&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;], &quot;datasets&quot;: [{&quot;label&quot;: &quot;Posts published&quot;, &quot;data&quot;: [3, 5, 2, 7, 4, 6, 8, 5], &quot;borderColor&quot;: &quot;rgb(75, 192, 192)&quot;, &quot;tension&quot;: 0.3}, {&quot;label&quot;: &quot;Drafts started&quot;, &quot;data&quot;: [6, 4, 8, 5, 7, 3, 4, 9], &quot;borderColor&quot;: &quot;rgb(255, 159, 64)&quot;, &quot;tension&quot;: 0.3}]}, &quot;options&quot;: {&quot;responsive&quot;: true, &quot;maintainAspectRatio&quot;: false, &quot;plugins&quot;: {&quot;title&quot;: {&quot;display&quot;: true, &quot;text&quot;: &quot;Writing activity over time&quot;}, &quot;legend&quot;: {&quot;position&quot;: &quot;bottom&quot;}}, &quot;scales&quot;: {&quot;y&quot;: {&quot;beginAtZero&quot;: true, &quot;title&quot;: {&quot;display&quot;: true, &quot;text&quot;: &quot;Count&quot;}}}}}"></canvas></div>
 <p>Bar charts work too:</p>
-<div class="chart-wrapper"><canvas data-chart="{
-  &amp;quot;type&amp;quot;: &amp;quot;bar&amp;quot;,
-  &amp;quot;data&amp;quot;: {
-    &amp;quot;labels&amp;quot;: [&amp;quot;Python&amp;quot;, &amp;quot;JavaScript&amp;quot;, &amp;quot;Go&amp;quot;, &amp;quot;Rust&amp;quot;, &amp;quot;TypeScript&amp;quot;],
-    &amp;quot;datasets&amp;quot;: [
-      {
-        &amp;quot;label&amp;quot;: &amp;quot;Lines of code (thousands)&amp;quot;,
-        &amp;quot;data&amp;quot;: [45, 32, 18, 12, 28],
-        &amp;quot;backgroundColor&amp;quot;: [
-          &amp;quot;rgba(255, 99, 132, 0.7)&amp;quot;,
-          &amp;quot;rgba(54, 162, 235, 0.7)&amp;quot;,
-          &amp;quot;rgba(255, 206, 86, 0.7)&amp;quot;,
-          &amp;quot;rgba(75, 192, 192, 0.7)&amp;quot;,
-          &amp;quot;rgba(153, 102, 255, 0.7)&amp;quot;
-        ],
-        &amp;quot;borderColor&amp;quot;: [
-          &amp;quot;rgb(255, 99, 132)&amp;quot;,
-          &amp;quot;rgb(54, 162, 235)&amp;quot;,
-          &amp;quot;rgb(255, 206, 86)&amp;quot;,
-          &amp;quot;rgb(75, 192, 192)&amp;quot;,
-          &amp;quot;rgb(153, 102, 255)&amp;quot;
-        ],
-        &amp;quot;borderWidth&amp;quot;: 1
-      }
-    ]
-  },
-  &amp;quot;options&amp;quot;: {
-    &amp;quot;responsive&amp;quot;: true,
-    &amp;quot;maintainAspectRatio&amp;quot;: false,
-    &amp;quot;plugins&amp;quot;: {
-      &amp;quot;title&amp;quot;: {
-        &amp;quot;display&amp;quot;: true,
-        &amp;quot;text&amp;quot;: &amp;quot;Language usage by lines of code&amp;quot;
-      }
-    },
-    &amp;quot;scales&amp;quot;: {
-      &amp;quot;y&amp;quot;: {
-        &amp;quot;beginAtZero&amp;quot;: true,
-        &amp;quot;title&amp;quot;: {
-          &amp;quot;display&amp;quot;: true,
-          &amp;quot;text&amp;quot;: &amp;quot;Thousands of lines&amp;quot;
-        }
-      }
-    }
-  }
-}"></canvas></div>
+<div class="chart-wrapper"><canvas data-chart="{&quot;type&quot;: &quot;bar&quot;, &quot;data&quot;: {&quot;labels&quot;: [&quot;Python&quot;, &quot;JavaScript&quot;, &quot;Go&quot;, &quot;Rust&quot;, &quot;TypeScript&quot;], &quot;datasets&quot;: [{&quot;label&quot;: &quot;Lines of code (thousands)&quot;, &quot;data&quot;: [45, 32, 18, 12, 28], &quot;backgroundColor&quot;: [&quot;rgba(255, 99, 132, 0.7)&quot;, &quot;rgba(54, 162, 235, 0.7)&quot;, &quot;rgba(255, 206, 86, 0.7)&quot;, &quot;rgba(75, 192, 192, 0.7)&quot;, &quot;rgba(153, 102, 255, 0.7)&quot;], &quot;borderColor&quot;: [&quot;rgb(255, 99, 132)&quot;, &quot;rgb(54, 162, 235)&quot;, &quot;rgb(255, 206, 86)&quot;, &quot;rgb(75, 192, 192)&quot;, &quot;rgb(153, 102, 255)&quot;], &quot;borderWidth&quot;: 1}]}, &quot;options&quot;: {&quot;responsive&quot;: true, &quot;maintainAspectRatio&quot;: false, &quot;plugins&quot;: {&quot;title&quot;: {&quot;display&quot;: true, &quot;text&quot;: &quot;Language usage by lines of code&quot;}}, &quot;scales&quot;: {&quot;y&quot;: {&quot;beginAtZero&quot;: true, &quot;title&quot;: {&quot;display&quot;: true, &quot;text&quot;: &quot;Thousands of lines&quot;}}}}}"></canvas></div>
 <p>And a simple pie chart:</p>
-<div class="chart-wrapper"><canvas data-chart="{
-  &amp;quot;type&amp;quot;: &amp;quot;doughnut&amp;quot;,
-  &amp;quot;data&amp;quot;: {
-    &amp;quot;labels&amp;quot;: [&amp;quot;Drafts&amp;quot;, &amp;quot;Published&amp;quot;, &amp;quot;Archived&amp;quot;],
-    &amp;quot;datasets&amp;quot;: [{
-      &amp;quot;data&amp;quot;: [15, 42, 8],
-      &amp;quot;backgroundColor&amp;quot;: [
-        &amp;quot;rgb(255, 159, 64)&amp;quot;,
-        &amp;quot;rgb(75, 192, 192)&amp;quot;,
-        &amp;quot;rgb(201, 203, 207)&amp;quot;
-      ]
-    }]
-  },
-  &amp;quot;options&amp;quot;: {
-    &amp;quot;responsive&amp;quot;: true,
-    &amp;quot;maintainAspectRatio&amp;quot;: false,
-    &amp;quot;plugins&amp;quot;: {
-      &amp;quot;title&amp;quot;: {
-        &amp;quot;display&amp;quot;: true,
-        &amp;quot;text&amp;quot;: &amp;quot;Post status breakdown&amp;quot;
-      }
-    }
-  }
-}"></canvas></div>
+<div class="chart-wrapper"><canvas data-chart="{&quot;type&quot;: &quot;doughnut&quot;, &quot;data&quot;: {&quot;labels&quot;: [&quot;Drafts&quot;, &quot;Published&quot;, &quot;Archived&quot;], &quot;datasets&quot;: [{&quot;data&quot;: [15, 42, 8], &quot;backgroundColor&quot;: [&quot;rgb(255, 159, 64)&quot;, &quot;rgb(75, 192, 192)&quot;, &quot;rgb(201, 203, 207)&quot;]}]}, &quot;options&quot;: {&quot;responsive&quot;: true, &quot;maintainAspectRatio&quot;: false, &quot;plugins&quot;: {&quot;title&quot;: {&quot;display&quot;: true, &quot;text&quot;: &quot;Post status breakdown&quot;}}}}"></canvas></div>
 <p>To add one to your own post, use the <strong>📊 Insert chart</strong> button in the writing desk, or write a fenced block with language <code>chart</code> containing a JSON Chart.js config:</p>
 <pre><code class="language-markdown">```chart
 {
@@ -208,7 +99,7 @@
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
     <script src="/theme-toggle.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
     <script defer src="/charts.js"></script>
     <script>
     (function () {
