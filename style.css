@@ -1491,3 +1491,37 @@ body:not([data-page=home]) .site-footer {
         font-size: 1rem;
     }
 }
+
+/* Chart containers for posts. Wraps each <canvas> so charts stay responsive
+   and don't overflow the capped prose measure. */
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5em 0;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.chart-wrapper canvas {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* Give charts a minimum height so they don't collapse before Chart.js runs. */
+.chart-wrapper canvas[data-chart] {
+    min-height: 240px;
+}
+
+/* When reduced motion is requested, chart animations are disabled. */
+@media (prefers-reduced-motion: reduce) {
+    .chart-wrapper canvas {
+        animation: none !important;
+        transition: none !important;
+    }
+}

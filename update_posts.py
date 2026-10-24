@@ -224,6 +224,54 @@ def render_markdown(text):
     return markdown.markdown(text, extensions=["fenced_code", "tables"])
 
 
+def convert_chart_blocks(html):
+    """Convert fenced chart code blocks into <canvas> elements for Chart.js.
+
+    A post author writes:
+
+        ```chart
+        {
+          "type": "line",
+          "data": { ... },
+          "options": { ... }
+        }
+        ```
+
+    Python-Markdown already HTML-escapes fenced code content, so we unescape
+    once to recover the raw JSON the author wrote, validate it parses, then
+    re-serialize and HTML-escape correctly for a double-quoted attribute.
+    Invalid JSON is left as a raw code block rather than breaking the page.
+    """
+    from html import unescape as html_unescape
+
+    pattern = r'<pre><code class="language-chart">(.*?)</code></pre>'
+
+    def _repl(match):
+        # Python-Markdown already HTML-escaped the fenced code content.
+        # Unescape once to recover the author's raw JSON.
+        raw_json = html_unescape(match.group(1).strip())
+
+        # Validate it is parseable JSON before embedding.
+        try:
+            json.loads(raw_json)
+        except (ValueError, TypeError):
+            # Leave the original code block intact so the author can see it.
+            return match.group(0)
+
+        # Re-serialize compactly and HTML-escape for a quoted attribute.
+        serialized = json.dumps(json.loads(raw_json), ensure_ascii=False)
+        escaped = (
+            serialized
+            .replace('&', '&amp;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;')
+            .replace('"', '&quot;')
+        )
+        return f'<div class="chart-wrapper"><canvas data-chart="{escaped}"></canvas></div>'
+
+    return re.sub(pattern, _repl, html, flags=re.DOTALL)
+
+
 def significant_words(text):
     """Words longer than 4 chars, used for excerpt-overlap scoring."""
     return {word for word in re.sub(r"[^a-z0-9\s]", " ", (text or "").lower()).split() if len(word) > 4}
@@ -366,6 +414,8 @@ def build_post_page(post, posts):
         older_link = "<span></span>"
 
     content_html = render_markdown(post["_body"])
+    content_html = convert_chart_blocks(content_html)
+    has_charts = 'chart-wrapper' in content_html
     related_html = build_related_html(find_related_posts(posts, post))
 
     # Meta row: a real <time> element plus reading time. Plain concatenation
@@ -378,6 +428,13 @@ def build_post_page(post, posts):
             '<time datetime="' + parsed_date.strftime("%Y-%m-%d") + '">'
             + display_date(post["date"]) + "</time>"
         )
+    chart_scripts = (
+        '    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"'
+        ' integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4"'
+        ' crossorigin="anonymous"></script>\n'
+        '    <script defer src="/charts.js"></script>'
+    ) if has_charts else ''
+
     meta_html = (
         date_html
         + '<span class="post-meta-sep" aria-hidden="true">&middot;</span>'
@@ -448,28 +505,41 @@ def build_post_page(post, posts):
 
     <script src="/layout.js"></script>
     <script src="/monthly-heatmap.js"></script>
-    <script src="/theme-toggle.js"></script>{SHARE_ROW_SCRIPT}
+    <script src="/theme-toggle.js"></script>
+{chart_scripts}{SHARE_ROW_SCRIPT}
 </body>
 </html>
 """
 
 
 def build_post_pages(posts):
-    """(Re)generate the static per-post pages under PAGES_DIR. The directory
-    is wiped first so deleted/renamed posts don't linger."""
-    os.makedirs(PAGES_DIR, exist_ok=True)
-    for existing in os.listdir(PAGES_DIR):
-        if existing.endswith(".html"):
-            os.remove(os.path.join(PAGES_DIR, existing))
+    """(Re)generate the static per-post pages under PAGES_DIR.
 
-    for post in posts:
-        slug = os.path.basename(post["filename"])[:-3]
-        page_path = os.path.join(PAGES_DIR, f"{slug}.html")
-        # newline="\n" keeps output byte-identical on Windows and Linux: without
-        # it Python's text mode translates \n to \r\n on Windows, so a local
-        # rebuild would rewrite every artifact with different bytes.
-        with open(page_path, "w", encoding="utf-8", newline="\n") as f:
-            f.write(build_post_page(post, posts))
+    Pages are rendered into a temporary directory first. Only when every page
+    renders successfully is the temp directory swapped into PAGES_DIR, so a
+    failed render never leaves the site with missing pages.
+    """
+    import shutil
+    import tempfile
+
+    os.makedirs(PAGES_DIR, exist_ok=True)
+    tmp_dir = tempfile.mkdtemp(prefix='post-pages-')
+    try:
+        for post in posts:
+            slug = os.path.basename(post["filename"])[:-3]
+            page_path = os.path.join(tmp_dir, f"{slug}.html")
+            # newline="\n" keeps output byte-identical on Windows and Linux.
+            with open(page_path, "w", encoding="utf-8", newline="\n") as f:
+                f.write(build_post_page(post, posts))
+
+        # All pages rendered successfully — swap the temp dir into place.
+        for existing in os.listdir(PAGES_DIR):
+            if existing.endswith(".html"):
+                os.remove(os.path.join(PAGES_DIR, existing))
+        for name in os.listdir(tmp_dir):
+            shutil.move(os.path.join(tmp_dir, name), os.path.join(PAGES_DIR, name))
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
     return len(posts)
 

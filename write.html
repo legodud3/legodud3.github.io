@@ -485,6 +485,7 @@
                         <button type="button" class="editor-btn" title="Numbered list" aria-label="Numbered list" onclick="mdNumberedList()">1.</button>
                         <button type="button" class="editor-btn" title="Blockquote" aria-label="Blockquote" onclick="mdPrefix('&gt; ')">❝</button>
                         <button type="button" class="editor-btn" title="Insert link (Ctrl+K)" aria-label="Insert link" onclick="insertLink()">🔗</button>
+                        <button type="button" class="editor-btn" title="Insert chart" aria-label="Insert chart" onclick="insertChart()">📊</button>
                     </div>
                     <textarea
                         id="postBodyEditor"
@@ -767,6 +768,34 @@
 
             const text = selected || safeUrl;
             replaceSelection(`[${text}](${safeUrl})`, 1, 1 + text.length);
+        }
+
+        function insertChart() {
+            const editor = getEditor();
+            const chartJson = JSON.stringify({
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'My Data',
+                        data: [12, 19, 15, 25, 22, 30],
+                        fill: false,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Chart Title'
+                        }
+                    }
+                }
+            }, 2);
+            const block = '\n\n```chart\n' + chartJson + '\n```\n\n';
+            replaceSelection(block, 0, block.length);
         }
 
         // Undo/redo: execCommand is deprecated, but remains the practical way to

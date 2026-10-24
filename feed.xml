@@ -5,7 +5,15 @@
   <link href="https://legodud3.github.io/" rel="alternate" />
   <link href="https://legodud3.github.io/feed.xml" rel="self" />
   <id>https://legodud3.github.io/</id>
-  <updated>2026-10-14T00:00:00Z</updated>
+  <updated>2026-10-15T00:00:00Z</updated>
+  <entry>
+    <title>Introducing charts to the blog</title>
+    <link href="https://legodud3.github.io/p/2026-10-15-introducing-charts.html" rel="alternate" />
+    <id>https://legodud3.github.io/p/2026-10-15-introducing-charts.html</id>
+    <published>2026-10-15T00:00:00Z</published>
+    <updated>2026-10-15T00:00:00Z</updated>
+    <summary>You can now embed nice-looking charts directly in posts using a fenced code block: Bar charts work too: And a simple pie chart: To add one to your own post, use the 📊 Insert chart button in the writing desk, or write a fenced block with language containing a JSON Chart.js config: markdown The build</summary>
+  </entry>
   <entry>
     <title>Samay's dreams</title>
     <link href="https://legodud3.github.io/p/2026-10-14-samays-dreams.html" rel="alternate" />
@@ -157,13 +165,5 @@
     <published>2026-03-21T00:00:00Z</published>
     <updated>2026-03-21T00:00:00Z</updated>
     <summary>I recently interacted with a few senior folks (think top 10% of the org). Our company had announced a transformative decision—one that will change the trajectory of the company—a couple of months ago. (Execution will tell whether the trajectory change is minimal or meaningful.) What struck me was: H</summary>
-  </entry>
-  <entry>
-    <title>Why I won't use AI to write first drafts</title>
-    <link href="https://legodud3.github.io/p/2026-03-21-why-i-won-t-use-ai-to-write-first-drafts.html" rel="alternate" />
-    <id>https://legodud3.github.io/p/2026-03-21-why-i-won-t-use-ai-to-write-first-drafts.html</id>
-    <published>2026-03-21T00:00:00Z</published>
-    <updated>2026-03-21T00:00:00Z</updated>
-    <summary>Unless you have been living under a rock, you know that AI can write better than you (the average person). AI can express ideas in a simpler, clearer, and more compelling fashion...or any fashion you want, really. The question is: Should you let it? It is useful to start by thinking about ghostwrite</summary>
   </entry>
 </feed>
