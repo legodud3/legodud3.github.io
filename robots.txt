@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /write.html
 
 Sitemap: https://legodud3.github.io/sitemap.xml

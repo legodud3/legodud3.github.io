@@ -131,7 +131,7 @@ And a simple pie chart:
 }
 ```
 
-To add one to your own post, use the **📊 Insert chart** button in the writing desk, or write a fenced block with language `chart` containing a JSON Chart.js config:
+To add one to your own post, write a fenced block with language `chart` containing a JSON Chart.js config:
 
 ````markdown
 ```chart

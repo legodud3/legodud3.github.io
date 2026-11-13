@@ -5,7 +5,7 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 ## Features
 
 *   **Zero-Backend Architecture**: No database to maintain. The site is purely HTML, CSS, and JavaScript, making it extremely fast and secure.
-*   **Browser-Based Editor**: Write, format, preview, and publish posts directly from `write.html` using the GitHub API—no command line needed.
+*   **Markdown-first publishing**: Add a Markdown file under `posts/`, commit it, and GitHub Actions regenerates the published pages and indexes.
 *   **Automated Content Pipeline**:
     *   Posts are written in **Markdown** and stored in the `posts/` directory (organized by year).
     *   A **GitHub Action** triggers on every push, running a Python script that regenerates the `posts.json` index, the `feed.xml` Atom feed, and **pre-rendered static HTML pages** for every post under `p/` (real titles, descriptions, canonical URLs, and baked-in prev/next navigation).
@@ -23,16 +23,16 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 ## Design System
 
 ### Typography
-- **All text**: [Roboto](https://fonts.google.com/specimen/Roboto) — a clean, readable sans-serif
+- Body text uses [Roboto](https://fonts.google.com/specimen/Roboto); display text uses Fraunces. The homepage has its own typography.
 
 ### Color Palette
 | Token | Dark Mode | Light Mode | Usage |
 |---|---|---|---|
-| `--bg-color` | `#1a1a1a` | `#ffffff` | Page background |
-| `--text-color` | `#e0e0e0` | `#1a1a1a` | Body text |
-| `--link-color` | `#4da6ff` | `#0066cc` | Hyperlinks |
-| `--accent-color` | `#FFD700` (gold) | `#DAA520` | Brand, buttons, highlights |
-| `--border-color` | `#333` | `#e0e0e0` | Borders & dividers |
+| `--bg-color` | `#1c211f` | `#f2f0e9` | Page background |
+| `--text-color` | `#f2f0e9` | `#20231f` | Body text |
+| `--link-color` | `#9facff` | `#2448f2` | Hyperlinks and accent |
+| `--accent-color` | `#9facff` | `#2448f2` | Brand, buttons, highlights |
+| `--border-color` | `#50564e` | `#c9cbc2` | Borders & dividers |
 
 ### Key Components
 - **Writing Consistency Heatmap**: GitHub-style contribution graph for posts
@@ -51,9 +51,9 @@ A custom-built static blogging engine designed for simplicity and longevity. It 
 
 ### Sitemap
 
-`sitemap.xml` is generated on every build, so a new post appears in it automatically — nothing to add by hand. It lists all 55 indexable URLs: the homepage, `about.html`, `side-projects.html`, and every post under `/p/`. Each post carries a `<lastmod>` taken from its own front matter `date`; the hand-maintained pages deliberately have none, since there's no reliable edit date to report.
+`sitemap.xml` is generated on every build, so new posts appear automatically. It lists the homepage, `about.html`, `side-projects.html`, and every dated post under `/p/`. Each post carries a `<lastmod>` from its front matter; the hand-maintained pages do not claim an edit date.
 
-It's advertised to crawlers in `robots.txt` (`Sitemap: https://legodud3.github.io/sitemap.xml`) and is the file to submit in **Google Search Console**. Deliberately excluded: `write.html` (the token-gated editor), `view.html` (a redirect shim that would duplicate every post) and `404.html` — all three are `noindex`.
+It's advertised in `robots.txt` and can be submitted in **Google Search Console**. `view.html` (a legacy redirect shim) and `404.html` are excluded because they are `noindex`.
 
 ### Reproducible Builds
 
@@ -81,53 +81,25 @@ To view the website, visit https://legodud3.github.io or simply open the `index.
 
 ## Writing New Posts
 
-### Option 1: Browser-Based Editor (Recommended)
-
-1. Navigate to `https://legodud3.github.io/write.html` or use “Open the writing desk” in the site footer.
-2. **First-time setup**:
-   - Create a fine-grained GitHub Personal Access Token limited to `legodud3.github.io`.
-   - Grant repository permission **Contents: Read and write**.
-   - Enter the token; the owner and repository are fixed by the editor.
-   - Click "Login & Continue"
-3. **Write your post**:
-   - Enter a title and select a date (defaults to today)
-   - Write in plain Markdown in the text area — the formatting toolbar and `Ctrl`/`Cmd` + `B`/`I`/`K` shortcuts insert Markdown syntax rather than rich HTML, so what you paste in is exactly what gets committed
-   - Click "Preview" to see how it will look
-   - Click "Publish Post" to commit directly to GitHub
-4. GitHub Actions will automatically update the site index
-
-### Security notes
-
-- The editor keeps your GitHub PAT in session storage only (cleared when browser session ends).
-- The token is sent only to GitHub's API and is never persisted in local storage.
-
-### Option 2: Manual File Creation
-
-1. Create a new `.md` file in `posts/YYYY/` (where YYYY is the current year)
-2. Name it using the format: `YYYY-MM-DD-title-slug.md`
-3. Add front matter at the top:
+1. Create `posts/YYYY/YYYY-MM-DD-title-slug.md` using a lowercase, hyphen-separated filename.
+2. Add front matter and write the post in Markdown:
    ```yaml
    ---
    title: Your Post Title
    date: YYYY-MM-DD
    ---
    ```
-4. Write your content in Markdown below the front matter
-5. Commit and push to GitHub
+3. Commit and push the file. GitHub Actions validates it and regenerates the index, feed, sitemap, and static post pages.
 
 ## Dependencies
 
 **Build (Python, used by the GitHub Action):**
 - [markdown](https://pypi.org/project/Markdown/) — renders posts to HTML for the static pages (`pip install markdown`)
 
-**Runtime (CDN, only loaded by the browser-based editor `write.html` for its preview):**
-- [marked.js](https://marked.js.org/) `18.0.14` — Markdown rendering (via CDN, version-pinned with an SRI `integrity` hash)
-- [DOMPurify](https://github.com/cure53/DOMPurify) `3.2.6` — XSS sanitization (via CDN, version-pinned with an SRI `integrity` hash)
-
-The reader path (`index.html` and every page under `p/`) loads **no third-party JavaScript at all** — posts are pre-rendered, so `marked`, `DOMPurify` and `js-yaml` are no longer needed there.
+**Runtime:** Chart.js is loaded from a pinned CDN only on post pages that contain charts. Google Analytics and Google Fonts are also loaded by the site.
 
 **Fonts:**
-- [Google Fonts](https://fonts.google.com/) — Roboto (body, headings)
+- [Google Fonts](https://fonts.google.com/) — used for shared and homepage typography.
 
 ## Generated Files
 

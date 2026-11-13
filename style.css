@@ -824,20 +824,6 @@ a:hover {
     font-size: 0.8rem;
 }
 
-.writing-desk-link {
-    display: inline-block;
-    margin-top: var(--space-2);
-    color: var(--text-muted);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: color var(--transition-fast);
-}
-
-.writing-desk-link:hover,
-.writing-desk-link:focus-visible {
-    color: var(--link-color);
-}
-
 /* Theme Toggle */
 .theme-toggle-container {
     display: flex;
@@ -1215,7 +1201,7 @@ ol li::marker {
 /* ==========================================================================
    Editorial theme (warm off-white, blue accent, serif display type).
    Matches the homepage; applies to post pages, About, Side projects,
-   the writing desk and the 404 page. The homepage carries its own layout.
+   and the 404 page. The homepage carries its own layout.
    ========================================================================== */
 
 body:not([data-page=home]) {

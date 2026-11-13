@@ -41,8 +41,8 @@ def parse_front_matter(content):
             continue
         key = match.group(1).strip().lower()
         value = match.group(2).strip()
-        # Unquote YAML-style quoted scalars — write.html emits quoted titles so
-        # titles containing ':' or '#' survive every parser in this repo.
+        # Unquote YAML-style quoted scalars so titles containing ':' or '#'
+        # survive the lightweight front-matter parser.
         if len(value) >= 2 and value.startswith('"') and value.endswith('"'):
             value = value[1:-1].replace('\\"', '"').replace("\\\\", "\\")
         elif len(value) >= 2 and value.startswith("'") and value.endswith("'"):

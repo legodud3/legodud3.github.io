@@ -4,7 +4,6 @@
 // Mount points:
 //   <aside class="left-rail" data-layout-rail></aside>
 //   <footer class="site-footer" data-layout-footer></footer>
-//   (use data-layout-footer="minimal" to omit the writing-desk link)
 //
 // The active nav item comes from <body data-page="home|about|projects">.
 // Paths are root-absolute so generated pages under /p/ resolve correctly.
@@ -63,15 +62,9 @@ window.Layout = (function () {
         rail.appendChild(widget);
     }
 
-    function buildFooter(footer, variant) {
+    function buildFooter(footer) {
         footer.appendChild(el('p', null,
             'All writing is personal. Views are my own and do not represent my employer, friends, or family.'));
-
-        if (variant !== 'minimal') {
-            const desk = el('a', 'writing-desk-link', 'Open the writing desk');
-            desk.href = '/write.html';
-            footer.appendChild(desk);
-        }
 
         const toggle = el('div', 'theme-toggle-container');
         toggle.appendChild(el('span', 'theme-toggle-label', 'Dark'));
@@ -96,7 +89,7 @@ window.Layout = (function () {
         });
         document.querySelectorAll('[data-layout-footer]').forEach((footer) => {
             footer.innerHTML = '';
-            buildFooter(footer, footer.getAttribute('data-layout-footer'));
+            buildFooter(footer);
         });
     }
 

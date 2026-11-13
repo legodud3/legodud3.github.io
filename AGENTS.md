@@ -14,7 +14,6 @@ This repository is a static GitHub Pages blog/site. Agents should keep changes s
 - `index.html`: Homepage with post listing, search, month filtering and pagination. State lives in the URL as `q` (search), `page` and `month=YYYY-MM`. Keep the `q` name stable — older shared links depend on it.
 - `view.html`: Legacy redirect shim — forwards old `view.html?post=YYYY/slug.md` links to `/p/<slug>.html`.
 - `p/`: **Generated** static per-post pages (one HTML file per post). Never hand-edit; regenerated and wiped by `update_posts.py`.
-- `write.html`: Browser-based publisher UI (commits posts via GitHub API). `noindex, nofollow`; a plain Markdown `<textarea>` editor — the toolbar and `Ctrl`/`Cmd` shortcuts splice Markdown syntax, they do not apply rich HTML. Autosaves an unpublished draft to `localStorage` (`writeDraft.v1`) in **new-post mode only** and offers Restore/Discard on load; the draft is cleared on publish. Edit mode (`?edit=`) deliberately skips autosave because the repo file is the source of truth there.
 - `side-projects.html`: Side projects page.
 - `about.html`: About page.
 - `404.html`: Not-found page. **Must use root-absolute asset paths.** GitHub Pages serves it for any missing URL, so a relative `style.css` resolves against the *requested* path (e.g. `/p/style.css` for `/p/typo.html`) and the page renders unstyled.
@@ -51,7 +50,7 @@ Notes:
 - Invalid/missing `date` values sort to the bottom (`datetime.min` fallback); the `validate_posts.yml` PR check fails on these.
 - A post's public URL is derived from its filename: `posts/2026/2026-09-28-my-slug.md` → `/p/2026-09-28-my-slug.html`.
 - **The filename is the URL**, so `--validate` requires slug-safe names (lowercase, hyphen-separated, no spaces). A stray ` copy` suffix once shipped a post at a URL containing a space; rename the file instead of working around it.
-- `title` may be quoted; the editor writes it quoted so titles containing `:` or `#` stay valid YAML.
+- `title` may be quoted; the lightweight front-matter parser supports quoted titles containing `:` or `#`.
 
 ## Local Commands
 
@@ -77,7 +76,7 @@ Note: the commands above are written as `python3`. On Windows there is usually n
 - If editing post metadata logic, verify `update_posts.py` still handles nested `posts/YYYY/` paths.
 - Post page templates live in `update_posts.py` (`build_post_page`); the rail/footer markup lives only in `layout.js`. Don't reintroduce that markup into individual pages.
 - Keep new pages' root-absolute links consistent (they must resolve from `/p/` too).
-- The head theme snippet and `theme-toggle.js` must each leave **exactly one** of `.light-mode` / `.dark-mode` on `<html>`. That invariant is what lets the light palette be declared exactly once in CSS. Seven sites carry it — `index`, `about`, `side-projects`, `write`, `404`, `view`, plus `THEME_INIT_SCRIPT` in `update_posts.py`. Change all seven together.
+- The head theme snippet and `theme-toggle.js` must each leave **exactly one** of `.light-mode` / `.dark-mode` on `<html>`. That invariant is what lets the light palette be declared exactly once in CSS. Five hand-maintained pages carry the head snippet — `index`, `about`, `side-projects`, `404`, and `view` — plus `THEME_INIT_SCRIPT` in `update_posts.py` for generated post pages. Keep their behavior consistent.
 - Display type is Fraunces and body copy is Roboto, both from **one** combined Google Fonts request. Fraunces is scoped to brand/headings/titles through `--font-handwriting` (a historical name for the display slot) — don't point it at nav pills or body copy.
 - When modifying UI pages, verify desktop + mobile behavior and ensure links still resolve from site root.
 
