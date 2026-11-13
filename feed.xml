@@ -5,7 +5,23 @@
   <link href="https://legodud3.github.io/" rel="alternate" />
   <link href="https://legodud3.github.io/feed.xml" rel="self" />
   <id>https://legodud3.github.io/</id>
-  <updated>2026-10-24T00:00:00Z</updated>
+  <updated>2026-11-13T00:00:00Z</updated>
+  <entry>
+    <title>$ANT and $OPENAI will be discovery tax collectors</title>
+    <link href="https://legodud3.github.io/p/2026-11-13-ant-and-openai-will-be-discovery-tax-collectors.html" rel="alternate" />
+    <id>https://legodud3.github.io/p/2026-11-13-ant-and-openai-will-be-discovery-tax-collectors.html</id>
+    <published>2026-11-13T00:00:00Z</published>
+    <updated>2026-11-13T00:00:00Z</updated>
+    <summary>Growing up in the 2000s and 2010s, Google and Facebook (Meta) were novel technology companies. They won their markets of choice - search and social - by having the winning products, outexecuting their competitors, and acquiring those they could not outexecute. They have slapped on one of the greates</summary>
+  </entry>
+  <entry>
+    <title>Freshie mindset</title>
+    <link href="https://legodud3.github.io/p/2026-11-06-freshie-mindset.html" rel="alternate" />
+    <id>https://legodud3.github.io/p/2026-11-06-freshie-mindset.html</id>
+    <published>2026-11-06T00:00:00Z</published>
+    <updated>2026-11-06T00:00:00Z</updated>
+    <summary>I am at a weird spot in my professional life. Figuring out what to do next is hard. Finding the motivation to figure out what to do next is even harder. I am convinced I am using my time in a fulfilling way. Reading books, spending time with Samay, and generally being disconnected. I am not deeply u</summary>
+  </entry>
   <entry>
     <title>Cutting my coding agent from 119k to 8k tokens</title>
     <link href="https://legodud3.github.io/p/2026-10-24-cutting-my-coding-agent-from-119k-to-8k-tokens.html" rel="alternate" />
@@ -149,21 +165,5 @@
     <published>2026-04-10T00:00:00Z</published>
     <updated>2026-04-10T00:00:00Z</updated>
     <summary>We live in a capitalist world. Consumers, corporations, and the state (i.e., government via laws and regulation) are the most important groups in this world. Consumers have value because they generate demand for various goods and services. Corporations have value because they fulfill these demands.</summary>
-  </entry>
-  <entry>
-    <title>How models approach document processing</title>
-    <link href="https://legodud3.github.io/p/2026-03-30-how-models-approach-document-processing.html" rel="alternate" />
-    <id>https://legodud3.github.io/p/2026-03-30-how-models-approach-document-processing.html</id>
-    <published>2026-03-30T00:00:00Z</published>
-    <updated>2026-03-30T00:00:00Z</updated>
-    <summary>I decided last week to shift from (using AI to build vanilla software) --&gt; (using AI to build software with AI features). This is a not-so-subtle shift in my view because I believe that unless a product has real AI-enabled features, (a) it is liable to be subsumed by general-purpose consumer applica</summary>
-  </entry>
-  <entry>
-    <title>Happy birthday to me!</title>
-    <link href="https://legodud3.github.io/p/2026-03-27-happy-birthday-to-me.html" rel="alternate" />
-    <id>https://legodud3.github.io/p/2026-03-27-happy-birthday-to-me.html</id>
-    <published>2026-03-27T00:00:00Z</published>
-    <updated>2026-03-27T00:00:00Z</updated>
-    <summary>Today is my 36th birthday. Happy birthday to me! Physically, I am (near) the best shape of my life, though there is a long way to go. Mentally, I feel like I have just turned 30, so a long way to go there too. Samay is here too, to celebrate, which I love. Every morning he wakes up and gives me a wi</summary>
   </entry>
 </feed>
