@@ -10,7 +10,7 @@ Growing up in the 2000s and 2010s, Google and Facebook (Meta) were novel technol
 
 Growing up in the 2020s, OpenAI (which I am calling $OPENAI) and $ANT are novel technology companies. They won their markets of choice - chat and coding - by having the winning product, outexecuting their competitors, and acquiring those they could not outexecute.
 
-$ANT: Will become the discovery layer for enterprise software & services. It's going to be much more profitable for $ANT to take a tax from every enterprise software & services company. $ANT will be the layer through which enterprises get their b2b software & services discovered. Or not.
+$ANT: Will become the discovery layer for enterprise software & services. Rather than building every enterprise software in existence, it's going to be much more profitable for $ANT to take a discovery tax from every enterprise software & services company. $ANT will be the layer through which enterprises get their b2b software & services shown to buyers. Or not.
 
 $OPENAI: They have slapped on one of the greatest business models of all time on top of chatGPT - advertising. ~20 years later, we will be in a situation where ~100% of consumer companies....you get the picture. FYI: OpenAI advertising is >$1B ARR in <200 days of launch.
 
