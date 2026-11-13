@@ -36,7 +36,7 @@
     <id>https://legodud3.github.io/p/2026-10-15-introducing-charts.html</id>
     <published>2026-10-15T00:00:00Z</published>
     <updated>2026-10-15T00:00:00Z</updated>
-    <summary>You can now embed nice-looking charts directly in posts using a fenced code block: Bar charts work too: And a simple pie chart: To add one to your own post, use the 📊 Insert chart button in the writing desk, or write a fenced block with language containing a JSON Chart.js config: markdown The build</summary>
+    <summary>You can now embed nice-looking charts directly in posts using a fenced code block: Bar charts work too: And a simple pie chart: To add one to your own post, write a fenced block with language containing a JSON Chart.js config: markdown The build script converts these into elements that Chart.js rend</summary>
   </entry>
   <entry>
     <title>Samay's dreams</title>
