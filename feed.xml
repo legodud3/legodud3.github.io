@@ -5,7 +5,15 @@
   <link href="https://legodud3.github.io/" rel="alternate" />
   <link href="https://legodud3.github.io/feed.xml" rel="self" />
   <id>https://legodud3.github.io/</id>
-  <updated>2026-11-13T00:00:00Z</updated>
+  <updated>2026-11-16T00:00:00Z</updated>
+  <entry>
+    <title>$1 and 3 hours later...I can run my ecovacs robo vaccum via Instinct</title>
+    <link href="https://legodud3.github.io/p/2026-11-16-ecovacs-instinct.html" rel="alternate" />
+    <id>https://legodud3.github.io/p/2026-11-16-ecovacs-instinct.html</id>
+    <published>2026-11-16T00:00:00Z</published>
+    <updated>2026-11-16T00:00:00Z</updated>
+    <summary>What did you build? The ability to control my robo vaccum (the Ecovacs N30 pro omni) directly from Instinct (the chat based assistant). How did I build it? Took about 3 hours end to end. Of which half was coding and the other half was test runs. Needless to say the kitchen was spotless. Some googlin</summary>
+  </entry>
   <entry>
     <title>$ANT and $OPENAI will be discovery tax collectors</title>
     <link href="https://legodud3.github.io/p/2026-11-13-ant-and-openai-will-be-discovery-tax-collectors.html" rel="alternate" />
@@ -157,13 +165,5 @@
     <published>2026-04-24T00:00:00Z</published>
     <updated>2026-04-24T00:00:00Z</updated>
     <summary>I have been heads-down for the past ~3 weeks understanding agents. I played around with them, listened to podcasts, and explored GitHub repos. H/T to smol-agents (Hugging Face) and pi (Mario Zechner). I am on board with their philosophy of building minimal coding agents and letting the models do the</summary>
-  </entry>
-  <entry>
-    <title>Selling the dream is the most significant driver of market cap</title>
-    <link href="https://legodud3.github.io/p/2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html" rel="alternate" />
-    <id>https://legodud3.github.io/p/2026-04-10-selling-the-dream-is-the-most-significant-driver-of-market-cap.html</id>
-    <published>2026-04-10T00:00:00Z</published>
-    <updated>2026-04-10T00:00:00Z</updated>
-    <summary>We live in a capitalist world. Consumers, corporations, and the state (i.e., government via laws and regulation) are the most important groups in this world. Consumers have value because they generate demand for various goods and services. Corporations have value because they fulfill these demands.</summary>
   </entry>
 </feed>
