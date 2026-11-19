@@ -5,7 +5,15 @@
   <link href="https://legodud3.github.io/" rel="alternate" />
   <link href="https://legodud3.github.io/feed.xml" rel="self" />
   <id>https://legodud3.github.io/</id>
-  <updated>2026-11-16T00:00:00Z</updated>
+  <updated>2026-11-19T00:00:00Z</updated>
+  <entry>
+    <title>Is it bad if agents see your content?</title>
+    <link href="https://legodud3.github.io/p/2026-11-19-is-it-bad-if-agents-see-your-content.html" rel="alternate" />
+    <id>https://legodud3.github.io/p/2026-11-19-is-it-bad-if-agents-see-your-content.html</id>
+    <published>2026-11-19T00:00:00Z</published>
+    <updated>2026-11-19T00:00:00Z</updated>
+    <summary>Context As a reminder to future me, the primary audience of this blog is me. And why I write was written down by past me over at what writing improves. A few months ago, I (technically, chatGPT) wired up Google Analytics on this blog. Every morning, I get a message of the prior day: (views, visitors</summary>
+  </entry>
   <entry>
     <title>$1 and 3 hours later...I can run my ecovacs robo vaccum via Instinct</title>
     <link href="https://legodud3.github.io/p/2026-11-16-ecovacs-instinct.html" rel="alternate" />
@@ -157,13 +165,5 @@
     <published>2026-05-22T00:00:00Z</published>
     <updated>2026-05-22T00:00:00Z</updated>
     <summary>Word on the street is that these are dropping soon. I plan to read the S-1s and form my own conclusions with help from AI. I will share them here.</summary>
-  </entry>
-  <entry>
-    <title>To learn something well, start small and follow historical evolution</title>
-    <link href="https://legodud3.github.io/p/2026-04-24-to-learn-something-well-start-small-and-follow-historical-evolution.html" rel="alternate" />
-    <id>https://legodud3.github.io/p/2026-04-24-to-learn-something-well-start-small-and-follow-historical-evolution.html</id>
-    <published>2026-04-24T00:00:00Z</published>
-    <updated>2026-04-24T00:00:00Z</updated>
-    <summary>I have been heads-down for the past ~3 weeks understanding agents. I played around with them, listened to podcasts, and explored GitHub repos. H/T to smol-agents (Hugging Face) and pi (Mario Zechner). I am on board with their philosophy of building minimal coding agents and letting the models do the</summary>
   </entry>
 </feed>
