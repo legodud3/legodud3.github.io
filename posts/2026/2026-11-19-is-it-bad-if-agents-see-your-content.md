@@ -17,7 +17,8 @@ We are now living in a world where agents browse, consume, and interact with the
 Suppose one of those two views from France was an agent looking up something for someone. And suppose what I wrote helped it give them a better answer. I think I’d still be quite happy with myself. 
 
 ## The other side
-What if I'm wrong? What if an agent's attention is actually a -ve value event? We will end up creating an agent-friendly internet anyway. Consider where things are headed: 
+What if I'm wrong? What if an agent's attention is actually a -ve value event? We will end up creating an agent-friendly internet anyway. Consider where things are headed:
+
 - There will be more agents; not fewer
 - They will browse, consume, and interact more; not less
 - People will change what they put out and how they monetize it to absorb this -ve value event. Because it cannot be avoided. Kinda like taxes, or spoilage, or someone stealing your stuff. You don't have to like it. You just have to price it in.
